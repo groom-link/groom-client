@@ -1,3 +1,27 @@
 {
-  "extends": ["next/core-web-vitals", "prettier"]
+  "extends": ["next", "prettier"],
+  "plugins": ["simple-import-sort"],
+  "rules": {
+    "simple-import-sort/imports": [
+      "error",
+      {
+        "groups": [
+          // react > next > @ > ~ > a~z
+          ["^react$", "^next", "^@", "^[a-z]"],
+          // `../` > './'
+          ["^~"],
+          [
+            "^\\.\\.(?!/?$)",
+            "^\\.\\./?$",
+            "^\\./(?=.*/)(?!/?$)",
+            "^\\.(?!/?$)",
+            "^\\./?$"
+          ],
+          // Side effect imports
+          ["^\\u0000"]
+        ]
+      }
+    ],
+    "simple-import-sort/exports": "error"
+  }
 }
