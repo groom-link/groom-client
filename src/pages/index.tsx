@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import Router from 'next/router';
+
+import { REDIRECT_URL } from '../constants/kakao';
 
 const KAKAO_JAVASCRIPT_KEY = '248c0f042143239e8aff41927befcf0a';
-const KAKAO_REDIRECT_URL = 'http://localhost:8080/auth/kakao';
 
 const Login = () => {
   useEffect(() => {
@@ -11,12 +11,7 @@ const Login = () => {
   }, []);
 
   const handleLogin = () => {
-    Kakao.Auth.authorize({ redirectUri: KAKAO_REDIRECT_URL });
-  };
-
-  const fetchJWTToken = () => {
-    const AccessToken = '111222333';
-    const RefreshToken = '444555666';
+    Kakao.Auth.authorize({ redirectUri: REDIRECT_URL });
   };
 
   return (
