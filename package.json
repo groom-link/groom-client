@@ -11,6 +11,8 @@
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
+    "axios": "^0.27.2",
+    "cookies-next": "^2.1.1",
     "install-peers": "^1.0.4",
     "next": "12.2.3",
     "react": "18.2.0",
