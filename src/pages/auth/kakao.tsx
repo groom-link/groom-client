@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
 import Router from 'next/router';
 
-import { USER_INFORMATION_REQUEST_URL } from '../../constants/kakao';
-
 const KAKAO_JAVASCRIPT_KEY = '248c0f042143239e8aff41927befcf0a';
 
 const Kakao = () => {
@@ -15,23 +13,13 @@ const Kakao = () => {
     const isJoined = false;
     if (isJoined) {
       // TODO: 우리 서비스 로그인 토큰 발급 요청
+      // TODO: 엑세스 토큰, 리프레시 토큰 받아서 쿠키에 저장.
       Router.push('/home');
       return;
     }
-    window.Kakao.Auth.setAccessToken('');
-    window.Kakao.API.request({
-      url: USER_INFORMATION_REQUEST_URL,
-      success: (response) => {
-        // TODO: 우리 서비스 회원가입 요청 보내기
-        console.log(response);
-        // TODO: 우리 서비스에 로그인 요청 보내기
-        Router.push('/home');
-        return;
-      },
-      fail: (error) => {
-        console.log(error);
-      }
-    });
+    // TODO: API 서버에 회원가입 요청
+    // TODO: 엑세스 토큰, 리프레시 토큰 받아서 쿠키에 저장.
+    Router.push('/home');
   }, []);
 
   return <div>로그인중</div>;
