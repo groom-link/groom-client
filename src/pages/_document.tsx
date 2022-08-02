@@ -4,13 +4,13 @@ import Script from 'next/script';
 export default function Document() {
   return (
     <Html>
-      <link
-        rel="preload"
-        href="/fonts/PretendardVariable.woff2"
-        as="font"
-        crossOrigin=""
-      />
       <Head>
+        <link
+          rel="preload"
+          href="/fonts/PretendardVariable.woff2"
+          as="font"
+          crossOrigin=""
+        />
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.js"
           strategy="beforeInteractive"
