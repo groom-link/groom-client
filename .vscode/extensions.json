@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "styled-components.vscode-styled-components",
+    "wayou.vscode-todo-highlight",
+    "naumovs.color-highlight",
+    "fehey.brackets-light-pro",
+    "esbenp.prettier-vscode"
+  ]
+}
