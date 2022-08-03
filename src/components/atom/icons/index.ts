@@ -1,0 +1,13 @@
+export { default as Alert } from './Alert';
+export { default as Bell } from './Bell';
+export { default as CalendarFill } from './CalendarFill';
+export { default as CalendarOutline } from './CalendarOutline';
+export { default as HomeFill } from './HomeFill';
+export { default as HomeOutline } from './HomeOutline';
+export { default as NoticeBell } from './NoticeBell';
+export { default as OK } from './OK';
+export { default as PersonFill } from './PersonFill';
+export { default as PersonOutline } from './PersonOutline';
+export { default as SearchThick } from './SearchThick';
+export { default as SearchThin } from './SearchThin';
+export { default as X } from './X';
