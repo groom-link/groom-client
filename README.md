@@ -5,4 +5,4 @@
 ## 링크
 
 - [Figma](https://www.figma.com/file/MLSplFs110q8rHJxpjXsVa/UI-prototyping?node-id=0%3A1)
-- [Story Book](https://www.chromatic.com/library?appId=62ea5486b7d06448c28fd46c)
+- [Story Book](https://www.chromatic.com/builds?appId=62ea777171e21338a5fb979a)
