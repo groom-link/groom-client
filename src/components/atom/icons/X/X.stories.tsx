@@ -1,7 +1,7 @@
 import React from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
-import X from '../OK/index';
+import X from './index';
 
 export default {
   title: 'icons/X',

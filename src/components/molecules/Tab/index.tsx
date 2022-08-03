@@ -65,9 +65,6 @@ const MENUS = [
 ] as const;
 
 type Props = {
-  /**
-   * 탭에서 활성화된 메뉴를 전달받습니다.
-   */
   activeMenu: '홈' | '모임 찾기' | '내 일정' | '내 GRoom';
 };
 
