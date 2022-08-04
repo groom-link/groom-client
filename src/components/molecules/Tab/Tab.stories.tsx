@@ -8,6 +8,7 @@ export default {
   component: Tab,
   argTypes: {
     activeMenu: {
+      description: '현재 활성화된 메뉴 이름을 전달받습니다.',
       options: ['홈', '모임 찾기', '내 일정', '내 GRoom'],
       defaultValue: '홈',
       control: {
@@ -17,6 +18,6 @@ export default {
   }
 } as ComponentMeta<typeof Tab>;
 
-export const Template: ComponentStory<typeof Tab> = ({ activeMenu }) => (
+export const Primary: ComponentStory<typeof Tab> = ({ activeMenu }) => (
   <Tab {...{ activeMenu }} />
 );
