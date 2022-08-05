@@ -12,11 +12,16 @@ export default {
       control: {
         type: 'text'
       },
-      defaultValue: '라벨'
+      table: {
+        defaultValue: {
+          summary: '요약값'
+        }
+      }
     }
   }
 } as ComponentMeta<typeof Label>;
 
-export const Primary: ComponentStory<typeof Label> = ({ text }) => (
-  <Label {...{ text }} />
-);
+export const Primary: ComponentStory<typeof Label> = ({
+  text = '라벨',
+  marginBottom
+}) => <Label {...{ text, marginBottom }} />;

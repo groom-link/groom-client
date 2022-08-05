@@ -3,8 +3,12 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 import { medium12 } from '../../../styles/typography';
 
-export const LabelSpan = styled.span`
+type LabelSpanProps = {
+  marginBottom: '4px' | '8px';
+};
+
+export const LabelSpan = styled.span<LabelSpanProps>`
   ${medium12}
-  margin-bottom: 4px;
+  margin-bottom: ${({ marginBottom }) => marginBottom};
   color: ${colors.grayScale.gray05};
 `;
