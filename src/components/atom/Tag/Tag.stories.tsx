@@ -24,6 +24,7 @@ export default {
   }
 } as ComponentMeta<typeof Tag>;
 
-export const Primary: ComponentStory<typeof Tag> = ({ state, text }) => (
-  <Tag {...{ state, text }} onCancel={() => console.log('clicked')} />
-);
+export const Primary: ComponentStory<typeof Tag> = ({
+  state,
+  text = '태그'
+}) => <Tag {...{ state, text }} onCancel={() => console.log('clicked')} />;

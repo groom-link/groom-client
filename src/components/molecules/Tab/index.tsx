@@ -2,21 +2,21 @@ import { useState } from 'react';
 
 import colors from '../../../styles/colors';
 import {
+  Calendar,
   CalendarFill,
-  CalendarOutline,
+  Home,
   HomeFill,
-  HomeOutline,
-  PersonFill,
-  PersonOutline,
-  SearchThick,
-  SearchThin
+  Search,
+  SearchFill,
+  User,
+  UserFill
 } from '../../atom/icons';
 import { ContainerDiv, LabelSpan, MenuBoxDiv } from './styled';
 
 const MENUS = [
   {
     outlineIcon: (
-      <HomeOutline width="28px" height="28px" color={colors.grayScale.gray04} />
+      <Home width="28px" height="28px" color={colors.grayScale.gray04} />
     ),
     fillIcon: (
       <HomeFill width="28px" height="28px" color={colors.grayScale.gray06} />
@@ -25,20 +25,16 @@ const MENUS = [
   },
   {
     outlineIcon: (
-      <SearchThin width="28px" height="28px" color={colors.grayScale.gray04} />
+      <Search width="28px" height="28px" color={colors.grayScale.gray04} />
     ),
     fillIcon: (
-      <SearchThick width="28px" height="28px" color={colors.grayScale.gray06} />
+      <SearchFill width="28px" height="28px" color={colors.grayScale.gray06} />
     ),
     label: '모임 찾기'
   },
   {
     outlineIcon: (
-      <CalendarOutline
-        width="28px"
-        height="28px"
-        color={colors.grayScale.gray04}
-      />
+      <Calendar width="28px" height="28px" color={colors.grayScale.gray04} />
     ),
     fillIcon: (
       <CalendarFill
@@ -51,14 +47,10 @@ const MENUS = [
   },
   {
     outlineIcon: (
-      <PersonOutline
-        width="28px"
-        height="28px"
-        color={colors.grayScale.gray04}
-      />
+      <User width="28px" height="28px" color={colors.grayScale.gray04} />
     ),
     fillIcon: (
-      <PersonFill width="28px" height="28px" color={colors.grayScale.gray06} />
+      <UserFill width="28px" height="28px" color={colors.grayScale.gray06} />
     ),
     label: '내 GRoom'
   }
