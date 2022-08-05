@@ -11,13 +11,11 @@ export default {
       description: '태그 안에 들어갈 텍스트를 전달받습니다.',
       control: {
         type: 'text'
-      },
-      defaultValue: '태그'
+      }
     },
     state: {
       description:
-        '볼 수만 있는 상태인지, 삭제할 수 있는 상태인지를 정의합니다.',
-      defaultValue: 'default'
+        '볼 수만 있는 상태인지, 삭제할 수 있는 상태인지를 정의합니다.'
     },
     onCancel: {
       description:
