@@ -1,5 +1,5 @@
 import colors from '../../../styles/colors';
-import { X } from '../icons';
+import { Cancel } from '../icons';
 import { TagBoxDiv, TagSpan } from './styled';
 
 type Props =
@@ -23,7 +23,7 @@ const Tag = (props: Props) => {
     >
       <TagSpan {...{ state }}>#{text}</TagSpan>
       {state === 'cancel' && (
-        <X width="15px" height="15px" color={colors.grayScale.white} />
+        <Cancel width="15px" height="15px" color={colors.grayScale.white} />
       )}
     </TagBoxDiv>
   );
