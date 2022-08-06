@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
-import ArrowLeft from '../../atom/icons/ArrowLeft';
-import Setting from '../../atom/icons/Setting';
+import { ArrowLeft, Setting } from '../../atom/icons';
 import { NavBoxDiv } from './styled';
 
 type Props =
