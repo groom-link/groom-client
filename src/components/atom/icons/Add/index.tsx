@@ -1,10 +1,11 @@
+import colors from '../../../../styles/colors';
 import { IconProps } from '../../../../types/icon';
 
 const Add = ({
   className,
   width = '40px',
   height = '40px',
-  color = '#000000'
+  color = colors.grayScale.gray05
 }: IconProps) => {
   return (
     <svg
