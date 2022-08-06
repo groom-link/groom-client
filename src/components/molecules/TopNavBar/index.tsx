@@ -15,7 +15,7 @@ type Props =
       setting: true;
     };
 
-const Tab = (prop: Props) => {
+const TopNavBar = (prop: Props) => {
   const { setting, backURL } = prop;
 
   return (
@@ -32,4 +32,4 @@ const Tab = (prop: Props) => {
   );
 };
 
-export default Tab;
+export default TopNavBar;
