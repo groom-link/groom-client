@@ -6,6 +6,7 @@ export { default as CalendarFill } from './CalendarFill';
 export { default as Camera } from './Camera';
 export { default as Cancel } from './Cancel';
 export { default as CheckCircle } from './CheckCircle';
+export { default as Clock } from './Clock';
 export { default as Delete } from './Delete';
 export { default as Edit } from './Edit';
 export { default as HambergerMenu } from './HambergerMenu';
