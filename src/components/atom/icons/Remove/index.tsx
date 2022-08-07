@@ -14,7 +14,7 @@ const Remove = ({
       fill={color}
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect x="7" y="20.5" width="30" height="3" rx="1.5" fill="#343A3F" />
+      <rect x="7" y="20.5" width="30" height="3" rx="1.5" fill={color} />
     </svg>
   );
 };

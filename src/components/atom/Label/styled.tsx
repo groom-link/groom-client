@@ -9,6 +9,7 @@ type LabelSpanProps = {
 
 export const LabelSpan = styled.span<LabelSpanProps>`
   ${medium12}
+  display: block;
   margin-bottom: ${({ marginBottom }) => marginBottom};
   color: ${colors.grayScale.gray05};
 `;
