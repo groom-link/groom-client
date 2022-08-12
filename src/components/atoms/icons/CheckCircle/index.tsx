@@ -1,5 +1,4 @@
 import colors from '../../../../styles/colors';
-import { IconProps } from '../../../../types/icon';
 
 const CheckCircle = ({
   className,

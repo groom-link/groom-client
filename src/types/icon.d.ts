@@ -1,4 +1,4 @@
-export type IconProps = {
+type IconProps = {
   className?: string;
   width?: string;
   height?: string;
