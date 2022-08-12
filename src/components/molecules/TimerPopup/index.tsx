@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 import { shadow01 } from '../../../styles/mixins';
 import { bold16, medium12, semiBold16 } from '../../../styles/typography';
-import { Clock } from '../../atom/icons';
+import { Clock } from '../../atoms/icons';
 
 const PopupBoxDiv = styled.div`
   ${shadow01}

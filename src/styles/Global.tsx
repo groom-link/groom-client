@@ -1,14 +1,14 @@
 import { css, Global } from '@emotion/react';
 import emotionNormalize from 'emotion-normalize';
 
-import { fontFace } from './font';
-
 const globalStyle = css`
   ${emotionNormalize}
-  ${fontFace}
-  
+
   * {
-    font-family: 'Pretendard Variable', serif, sans-serif;
+    font-family: Pretendard, -apple-system, BlinkMacSystemFont, system-ui,
+      Roboto, 'Helvetica Neue', 'Segoe UI', 'Apple SD Gothic Neo',
+      'Noto Sans KR', 'Malgun Gothic', 'Apple Color Emoji', 'Segoe UI Emoji',
+      'Segoe UI Symbol', sans-serif;
   }
 `;
 

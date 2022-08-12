@@ -6,10 +6,9 @@ export default function Document() {
     <Html>
       <Head>
         <link
-          rel="preload"
-          href="/fonts/PretendardVariable.woff2"
-          as="font"
-          crossOrigin=""
+          rel="stylesheet"
+          as="style"
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
         />
         <Script
           src="https://developers.kakao.com/sdk/js/kakao.js"

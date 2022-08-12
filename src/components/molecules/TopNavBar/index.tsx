@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
-import { ArrowLeft, Setting } from '../../atom/icons';
+import { ArrowLeft, Setting } from '../../atoms/icons';
 
 const NavBoxDiv = styled.div`
   display: flex;
