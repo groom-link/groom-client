@@ -1,6 +1,20 @@
+import styled from '@emotion/styled';
+
 import colors from '../../../styles/colors';
-import { IconButton, Label } from '../../atom';
-import { StepperBoxDiv, StepValueSpan } from './styled';
+import { regular16 } from '../../../styles/typography';
+import { IconButton, Label } from '../../atoms';
+
+const StepperBoxDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 88px;
+`;
+
+const StepValueSpan = styled.span`
+  ${regular16}
+  color: ${colors.grayScale.gray05};
+`;
 
 type Props = {
   label: string;

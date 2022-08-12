@@ -1,14 +1,55 @@
+import styled from '@emotion/styled';
+
 import colors from '../../../styles/colors';
-import { Clock } from '../../atom/icons';
-import {
-  DescriptionSpan,
-  PopupBoxDiv,
-  TextBoxDiv,
-  TimerBoxDiv,
-  TimerSpan,
-  TitleStrong,
-  WarningStrong
-} from './styled';
+import { shadow01 } from '../../../styles/mixins';
+import { bold16, medium12, semiBold16 } from '../../../styles/typography';
+import { Clock } from '../../atoms/icons';
+
+const PopupBoxDiv = styled.div`
+  ${shadow01}
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  width: 374px;
+  height: 100px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  background-color: ${colors.grayScale.white};
+`;
+
+const TextBoxDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+`;
+
+const TitleStrong = styled.b`
+  ${bold16}
+  color: ${colors.grayScale.gray05};
+`;
+
+const WarningStrong = styled.strong`
+  ${semiBold16}
+  color: ${colors.grayScale.gray04};
+`;
+
+const TimerBoxDiv = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DescriptionSpan = styled.span`
+  ${medium12}
+  color: ${colors.grayScale.gray03};
+`;
+
+const TimerSpan = styled.span`
+  ${bold16}
+  color: ${colors.mainColor.purple};
+`;
 
 type Props = {
   groupName: string;

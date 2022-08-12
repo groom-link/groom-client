@@ -1,10 +1,28 @@
-import { Label } from '../../atom';
-import {
-  HiddenInput,
-  RadioLabel,
-  RadioOffStyled,
-  RadioOnStyled
-} from './styled';
+import styled from '@emotion/styled';
+
+import colors from '../../../styles/colors';
+import { medium12 } from '../../../styles/typography';
+import { Label } from '../../atoms';
+import { RadioOff, RadioOn } from '../../atoms/icons';
+
+const RadioLabel = styled.label`
+  ${medium12}
+  display: flex;
+  align-items: center;
+  color: ${colors.grayScale.gray04};
+`;
+
+const HiddenInput = styled.input`
+  display: none;
+`;
+
+const RadioOnStyled = styled(RadioOn)`
+  margin-right: 4px;
+`;
+
+const RadioOffStyled = styled(RadioOff)`
+  margin-right: 4px;
+`;
 
 type Props = {
   radioLabel?: string;

@@ -7,13 +7,6 @@ module.exports = async ({ config }) => {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(
-            __dirname,
-            '../public/fonts/PretendardVariable.woff2'
-          ),
-          to: 'fonts'
-        },
-        {
           from: path.resolve(__dirname, '../public/images/profileImage.jpg'),
           to: 'images'
         }

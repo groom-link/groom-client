@@ -4,13 +4,13 @@ import { css } from '@emotion/react';
 
 export const medium10 = css`
   font-weight: 500;
-  font-size: 10px;
+  font-size: 0.625rem;
   line-height: 15px;
 `;
 
 export const medium12 = css`
   font-weight: 500;
-  font-size: 12px;
+  font-size: 0.75rem;
   line-height: 18px;
 `;
 
@@ -18,25 +18,25 @@ export const medium12 = css`
 
 export const regular16 = css`
   font-weight: 400;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
 `;
 
 export const semiBold16 = css`
   font-weight: 600;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
 `;
 
 export const bold16 = css`
   font-weight: 700;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 24px;
 `;
 
 export const medium18 = css`
   font-weight: 500;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 27px;
 `;
 
@@ -44,18 +44,18 @@ export const medium18 = css`
 
 export const medium20 = css`
   font-weight: 500;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 30px;
 `;
 
 export const semiBold20 = css`
   font-weight: 600;
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 30px;
 `;
 
 export const semiBold = css`
   font-weight: 600;
-  font-size: 24px;
+  font-size: 1.5rem;
   line-height: 36px;
 `;
