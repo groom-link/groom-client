@@ -6,9 +6,10 @@ type Props = {
   size: 'large' | 'medium';
   disabled: boolean;
   color: 'purple' | 'gray' | 'ghost';
+  onClick: () => void;
 };
 
-const BasicButton = styled.button<Omit<Props, 'color'>>`
+const BasicButton = styled.button<Omit<Props, 'color' | 'onClick'>>`
   width: 100%;
   border-radius: 12px;
   height: ${({ size }) => (size === 'large' ? '54px' : '48px')};
@@ -45,21 +46,21 @@ const GhostButton = styled(BasicButton)`
   }
 `;
 
-const Button = ({ size, disabled, color }: Props) => {
+const Button = ({ size, disabled, color, onClick }: Props) => {
   if (color === 'purple')
     return (
-      <PurpleButton type="button" {...{ size, disabled }}>
+      <PurpleButton type="button" {...{ size, disabled, onClick }}>
         버튼 이름
       </PurpleButton>
     );
   if (color === 'gray')
     return (
-      <GrayButton type="button" {...{ size, disabled }}>
+      <GrayButton type="button" {...{ size, disabled, onClick }}>
         버튼 이름
       </GrayButton>
     );
   return (
-    <GhostButton type="button" {...{ size, disabled }}>
+    <GhostButton type="button" {...{ size, disabled, onClick }}>
       버튼 이름
     </GhostButton>
   );
