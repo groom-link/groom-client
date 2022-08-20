@@ -3,36 +3,33 @@ import { getCookie, setCookie } from 'cookies-next';
 
 import {
   ACCESS_TOKEN_KEY,
-  BASE_URL,
   REFRESH_TOKEN_KEY
 } from '../constants/authentication';
 
-const authenticationAxios = axios.create({
-  baseURL: BASE_URL,
+const customAxios = axios.create({
   timeout: 10000
 });
 
-authenticationAxios.interceptors.response.use((config) => {
+customAxios.interceptors.request.use((config) => {
   const accessToken = getCookie(ACCESS_TOKEN_KEY);
-  config.headers.Autorization = accessToken ? `Bearer ${accessToken}` : '';
+  if (!config.headers) return config;
+  if (config.url !== '/api/auth/kakao/login')
+    config.headers['x-access-token'] = accessToken ? accessToken : '';
   return config;
 });
 
-authenticationAxios.interceptors.response.use(
+customAxios.interceptors.response.use(
   (response) => response,
   async (error) => {
     const {
       config,
-      response: {
-        status,
-        data: { message }
-      }
+      response: { status, data }
     } = error;
     if (status === '401') {
-      if (message === 'TokenExpiredError') {
+      if (data.message === 'TokenExpiredError') {
         const originalRequest = config;
         const refreshToken = getCookie('X-Refresh-Token');
-        const { data } = await authenticationAxios.post('sample', {
+        const { data } = await customAxios.post('sample', {
           refreshToken
         });
         const {
@@ -49,4 +46,4 @@ authenticationAxios.interceptors.response.use(
   }
 );
 
-export default authenticationAxios;
+export default customAxios;
