@@ -8,6 +8,6 @@ export default {
   component: KakaoLoginButton
 } as ComponentMeta<typeof KakaoLoginButton>;
 
-export const Primary: ComponentStory<typeof KakaoLoginButton> = () => (
-  <KakaoLoginButton />
-);
+export const Primary: ComponentStory<typeof KakaoLoginButton> = ({
+  onClick
+}) => <KakaoLoginButton onClick={onClick} />;

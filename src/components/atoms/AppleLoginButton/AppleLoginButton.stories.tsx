@@ -8,6 +8,6 @@ export default {
   component: AppleLoginButton
 } as ComponentMeta<typeof AppleLoginButton>;
 
-export const Primary: ComponentStory<typeof AppleLoginButton> = () => (
-  <AppleLoginButton />
-);
+export const Primary: ComponentStory<typeof AppleLoginButton> = ({
+  onClick
+}) => <AppleLoginButton onClick={onClick} />;
