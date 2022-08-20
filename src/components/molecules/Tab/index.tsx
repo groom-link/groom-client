@@ -19,8 +19,10 @@ type ActiveProps = {
 
 const ContainerDiv = styled.div`
   display: flex;
+  width: 100%;
   height: 49px;
   border-top: 0.5px solid ${colors.grayScale.gray02};
+  background-color: ${colors.grayScale.white};
 `;
 
 const MenuBoxDiv = styled.div`
@@ -81,11 +83,12 @@ const MENUS = [
 
 type Props = {
   activeMenu: '홈' | '모임 찾기' | '내 일정' | '내 GRoom';
+  className?: string;
 };
 
-const Tab = ({ activeMenu }: Props) => {
+const Tab = ({ activeMenu, className }: Props) => {
   return (
-    <ContainerDiv>
+    <ContainerDiv className={className}>
       {MENUS.map(({ outlineIcon, fillIcon, label }) => (
         <MenuBoxDiv key={label}>
           {activeMenu === label ? fillIcon : outlineIcon}
