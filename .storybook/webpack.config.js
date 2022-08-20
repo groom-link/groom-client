@@ -7,7 +7,7 @@ module.exports = async ({ config }) => {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: path.resolve(__dirname, '../public/images/profileImage.jpg'),
+          from: path.resolve(__dirname, '../public/images/*'),
           to: 'images'
         }
       ]
