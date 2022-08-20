@@ -54,7 +54,7 @@ export const semiBold20 = css`
   line-height: 30px;
 `;
 
-export const semiBold = css`
+export const semiBold24 = css`
   font-weight: 600;
   font-size: 1.5rem;
   line-height: 36px;

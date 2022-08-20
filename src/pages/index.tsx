@@ -1,15 +1,37 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
+import Router from 'next/router';
+import styled from '@emotion/styled';
+
+import { AppleLoginButton, KakaoLoginButton } from '../components/atoms';
+import colors from '../styles/colors';
+
+const Logo = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 150px;
+  margin: 120px auto 120px;
+  border: 1px solid ${colors.grayScale.gray04};
+  color: ${colors.grayScale.gray04};
+  font-size: 40px;
+`;
+
+const AppleLoginButtonStyled = styled(AppleLoginButton)`
+  margin-top: 20px;
+`;
 
 const Login = () => {
   useEffect(() => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string);
+    // window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string);
   }, []);
 
   const handleLogin = () => {
-    Kakao.Auth.authorize({
-      redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
-    });
+    // Kakao.Auth.authorize({
+    //   redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
+    // });
+    Router.push('/home');
   };
 
   return (
@@ -17,8 +39,9 @@ const Login = () => {
       <Head>
         <title>GRoom | Login</title>
       </Head>
-      <div>Login page</div>
-      <button onClick={handleLogin}>카카오 로그인</button>
+      <Logo>GRoom</Logo>
+      <KakaoLoginButton onClick={handleLogin} width="100%" />
+      <AppleLoginButtonStyled onClick={handleLogin} width="100%" />
     </>
   );
 };
