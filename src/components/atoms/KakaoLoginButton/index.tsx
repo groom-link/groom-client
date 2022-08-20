@@ -1,24 +1,28 @@
+import styled from '@emotion/styled';
+
 type Props = {
   className?: string;
-  width?: number;
-  height?: number;
+  width?: string;
+  height?: string;
   onClick: () => void;
 };
 
-const KakaoLoginButton = ({
-  className,
-  width = 374,
-  height = 56,
-  onClick
-}: Props) => {
+const Button = styled.button<Pick<Props, 'width' | 'height'>>`
+  width: ${({ width }) => (width ??= '374px')};
+  height: ${({ height }) => (height ??= '56px')};
+`;
+
+const KakaoLoginButton = ({ onClick, width, height, className }: Props) => {
   return (
-    <button
+    <Button
       type="button"
       onClick={onClick}
-      aria-label="애플 계정으로 로그인하기"
+      aria-label="카카오 계정으로 로그인하기"
+      {...{ width, height, className }}
     >
       <svg
-        {...{ className, width, height }}
+        width="100%"
+        height="100%"
         viewBox="0 0 374 56"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -50,7 +54,7 @@ const KakaoLoginButton = ({
           />
         </defs>
       </svg>
-    </button>
+    </Button>
   );
 };
 

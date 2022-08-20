@@ -1,3 +1,4 @@
+export { default as AppleLoginButton } from './AppleLoginButton';
 export { default as Avatar } from './Avatar';
 export { default as Button } from './Button';
 export { default as IconButton } from './IconButton';
