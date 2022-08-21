@@ -8,7 +8,7 @@ import { Warning } from '../../atoms/icons';
 
 type Props = {
   className?: string;
-  label: string;
+  label?: string;
   width?: string;
   isError: boolean;
   placeholder?: string;
@@ -72,7 +72,7 @@ const TextInput = ({
 }: Props) => {
   return (
     <div className={className}>
-      <Label text={label} marginBottom="4px" />
+      {label && <Label text={label} marginBottom="4px" />}
       <InputBox>
         <Input
           type="text"
