@@ -3,16 +3,19 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 
 type Props = {
+  className?: string;
+  label: string;
   size: 'large' | 'medium';
   disabled: boolean;
   color: 'purple' | 'gray' | 'ghost';
   onClick: () => void;
 };
 
-const BasicButton = styled.button<Omit<Props, 'color' | 'onClick'>>`
+const BasicButton = styled.button<Pick<Props, 'size' | 'disabled'>>`
   width: 100%;
+  padding: 0;
   border-radius: 12px;
-  height: ${({ size }) => (size === 'large' ? '54px' : '48px')};
+  height: ${({ size }) => (size === 'large' ? '56px' : '48px')};
 `;
 
 const PurpleButton = styled(BasicButton)`
@@ -46,22 +49,29 @@ const GhostButton = styled(BasicButton)`
   }
 `;
 
-const Button = ({ size, disabled, color, onClick }: Props) => {
+const Button = ({
+  className,
+  label,
+  size,
+  disabled,
+  color,
+  onClick
+}: Props) => {
   if (color === 'purple')
     return (
-      <PurpleButton type="button" {...{ size, disabled, onClick }}>
-        버튼 이름
+      <PurpleButton type="button" {...{ className, size, disabled, onClick }}>
+        {label}
       </PurpleButton>
     );
   if (color === 'gray')
     return (
-      <GrayButton type="button" {...{ size, disabled, onClick }}>
-        버튼 이름
+      <GrayButton type="button" {...{ className, size, disabled, onClick }}>
+        {label}
       </GrayButton>
     );
   return (
-    <GhostButton type="button" {...{ size, disabled, onClick }}>
-      버튼 이름
+    <GhostButton type="button" {...{ className, size, disabled, onClick }}>
+      {label}
     </GhostButton>
   );
 };
