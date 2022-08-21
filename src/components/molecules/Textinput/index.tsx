@@ -17,15 +17,15 @@ type Props = {
   errorMessage?: string;
 };
 
-const InputBox = styled.div`
+const InputBox = styled.div<Pick<Props, 'width'>>`
   position: relative;
-  width: min-content;
+  width: ${({ width }) => width};
 `;
 
-const Input = styled.input<Pick<Props, 'width' | 'isError'>>`
+const Input = styled.input<Pick<Props, 'isError'>>`
   ${regular16}
   box-sizing: border-box;
-  width: ${({ width }) => width};
+  width: 100%;
   height: 44px;
   padding: ${({ isError }) => (isError ? '10px 40px 10px 12px' : '10px 12px')};
   border: 1px solid
@@ -64,7 +64,7 @@ const TextInput = ({
   className,
   label,
   isError,
-  width = '300px',
+  width = 'auto',
   placeholder,
   value,
   onChange,
@@ -73,11 +73,8 @@ const TextInput = ({
   return (
     <div className={className}>
       {label && <Label text={label} marginBottom="4px" />}
-      <InputBox>
-        <Input
-          type="text"
-          {...{ width, placeholder, isError, value, onChange }}
-        />
+      <InputBox width={width}>
+        <Input type="text" {...{ placeholder, isError, value, onChange }} />
         {isError && (
           <ErrorWarning color={colors.etcColor.alertRed} width="24px" />
         )}

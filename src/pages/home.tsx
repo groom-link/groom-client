@@ -45,6 +45,15 @@ const BottomBox = styled.div`
   margin-top: 20px;
 `;
 
+const SearchInput = styled(TextInput)`
+  flex: 4.5;
+  margin-right: 12px;
+`;
+
+const SearchButton = styled(TextButton)`
+  flex: 1;
+`;
+
 const Title = styled.h1`
   ${semiBold24}
   color: ${colors.grayScale.gray06};
@@ -90,14 +99,13 @@ const Home = () => {
             <NotificationOff width="36px" height="36px" />
           </TopBox>
           <BottomBox>
-            <TextInput
-              width="278px"
+            <SearchInput
               isError={false}
               value={''}
               placeholder="초대코드를 입력하세요."
               onChange={() => console.log()}
             />
-            <TextButton
+            <SearchButton
               color="navy"
               label="모임 가입"
               isDisabled={false}
