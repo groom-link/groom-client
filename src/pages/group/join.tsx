@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Button } from '../../components/atoms';
@@ -53,9 +54,15 @@ const ButtonBox = styled.div`
 `;
 
 const Join = () => {
+  const [text, setText] = useState('');
+
+  const handleChange: ChangeEventHandler<HTMLTextAreaElement> = ({
+    target: { value }
+  }) => setText(value);
+
   return (
     <>
-      <TopNavBar setting={false} backURL="" />
+      <TopNavBar setting={false} backURL="./detail" />
       <WhiteBox>
         <Title>자유롭게 본인을 소개해주세요!</Title>
         <Description>
@@ -63,7 +70,11 @@ const Join = () => {
           <br />
           모임장에게 가입 신청이 완료됩니다.
         </Description>
-        <TextArea placeholder="자신을 소개해주세요." />
+        <TextArea
+          placeholder="자신을 소개해주세요."
+          value={text}
+          onChange={handleChange}
+        />
       </WhiteBox>
       <Background>
         <WhiteBox>
@@ -74,7 +85,7 @@ const Join = () => {
           <Button
             label="모임비 결제하기"
             size="medium"
-            disabled={false}
+            disabled={text === ''}
             color="purple"
             onClick={() => console.log('clicked!')}
           />

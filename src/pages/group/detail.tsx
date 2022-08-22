@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Avatar, Button, Tag } from '../../components/atoms';
@@ -123,7 +124,7 @@ const Detail = () => (
           size="medium"
           disabled={false}
           color="purple"
-          onClick={() => console.log('clicked!')}
+          onClick={() => Router.push('./join')}
         />
       </ButtonBox>
     </Background>

@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -10,6 +11,8 @@ type Props = {
   width?: string;
   placeholder?: string;
   errorMessage?: string;
+  value: string;
+  onChange: ChangeEventHandler<HTMLTextAreaElement>;
 };
 
 const Box = styled.div<Pick<Props, 'width'>>`
@@ -54,12 +57,16 @@ const TextArea = ({
   errorMessage,
   label,
   placeholder,
-  width = 'auto'
+  width = 'auto',
+  value,
+  onChange
 }: Props) => {
   return (
     <Box {...{ className, width }}>
       {label && <Label text={label} marginBottom="4px" />}
-      <StyledTextArea {...{ label, placeholder, errorMessage }} />
+      <StyledTextArea
+        {...{ label, placeholder, errorMessage, value, onChange }}
+      />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Box>
   );
