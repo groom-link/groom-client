@@ -1,4 +1,5 @@
 import { ChangeEventHandler, useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button } from '../../components/atoms';
@@ -87,7 +88,7 @@ const Join = () => {
             size="medium"
             disabled={text === ''}
             color="purple"
-            onClick={() => console.log('clicked!')}
+            onClick={() => Router.push('./join-success')}
           />
         </ButtonBox>
       </Background>

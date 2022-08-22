@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -91,6 +92,12 @@ const Footer = styled(Tab)`
 `;
 
 const Home = () => {
+  const [searchText, setSearchText] = useState('');
+
+  const handleSearchChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => setSearchText(value);
+
   const handleJoinClick = () => Router.push('/group/detail');
 
   return (
@@ -104,9 +111,9 @@ const Home = () => {
           <BottomBox>
             <SearchInput
               isError={false}
-              value={''}
+              value={searchText}
               placeholder="초대코드를 입력하세요."
-              onChange={() => console.log()}
+              onChange={handleSearchChange}
             />
             <SearchButton
               color="navy"
