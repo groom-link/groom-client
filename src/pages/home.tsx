@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button, TextButton } from '../components/atoms';
@@ -90,6 +91,8 @@ const Footer = styled(Tab)`
 `;
 
 const Home = () => {
+  const handleJoinClick = () => Router.push('/group/detail');
+
   return (
     <>
       <Background>
@@ -109,7 +112,7 @@ const Home = () => {
               color="navy"
               label="모임 가입"
               isDisabled={false}
-              onClick={() => console.log('clicked')}
+              onClick={handleJoinClick}
             />
           </BottomBox>
         </Header>
