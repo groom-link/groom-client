@@ -13,7 +13,7 @@ type Props = {
 
 const Button = styled.button<Pick<Props, 'color'>>`
   ${semiBold16}
-  width: max-content;
+  min-width: max-content;
   height: 44px;
   padding: 10px 12px;
   color: ${({ color }) =>
