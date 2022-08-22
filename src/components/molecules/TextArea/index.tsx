@@ -5,14 +5,21 @@ import { medium12, regular16 } from '../../../styles/typography';
 import { Label } from '../../atoms';
 
 type Props = {
+  className?: string;
   label?: string;
+  width?: string;
   placeholder?: string;
   errorMessage?: string;
 };
 
+const Box = styled.div<Pick<Props, 'width'>>`
+  width: ${({ width }) => width};
+`;
+
 const StyledTextArea = styled.textarea<Pick<Props, 'errorMessage'>>`
   ${regular16}
-  width: 300px;
+  box-sizing: border-box;
+  width: 100%;
   height: 200px;
   padding: 10px 12px;
   resize: none;
@@ -42,13 +49,19 @@ const ErrorMessage = styled.strong`
   color: ${colors.etcColor.alertRed};
 `;
 
-const TextArea = ({ errorMessage, label, placeholder }: Props) => {
+const TextArea = ({
+  className,
+  errorMessage,
+  label,
+  placeholder,
+  width = 'auto'
+}: Props) => {
   return (
-    <div>
+    <Box {...{ className, width }}>
       {label && <Label text={label} marginBottom="4px" />}
       <StyledTextArea {...{ label, placeholder, errorMessage }} />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-    </div>
+    </Box>
   );
 };
 
