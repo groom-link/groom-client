@@ -4,4 +4,5 @@ export { default as Tab } from './Tab';
 export { default as TextArea } from './TextArea';
 export { default as TextInput } from './Textinput';
 export { default as TimerPopup } from './TimerPopup';
+export { default as TopCancelBar } from './TopCancelBar';
 export { default as TopNavBar } from './TopNavBar';

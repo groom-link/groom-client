@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
+import { semiBold16 } from '../../../styles/typography';
 
 type Props = {
   className?: string;
@@ -12,6 +13,7 @@ type Props = {
 };
 
 const BasicButton = styled.button<Pick<Props, 'size' | 'disabled'>>`
+  ${semiBold16}
   width: 100%;
   padding: 0;
   border-radius: 12px;
