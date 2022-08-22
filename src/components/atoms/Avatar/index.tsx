@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 
 type Props = {
+  className?: string;
   src?: string;
 };
 
@@ -30,9 +31,9 @@ const ProfileImg = styled(Image)`
   object-fit: cover;
 `;
 
-const Avatar = ({ src }: Props) => {
+const Avatar = ({ className, src }: Props) => {
   return (
-    <CircleDiv>
+    <CircleDiv className={className}>
       {src && <ProfileImg src={src} alt="avatar" layout="fill" />}
     </CircleDiv>
   );

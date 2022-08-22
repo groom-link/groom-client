@@ -8,10 +8,12 @@ type Props =
   | {
       state: 'default';
       text: string;
+      className?: string;
     }
   | {
       state: 'cancel';
       text: string;
+      className?: string;
       onCancel: () => void;
     };
 
@@ -24,7 +26,7 @@ const TagBoxDiv = styled.div<StateProps>`
   width: ${({ state }) => (state === 'cancel' ? '57px' : '40px')};
   height: 19px;
   border-radius: 8px;
-  background-color: ${colors.grayScale.gray04};
+  background-color: ${colors.mainColor.navy};
 `;
 
 const TagSpan = styled.span<StateProps>`
@@ -34,11 +36,11 @@ const TagSpan = styled.span<StateProps>`
 `;
 
 const Tag = (props: Props) => {
-  const { state, text } = props;
+  const { state, text, className } = props;
 
   return (
     <TagBoxDiv
-      {...{ state }}
+      {...{ state, className }}
       {...(state === 'cancel' && { onClick: props.onCancel })}
     >
       <TagSpan {...{ state }}>#{text}</TagSpan>
