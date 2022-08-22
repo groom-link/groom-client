@@ -11,5 +11,7 @@ export default {
 export const Primary: ComponentStory<typeof TextArea> = ({
   errorMessage,
   label = '라벨',
-  placeholder = '플레이스 홀더'
-}) => <TextArea {...{ errorMessage, label, placeholder }} />;
+  placeholder = '플레이스 홀더',
+  value,
+  onChange
+}) => <TextArea {...{ errorMessage, label, placeholder, value, onChange }} />;
