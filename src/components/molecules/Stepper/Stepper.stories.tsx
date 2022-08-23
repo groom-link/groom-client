@@ -8,7 +8,12 @@ export default {
   component: Stepper
 } as ComponentMeta<typeof Stepper>;
 
-export const Primary: ComponentStory<typeof Stepper> = ({ label = '라벨' }) => {
+export const Primary: ComponentStory<typeof Stepper> = ({
+  label = '라벨',
+  color = 'navy',
+  decreaseDisabled,
+  increaseDisabled
+}) => {
   const [value, setValue] = useState(0);
 
   const handleDecrease = () => setValue((pre) => pre - 1);
@@ -19,7 +24,7 @@ export const Primary: ComponentStory<typeof Stepper> = ({ label = '라벨' }) =>
     <Stepper
       onDecrease={handleDecrease}
       onIncrease={handleIncrease}
-      {...{ value, label }}
+      {...{ value, label, color, increaseDisabled, decreaseDisabled }}
     />
   );
 };

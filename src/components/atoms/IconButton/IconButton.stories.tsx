@@ -9,5 +9,8 @@ export default {
 } as ComponentMeta<typeof IconButton>;
 
 export const Primary: ComponentStory<typeof IconButton> = ({
-  type = 'decrease'
-}) => <IconButton {...{ type, onClick: () => console.log('clicked') }} />;
+  type = 'decrease',
+  disabled,
+  onClick,
+  color = 'navy'
+}) => <IconButton {...{ type, disabled, onClick, color }} />;

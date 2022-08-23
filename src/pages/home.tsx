@@ -134,7 +134,7 @@ const Home = () => {
           size="medium"
           disabled={false}
           color="purple"
-          onClick={() => console.log('clicked')}
+          onClick={() => Router.push('/group/make-form-basic')}
         />
         <Footer activeMenu="홈" />
       </Background>
