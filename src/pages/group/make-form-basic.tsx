@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -32,6 +33,24 @@ const Title = styled.h1`
 `;
 
 const MakeFormBasic = () => {
+  const [groupName, setGroupName] = useState('');
+  const [description, setDescription] = useState('');
+
+  const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => setGroupName(value);
+
+  const handleDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = ({
+    target: { value }
+  }) => setDescription(value);
+
+  const isValueExist = () => !!(groupName && description);
+
+  const handleButtonClick = () => {
+    if (!isValueExist()) return;
+    Router.push('./make-form-more');
+  };
+
   return (
     <Background>
       <TopNavBar setting={false} backURL="/home" />
@@ -41,16 +60,16 @@ const MakeFormBasic = () => {
           label="모임 이름"
           placeholder="모임 이름을 입력해주세요."
           isError={false}
-          value={''}
-          onChange={() => console.log('Changing')}
+          value={groupName}
+          onChange={handleGroupNameChange}
         />
       </WhiteBox>
       <WhiteBox>
         <TextArea
           label="모임 내용"
           placeholder="예시) 저희는 OO을 하는 모임입니다."
-          value={''}
-          onChange={() => console.log('changing')}
+          value={description}
+          onChange={handleDescriptionChange}
         />
       </WhiteBox>
       <WhiteBox>
@@ -66,8 +85,8 @@ const MakeFormBasic = () => {
       </WhiteBox>
       <ButtonFooter
         label="다음"
-        disabled={false}
-        onClick={() => Router.push('./make-form-more')}
+        disabled={!isValueExist()}
+        onClick={handleButtonClick}
       />
     </Background>
   );
