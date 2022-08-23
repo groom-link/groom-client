@@ -19,18 +19,39 @@ const StepValueSpan = styled.span`
 type Props = {
   label: string;
   value: number;
+  color: 'navy' | 'ghost';
+  decreaseDisabled: boolean;
+  increaseDisabled: boolean;
   onDecrease: () => void;
   onIncrease: () => void;
 };
 
-const Stepper = ({ label, value, onDecrease, onIncrease }: Props) => {
+const Stepper = ({
+  label,
+  value,
+  color,
+  onDecrease,
+  onIncrease,
+  decreaseDisabled,
+  increaseDisabled
+}: Props) => {
   return (
     <div>
       <Label text={label} marginBottom="8px" />
       <StepperBoxDiv>
-        <IconButton type="decrease" onClick={onDecrease} />
+        <IconButton
+          type="decrease"
+          color={color}
+          onClick={onDecrease}
+          disabled={decreaseDisabled}
+        />
         <StepValueSpan>{value}</StepValueSpan>
-        <IconButton type="increase" onClick={onIncrease} />
+        <IconButton
+          type="increase"
+          color={color}
+          onClick={onIncrease}
+          disabled={increaseDisabled}
+        />
       </StepperBoxDiv>
     </div>
   );

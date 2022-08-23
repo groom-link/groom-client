@@ -59,6 +59,9 @@ const MakeFormBasic = () => {
           value={0}
           onDecrease={() => console.log('decrease')}
           onIncrease={() => console.log('increase')}
+          color="navy"
+          decreaseDisabled={false}
+          increaseDisabled={false}
         />
       </WhiteBox>
       <ButtonFooter
