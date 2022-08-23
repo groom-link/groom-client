@@ -16,6 +16,7 @@ import {
 type ThumbmailSize = 'small' | 'medium' | 'large';
 
 type Props = {
+  className?: string;
   size: ThumbmailSize;
   company: string;
   menu: string;
@@ -82,6 +83,7 @@ const Won = styled.span<Pick<Props, 'size'>>`
 `;
 
 const Thumbnail = ({
+  className,
   size,
   company,
   menu,
@@ -93,7 +95,7 @@ const Thumbnail = ({
     <Background
       type="button"
       aria-label={`${menu} 기프티콘 선택`}
-      {...{ size, isActive, onClick }}
+      {...{ size, isActive, onClick, className }}
     >
       <ImageBox size={size}>
         <Image

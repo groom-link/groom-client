@@ -35,6 +35,7 @@ const Title = styled.h1`
 const MakeFormBasic = () => {
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
+  const [numberOfPeople, setNumberOfPeople] = useState(0);
 
   const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -44,11 +45,19 @@ const MakeFormBasic = () => {
     target: { value }
   }) => setDescription(value);
 
-  const isValueExist = () => !!(groupName && description);
+  const decreasePeople = () =>
+    setNumberOfPeople((pre) => {
+      if (pre <= 0) return 0;
+      return --pre;
+    });
+
+  const increasePeople = () => setNumberOfPeople((pre) => ++pre);
+
+  const isValueExist = () => !!(groupName && description && numberOfPeople);
 
   const handleButtonClick = () => {
     if (!isValueExist()) return;
-    Router.push('./make-form-more');
+    Router.push('./make-form-additional');
   };
 
   return (
@@ -75,9 +84,9 @@ const MakeFormBasic = () => {
       <WhiteBox>
         <Stepper
           label="모임 구성원 수"
-          value={0}
-          onDecrease={() => console.log('decrease')}
-          onIncrease={() => console.log('increase')}
+          value={numberOfPeople}
+          onDecrease={decreasePeople}
+          onIncrease={increasePeople}
           color="navy"
           decreaseDisabled={false}
           increaseDisabled={false}

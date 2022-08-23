@@ -1,3 +1,4 @@
+import { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -29,7 +30,7 @@ type Props = {
   option1Label: string;
   option2Label: string;
   selectedValue: 1 | 2;
-  onChange: () => void;
+  onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
 const RadioButtom = ({

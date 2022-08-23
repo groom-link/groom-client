@@ -17,6 +17,7 @@ const StepValueSpan = styled.span`
 `;
 
 type Props = {
+  className?: string;
   label: string;
   value: number;
   color: 'navy' | 'ghost';
@@ -27,6 +28,7 @@ type Props = {
 };
 
 const Stepper = ({
+  className,
   label,
   value,
   color,
@@ -37,7 +39,7 @@ const Stepper = ({
 }: Props) => {
   return (
     <div>
-      <Label text={label} marginBottom="8px" />
+      <Label text={label} marginBottom="8px" className={className} />
       <StepperBoxDiv>
         <IconButton
           type="decrease"

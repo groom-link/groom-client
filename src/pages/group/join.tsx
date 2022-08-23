@@ -75,7 +75,7 @@ const Join = () => {
         </WhiteBox>
         <ButtonFooter
           label="모임비 결제하기"
-          disabled={false}
+          disabled={text === ''}
           onClick={() => Router.push('./join-success')}
         />
       </Background>
