@@ -2,8 +2,9 @@ import Image from 'next/image';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { Avatar, Button, Tag } from '../../components/atoms';
+import { Avatar, Tag } from '../../components/atoms';
 import { TopNavBar } from '../../components/molecules';
+import ButtonFooter from '../../components/molecules/ButtonFooter';
 import colors from '../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
 
@@ -24,7 +25,7 @@ const WhiteBox = styled.div`
   padding: 20px;
   background-color: ${colors.grayScale.white};
 
-  &:not(:first-child) {
+  &:not(:first-of-type) {
     margin-top: 16px;
   }
 `;
@@ -69,15 +70,6 @@ const Money = styled.strong`
   color: ${colors.mainColor.purple};
 `;
 
-const ButtonBox = styled.div`
-  position: fixed;
-  bottom: 0;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 8px 20px;
-  background-color: ${colors.grayScale.white};
-`;
-
 const Detail = () => (
   <>
     <TopNavBar backURL="/home" setting={false} />
@@ -118,15 +110,11 @@ const Detail = () => (
         <SubTitle>모임비</SubTitle>
         <Money>50,000원</Money>
       </WhiteBox>
-      <ButtonBox>
-        <Button
-          label="가입 초대받기"
-          size="medium"
-          disabled={false}
-          color="purple"
-          onClick={() => Router.push('./join')}
-        />
-      </ButtonBox>
+      <ButtonFooter
+        label="가입 초대받기"
+        disabled={false}
+        onClick={() => Router.push('./join')}
+      />
     </Background>
   </>
 );

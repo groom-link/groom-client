@@ -2,8 +2,8 @@ import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { Button } from '../../components/atoms';
 import { TextArea, TopNavBar } from '../../components/molecules';
+import ButtonFooter from '../../components/molecules/ButtonFooter';
 import colors from '../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
 
@@ -45,15 +45,6 @@ const Money = styled.strong`
   color: ${colors.mainColor.purple};
 `;
 
-const ButtonBox = styled.div`
-  position: fixed;
-  bottom: 0;
-  box-sizing: border-box;
-  width: 100%;
-  padding: 8px 20px;
-  background-color: ${colors.grayScale.white};
-`;
-
 const Join = () => {
   const [text, setText] = useState('');
 
@@ -82,15 +73,11 @@ const Join = () => {
           <SubTitle>모임비</SubTitle>
           <Money>50,000원</Money>
         </WhiteBox>
-        <ButtonBox>
-          <Button
-            label="모임비 결제하기"
-            size="medium"
-            disabled={text === ''}
-            color="purple"
-            onClick={() => Router.push('./join-success')}
-          />
-        </ButtonBox>
+        <ButtonFooter
+          label="모임비 결제하기"
+          disabled={false}
+          onClick={() => Router.push('./join-success')}
+        />
       </Background>
     </>
   );
