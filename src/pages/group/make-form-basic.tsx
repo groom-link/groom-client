@@ -21,7 +21,7 @@ const WhiteBox = styled.div`
   padding: 20px;
   background-color: ${colors.grayScale.white};
 
-  &:not(:nth-child(2)) {
+  &:not(:nth-of-type(2)) {
     margin-top: 16px;
   }
 `;

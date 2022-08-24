@@ -1,3 +1,4 @@
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 import { Carousel } from 'react-responsive-carousel';
@@ -17,8 +18,58 @@ import {
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
+type Gifticon = {
+  id: string;
+  company: string;
+  menu: string;
+  price: number;
+};
+
+const FOOTER_HEIGHT = '64px';
+
+const GIFTICON_MOCK = [
+  {
+    id: '1',
+    company: '버거컹',
+    menu: '주니어와퍼버거',
+    price: 2900
+  },
+  {
+    id: '2',
+    company: '버거컹',
+    menu: '주니어와퍼버거',
+    price: 2900
+  },
+  {
+    id: '3',
+    company: '버거컹',
+    menu: '주니어와퍼버거',
+    price: 2900
+  },
+  {
+    id: '4',
+    company: '버거컹',
+    menu: '주니어와퍼버거',
+    price: 2900
+  },
+  {
+    id: '5',
+    company: '버거컹',
+    menu: '주니어와퍼버거',
+    price: 2900
+  },
+  {
+    id: '6',
+    company: '버거컹',
+    menu: '주니어와퍼버거',
+    price: 2900
+  }
+];
+
 const Background = styled.div`
+  box-sizing: border-box;
   min-height: 100vh;
+  padding-bottom: calc(${FOOTER_HEIGHT} + 20px);
   background-color: ${colors.grayScale.gray01};
 `;
 
@@ -28,10 +79,6 @@ const WhiteBox = styled.div`
 
   &:not(:nth-of-type(2)) {
     margin-top: 16px;
-  }
-
-  &:nth-of-type(5) {
-    margin-bottom: 100px;
   }
 `;
 
@@ -62,6 +109,25 @@ const WarningWithMargin = styled(Warning)`
 `;
 
 const MakeFormAdditional = () => {
+  const [selectedGifticon, setSelectedGifticon] = useState<Gifticon>();
+  const [penaltyCount, setPenaltyCount] = useState(0);
+  const [isPublic, SetIsPublic] = useState<1 | 2>(1);
+
+  const handleGifticonSelect = (gifticon: Gifticon) =>
+    setSelectedGifticon(gifticon);
+
+  const handlePenaltyCountIncrease = () => setPenaltyCount((pre) => ++pre);
+
+  const handlePenaltyCountDecrease = () =>
+    setPenaltyCount((pre) => {
+      if (pre <= 0) return 0;
+      return --pre;
+    });
+
+  const handleIsPublicChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => SetIsPublic(parseInt(value) as 1 | 2);
+
   return (
     <Background>
       <TopNavBar setting={false} backURL="./make-form-basic" />
@@ -72,71 +138,31 @@ const MakeFormAdditional = () => {
         <Carousel
           showThumbs={false}
           showStatus={false}
-          centerMode={true}
-          centerSlidePercentage={47}
+          showArrows={false}
+          centerMode
+          emulateTouch
+          preventMovementUntilSwipeScrollTolerance
+          centerSlidePercentage={50}
           showIndicators={false}
         >
-          <Thumbnail
-            size="small"
-            company="버거킹"
-            menu="와퍼주니어버거"
-            price="6,900"
-            isActive={false}
-            onClick={() => console.log('clicked')}
-          />
-          <Thumbnail
-            size="small"
-            company="버거킹"
-            menu="와퍼주니어버거"
-            price="6,900"
-            isActive={false}
-            onClick={() => console.log('clicked')}
-          />
-          <Thumbnail
-            size="small"
-            company="버거킹"
-            menu="와퍼주니어버거"
-            price="6,900"
-            isActive={false}
-            onClick={() => console.log('clicked')}
-          />
-          <Thumbnail
-            size="small"
-            company="버거킹"
-            menu="와퍼주니어버거"
-            price="6,900"
-            isActive={false}
-            onClick={() => console.log('clicked')}
-          />
-          <Thumbnail
-            size="small"
-            company="버거킹"
-            menu="와퍼주니어버거"
-            price="6,900"
-            isActive={false}
-            onClick={() => console.log('clicked')}
-          />
-          <Thumbnail
-            size="small"
-            company="버거킹"
-            menu="와퍼주니어버거"
-            price="6,900"
-            isActive={false}
-            onClick={() => console.log('clicked')}
-          />
+          {GIFTICON_MOCK.map(({ id, company, menu, price }) => (
+            <Thumbnail
+              key={id}
+              size="small"
+              isActive={id === selectedGifticon?.id}
+              onClick={() => handleGifticonSelect({ id, company, menu, price })}
+              {...{ company, menu, price }}
+            />
+          ))}
         </Carousel>
         <PenaltyStepper
           label="1인 최대 패널티 횟수"
-          value={0}
-          color={'navy'}
-          decreaseDisabled={false}
+          value={penaltyCount}
+          color="navy"
+          decreaseDisabled={penaltyCount <= 0}
           increaseDisabled={false}
-          onDecrease={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-          onIncrease={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          onDecrease={handlePenaltyCountDecrease}
+          onIncrease={handlePenaltyCountIncrease}
         />
         <PenaltyDescription>
           <WarningWithMargin
@@ -152,40 +178,44 @@ const MakeFormAdditional = () => {
           radioLabel="모임 공개 여부"
           option1Label="전체 공개 (검색을 통해 찾을 수 있어요)"
           option2Label="비공개 (링크로만 초대할 수 있어요)"
-          selectedValue={1}
-          onChange={() => console.log('clicked')}
+          selectedValue={isPublic}
+          onChange={handleIsPublicChange}
         />
       </WhiteBox>
       <WhiteBox>
         <SelectedResultRow
-          type="default"
+          type={selectedGifticon?.price ? 'default' : 'error'}
           label="기프티콘을 선택해주세요."
-          value={0}
+          value={selectedGifticon?.price.toLocaleString()}
           unit="원"
         />
         <SelectedResultRow
           type="default"
           label="모임원 수"
-          value={0}
+          value="3"
           unit="명"
         />
         <SelectedResultRow
-          type="default"
+          type={penaltyCount ? 'default' : 'error'}
           label="최대 패널티 횟수"
-          value={0}
+          value={penaltyCount.toString()}
           unit="회"
         />
         <SelectedResultRow
           type="result"
           label="총 모임비"
-          value={0}
+          value={
+            selectedGifticon
+              ? (selectedGifticon.price * penaltyCount * 3).toLocaleString()
+              : '0'
+          }
           unit="원"
           smallLabel="(기프티콘 가격 X 모임원 수 X 최대 패널티 횟수)"
         />
       </WhiteBox>
       <ButtonFooter
         label="모임비 결제하기"
-        disabled={false}
+        disabled={!(selectedGifticon && penaltyCount)}
         onClick={() => Router.push('/home')}
       />
     </Background>
@@ -194,20 +224,26 @@ const MakeFormAdditional = () => {
 
 export default MakeFormAdditional;
 
-type LeftTextType = 'error' | 'default' | 'result';
+type TextType = 'error' | 'default' | 'result';
 
 type SelectedResultRowProps = {
-  type: LeftTextType;
+  type: TextType;
   label: string;
   smallLabel?: string;
-  value: number;
+  value?: string;
   unit: string;
 };
 
-const colorPicker = (type: LeftTextType) => {
+const leftColorPicker = (type: TextType) => {
   if (type === 'result') return colors.grayScale.gray04;
   if (type === 'error') return colors.etcColor.alertRed;
   return colors.grayScale.gray03;
+};
+
+const rightColorPicker = (type: TextType) => {
+  if (type === 'result') return colors.mainColor.purple;
+  if (type === 'error') return colors.etcColor.alertRed;
+  return colors.grayScale.gray05;
 };
 
 const TextBox = styled.div`
@@ -218,7 +254,7 @@ const TextBox = styled.div`
 
 const LeftText = styled.span<Pick<SelectedResultRowProps, 'type'>>`
   ${medium12}
-  color: ${({ type }) => colorPicker(type)};
+  color: ${({ type }) => leftColorPicker(type)};
 `;
 
 const SmallLabel = styled.small`
@@ -229,8 +265,7 @@ const SmallLabel = styled.small`
 
 const RightText = styled.span<Pick<SelectedResultRowProps, 'type'>>`
   ${regular16}
-  color: ${({ type }) =>
-    type === 'result' ? colors.mainColor.purple : colors.grayScale.gray05};
+  color: ${({ type }) => rightColorPicker(type)};
 
   strong {
     ${bold16}
@@ -241,7 +276,7 @@ const SelectedResultRow = ({
   type,
   label,
   smallLabel,
-  value,
+  value = '0',
   unit
 }: SelectedResultRowProps) => {
   return (

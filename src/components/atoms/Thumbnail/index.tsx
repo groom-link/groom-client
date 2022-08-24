@@ -20,7 +20,7 @@ type Props = {
   size: ThumbmailSize;
   company: string;
   menu: string;
-  price: string;
+  price: number;
   isActive: boolean;
   onClick: () => void;
 };
@@ -39,8 +39,8 @@ const Background = styled.button<Pick<Props, 'size' | 'isActive'>>`
   width: ${({ size }) => (size === 'small' ? '172px' : '336px')};
   height: ${({ size }) => heightPicker(size)};
   padding: 12px 16px;
-  outline: ${({ isActive }) =>
-    isActive ? `2px solid ${colors.mainColor.purple}` : 'none'};
+  border: 2px solid
+    ${({ isActive }) => (isActive ? colors.mainColor.purple : 'transparent')};
   border-radius: 12px;
   background-color: ${colors.grayScale.gray01};
   text-align: ${({ size }) => (size === 'large' ? 'center' : 'start')};
@@ -107,7 +107,7 @@ const Thumbnail = ({
       </ImageBox>
       <Company>{company}</Company>
       <Menu size={size}>{menu}</Menu>
-      <Price size={size}>{price}</Price>
+      <Price size={size}>{price.toLocaleString()}</Price>
       <Won size={size}>원</Won>
     </Background>
   );
