@@ -47,6 +47,7 @@ const Background = styled.button<Pick<Props, 'size' | 'isActive'>>`
 `;
 
 const ImageBox = styled.div<Pick<Props, 'size'>>`
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,8 +102,8 @@ const Thumbnail = ({
         <Image
           src={DEMO_IMAGE_URL}
           alt="기프티콘 썸네일"
-          width={size === 'small' ? '140px' : '304px'}
-          height={size === 'small' ? '140px' : '250px'}
+          layout="fill"
+          objectFit="cover"
         />
       </ImageBox>
       <Company>{company}</Company>
