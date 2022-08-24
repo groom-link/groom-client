@@ -6,3 +6,4 @@ export { default as KakaoLoginButton } from './KakaoLoginButton';
 export { default as Label } from './Label';
 export { default as Tag } from './Tag';
 export { default as TextButton } from './TextButton';
+export { default as Thumbnail } from './Thumbnail';

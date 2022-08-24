@@ -24,7 +24,7 @@ const ButtonFooter = ({ label, onClick, disabled }: Props) => {
   return (
     <ButtonBox>
       <Button
-        label="모임비 결제하기"
+        label={label}
         size="medium"
         disabled={disabled}
         color="purple"
