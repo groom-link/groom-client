@@ -4,6 +4,7 @@ import colors from '../../../styles/colors';
 import { semiBold16 } from '../../../styles/typography';
 
 type Props = {
+  width?: string;
   className?: string;
   label: string;
   size: 'large' | 'medium';
@@ -12,9 +13,9 @@ type Props = {
   onClick: () => void;
 };
 
-const BasicButton = styled.button<Pick<Props, 'size' | 'disabled'>>`
+const BasicButton = styled.button<Pick<Props, 'size' | 'disabled' | 'width'>>`
   ${semiBold16}
-  width: 100%;
+  width: ${({ width }) => width};
   padding: 0;
   border-radius: 12px;
   height: ${({ size }) => (size === 'large' ? '56px' : '48px')};
@@ -52,6 +53,7 @@ const GhostButton = styled(BasicButton)`
 `;
 
 const Button = ({
+  width = '100%',
   className,
   label,
   size,
@@ -61,18 +63,27 @@ const Button = ({
 }: Props) => {
   if (color === 'purple')
     return (
-      <PurpleButton type="button" {...{ className, size, disabled, onClick }}>
+      <PurpleButton
+        type="button"
+        {...{ className, size, disabled, onClick, width }}
+      >
         {label}
       </PurpleButton>
     );
   if (color === 'gray')
     return (
-      <GrayButton type="button" {...{ className, size, disabled, onClick }}>
+      <GrayButton
+        type="button"
+        {...{ className, size, disabled, onClick, width }}
+      >
         {label}
       </GrayButton>
     );
   return (
-    <GhostButton type="button" {...{ className, size, disabled, onClick }}>
+    <GhostButton
+      type="button"
+      {...{ className, size, disabled, onClick, width }}
+    >
       {label}
     </GhostButton>
   );

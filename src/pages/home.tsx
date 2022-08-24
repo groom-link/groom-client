@@ -48,7 +48,7 @@ const BottomBox = styled.div`
 `;
 
 const TemporaryLogo = styled(Logo)`
-  margin-top: 300px;
+  margin-top: 200px;
 `;
 
 const SearchInput = styled(TextInput)`
