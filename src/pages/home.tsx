@@ -2,7 +2,7 @@ import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { Button, TextButton } from '../components/atoms';
+import { Button, Logo, TextButton } from '../components/atoms';
 import { NotificationOff } from '../components/atoms/icons';
 import { Tab, TextInput } from '../components/molecules';
 import colors from '../styles/colors';
@@ -47,6 +47,10 @@ const BottomBox = styled.div`
   margin-top: 20px;
 `;
 
+const TemporaryLogo = styled(Logo)`
+  margin-top: 300px;
+`;
+
 const SearchInput = styled(TextInput)`
   flex: 4.5;
   margin-right: 12px;
@@ -59,18 +63,6 @@ const SearchButton = styled(TextButton)`
 const Title = styled.h1`
   ${semiBold24}
   color: ${colors.grayScale.gray06};
-`;
-
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 150px;
-  margin-top: calc(120px + ${HEADER_HEIGHT});
-  border: 1px solid ${colors.grayScale.gray04};
-  color: ${colors.grayScale.gray04};
-  font-size: 40px;
 `;
 
 const EmptyDescription = styled.span`
@@ -123,7 +115,7 @@ const Home = () => {
             />
           </BottomBox>
         </Header>
-        <Logo>GRoom</Logo>
+        <TemporaryLogo />
         <EmptyDescription>
           새 모임을 만들거나
           <br />
