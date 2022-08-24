@@ -12,6 +12,7 @@ export { default as Edit } from './Edit';
 export { default as HambergerMenu } from './HambergerMenu';
 export { default as Home } from './Home';
 export { default as HomeFill } from './HomeFill';
+export { default as Kakao } from './Kakao';
 export { default as Left } from './Left';
 export { default as NotificationOff } from './NotificationOff';
 export { default as NotificationOn } from './NotificationOn';

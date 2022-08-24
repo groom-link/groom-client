@@ -216,7 +216,7 @@ const MakeFormAdditional = () => {
       <ButtonFooter
         label="모임비 결제하기"
         disabled={!(selectedGifticon && penaltyCount)}
-        onClick={() => Router.push('/home')}
+        onClick={() => Router.push('./make-success')}
       />
     </Background>
   );
