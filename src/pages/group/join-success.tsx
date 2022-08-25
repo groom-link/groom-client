@@ -41,7 +41,7 @@ const joinSuccess = () => {
           size="large"
           disabled={false}
           color="purple"
-          onClick={() => Router.push('/home')}
+          onClick={() => Router.push('/home?group=true')}
         />
       </ButtonBox>
     </>
