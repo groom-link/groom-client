@@ -1,12 +1,12 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button, Logo, TextButton } from '../components/atoms';
 import { NotificationOff } from '../components/atoms/icons';
-import { Tab, TextInput } from '../components/molecules';
+import { Tab, TextInput, ThumbnailList } from '../components/molecules';
 import colors from '../styles/colors';
-import { regular16, semiBold24 } from '../styles/typography';
+import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
 const HEADER_HEIGHT = '136px' as const;
 
@@ -17,7 +17,7 @@ const Background = styled.div`
   align-items: center;
   width: 100vw;
   height: 100vh;
-  padding: 0 20px;
+  padding: 152px 20px 0;
   background-color: ${colors.grayScale.gray01};
 `;
 
@@ -48,7 +48,7 @@ const BottomBox = styled.div`
 `;
 
 const TemporaryLogo = styled(Logo)`
-  margin-top: 200px;
+  margin-top: 100px;
 `;
 
 const SearchInput = styled(TextInput)`
@@ -85,6 +85,11 @@ const Footer = styled(Tab)`
 
 const Home = () => {
   const [searchText, setSearchText] = useState('');
+  const [isGroup, setIsGroup] = useState(false);
+
+  useEffect(() => {
+    setIsGroup(Router.asPath.includes('group'));
+  }, []);
 
   const handleSearchChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -115,12 +120,18 @@ const Home = () => {
             />
           </BottomBox>
         </Header>
-        <TemporaryLogo />
-        <EmptyDescription>
-          새 모임을 만들거나
-          <br />
-          초대 코드를 입력하세요!
-        </EmptyDescription>
+        {isGroup ? (
+          <Groups />
+        ) : (
+          <div>
+            <TemporaryLogo />
+            <EmptyDescription>
+              새 모임을 만들거나
+              <br />
+              초대 코드를 입력하세요!
+            </EmptyDescription>
+          </div>
+        )}
         <MakeGroupButton
           label="모임 만들기"
           size="medium"
@@ -135,3 +146,22 @@ const Home = () => {
 };
 
 export default Home;
+
+const GroupContainer = styled.div`
+  width: 100%;
+`;
+
+const GroupType = styled.h2`
+  ${semiBold16}
+  margin-bottom: 12px;
+  color: ${colors.grayScale.gray04};
+`;
+
+const Groups = () => {
+  return (
+    <GroupContainer>
+      <GroupType>가입된 모임</GroupType>
+      <ThumbnailList />
+    </GroupContainer>
+  );
+};

@@ -49,7 +49,7 @@ const KakaoShareButton = styled.button`
 const MakeSuccess = () => {
   return (
     <>
-      <TopCancelBar cancelURL="/home" />
+      <TopCancelBar cancelURL="/home?group=true" />
       <MainBox>
         <TemporaryLogo />
         <BoldText>새로운 모임이 만들어졌습니다!</BoldText>

@@ -13,7 +13,8 @@ const DEMO_GROUP_IMAGE_URL =
   'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
 
 const Container = styled.div`
-  width: '100%';
+  box-sizing: border-box;
+  width: 100%;
   padding: 12px 16px;
   border-radius: 8px;
   background-color: ${colors.grayScale.white};
