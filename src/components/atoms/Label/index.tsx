@@ -9,7 +9,7 @@ type Props = {
   marginBottom: '4px' | '8px';
 };
 
-const LabelSpan = styled.span<Pick<Props, 'marginBottom'>>`
+const LabelText = styled.span<Pick<Props, 'marginBottom'>>`
   ${medium12}
   display: block;
   margin-bottom: ${({ marginBottom }) => marginBottom};
@@ -17,7 +17,7 @@ const LabelSpan = styled.span<Pick<Props, 'marginBottom'>>`
 `;
 
 const Label = ({ text, marginBottom, className }: Props) => {
-  return <LabelSpan {...{ marginBottom, className }}>{text}</LabelSpan>;
+  return <LabelText {...{ marginBottom, className }}>{text}</LabelText>;
 };
 
 export default Label;

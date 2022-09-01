@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 import { ArrowLeft, Setting } from '../../atoms/icons';
 
-const NavBoxDiv = styled.div`
+const NavBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -28,7 +28,7 @@ const TopNavBar = (prop: Props) => {
   const { setting, backURL } = prop;
 
   return (
-    <NavBoxDiv>
+    <NavBox>
       <Link href={backURL}>
         <a>
           <ArrowLeft width="24px" height="24px" />
@@ -39,7 +39,7 @@ const TopNavBar = (prop: Props) => {
           <Setting width="24px" height="24px" />
         </Link>
       )}
-    </NavBoxDiv>
+    </NavBox>
   );
 };
 

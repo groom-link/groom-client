@@ -17,7 +17,7 @@ type ActiveProps = {
   isActive: boolean;
 };
 
-const ContainerDiv = styled.div`
+const Container = styled.div`
   display: flex;
   width: 100%;
   height: 49px;
@@ -25,14 +25,14 @@ const ContainerDiv = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
-const MenuBoxDiv = styled.div`
+const MenuBox = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
 `;
 
-const LabelSpan = styled.div<ActiveProps>`
+const Label = styled.div<ActiveProps>`
   ${medium10}
   color: ${({ isActive }) =>
     isActive ? colors.grayScale.gray06 : colors.grayScale.gray04};
@@ -88,14 +88,14 @@ type Props = {
 
 const Tab = ({ activeMenu, className }: Props) => {
   return (
-    <ContainerDiv className={className}>
+    <Container className={className}>
       {MENUS.map(({ outlineIcon, fillIcon, label }) => (
-        <MenuBoxDiv key={label}>
+        <MenuBox key={label}>
           {activeMenu === label ? fillIcon : outlineIcon}
-          <LabelSpan isActive={activeMenu === label}>{label}</LabelSpan>
-        </MenuBoxDiv>
+          <Label isActive={activeMenu === label}>{label}</Label>
+        </MenuBox>
       ))}
-    </ContainerDiv>
+    </Container>
   );
 };
 
