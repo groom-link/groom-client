@@ -40,43 +40,23 @@ const Label = styled.div<ActiveProps>`
 
 const MENUS = [
   {
-    outlineIcon: (
-      <Home width="28px" height="28px" color={colors.grayScale.gray04} />
-    ),
-    fillIcon: (
-      <HomeFill width="28px" height="28px" color={colors.grayScale.gray06} />
-    ),
+    outlineIcon: <Home width="28px" color={colors.grayScale.gray04} />,
+    fillIcon: <HomeFill width="28px" color={colors.grayScale.gray06} />,
     label: '홈'
   },
   {
-    outlineIcon: (
-      <Search width="28px" height="28px" color={colors.grayScale.gray04} />
-    ),
-    fillIcon: (
-      <SearchFill width="28px" height="28px" color={colors.grayScale.gray06} />
-    ),
+    outlineIcon: <Search width="28px" color={colors.grayScale.gray04} />,
+    fillIcon: <SearchFill width="28px" color={colors.grayScale.gray06} />,
     label: '모임 찾기'
   },
   {
-    outlineIcon: (
-      <Calendar width="28px" height="28px" color={colors.grayScale.gray04} />
-    ),
-    fillIcon: (
-      <CalendarFill
-        width="28px"
-        height="28px"
-        color={colors.grayScale.gray06}
-      />
-    ),
+    outlineIcon: <Calendar width="28px" color={colors.grayScale.gray04} />,
+    fillIcon: <CalendarFill width="28px" color={colors.grayScale.gray06} />,
     label: '내 일정'
   },
   {
-    outlineIcon: (
-      <User width="28px" height="28px" color={colors.grayScale.gray04} />
-    ),
-    fillIcon: (
-      <UserFill width="28px" height="28px" color={colors.grayScale.gray06} />
-    ),
+    outlineIcon: <User width="28px" color={colors.grayScale.gray04} />,
+    fillIcon: <UserFill width="28px" color={colors.grayScale.gray06} />,
     label: '내 GRoom'
   }
 ] as const;

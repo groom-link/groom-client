@@ -20,7 +20,7 @@ const TopCancelBar = ({ cancelURL }: Props) => {
     <NavBox>
       <Link href={cancelURL}>
         <a>
-          <Cancel width="24px" height="24px" />
+          <Cancel width="24px" />
         </a>
       </Link>
     </NavBox>

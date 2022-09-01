@@ -165,11 +165,7 @@ const MakeFormAdditional = () => {
           onIncrease={handlePenaltyCountIncrease}
         />
         <PenaltyDescription>
-          <WarningWithMargin
-            width="18px"
-            height="18px"
-            color={colors.grayScale.gray04}
-          />
+          <WarningWithMargin width="18px" color={colors.grayScale.gray04} />
           패널티는 3~5회를 권장합니다.
         </PenaltyDescription>
       </CarouselBox>

@@ -45,9 +45,9 @@ const RadioButtom = ({
       {radioLabel && <Label text={radioLabel} marginBottom="8px" />}
       <RadioLabel htmlFor="radio1">
         {selectedValue === 1 ? (
-          <RadioOnStyled width="24px" height="24px" />
+          <RadioOnStyled width="24px" />
         ) : (
-          <RadioOffStyled width="24px" height="24px" />
+          <RadioOffStyled width="24px" />
         )}
         <HiddenInput
           id="radio1"
@@ -61,9 +61,9 @@ const RadioButtom = ({
       </RadioLabel>
       <RadioLabel htmlFor="radio2">
         {selectedValue === 2 ? (
-          <RadioOnStyled width="24px" height="24px" />
+          <RadioOnStyled width="24px" />
         ) : (
-          <RadioOffStyled width="24px" height="24px" />
+          <RadioOffStyled width="24px" />
         )}
         <HiddenInput
           id="radio2"

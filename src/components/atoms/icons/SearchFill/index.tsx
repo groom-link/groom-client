@@ -3,12 +3,12 @@ import colors from '../../../../styles/colors';
 const SearchFill = ({
   className,
   width = '40px',
-  height = '40px',
   color = colors.grayScale.gray05
 }: IconProps) => {
   return (
     <svg
-      {...{ className, width, height, color }}
+      {...{ className, width, color }}
+      height="100%"
       viewBox="0 0 44 44"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
