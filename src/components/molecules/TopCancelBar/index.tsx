@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 import { Cancel } from '../../atoms/icons';
 
-const NavBoxDiv = styled.div`
+const NavBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -17,13 +17,13 @@ type Props = { cancelURL: string };
 
 const TopCancelBar = ({ cancelURL }: Props) => {
   return (
-    <NavBoxDiv>
+    <NavBox>
       <Link href={cancelURL}>
         <a>
           <Cancel width="24px" height="24px" />
         </a>
       </Link>
-    </NavBoxDiv>
+    </NavBox>
   );
 };
 

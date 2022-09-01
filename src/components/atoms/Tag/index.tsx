@@ -19,7 +19,7 @@ type Props =
 
 type StateProps = Pick<Props, 'state'>;
 
-const TagBoxDiv = styled.div<StateProps>`
+const TagBox = styled.div<StateProps>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -29,7 +29,7 @@ const TagBoxDiv = styled.div<StateProps>`
   background-color: ${colors.mainColor.navy};
 `;
 
-const TagSpan = styled.span<StateProps>`
+const TagText = styled.span<StateProps>`
   ${medium10}
   margin-right: ${({ state }) => (state === 'cancel' ? '2px;' : '0')};
   color: ${colors.grayScale.white};
@@ -39,15 +39,15 @@ const Tag = (props: Props) => {
   const { state, text, className } = props;
 
   return (
-    <TagBoxDiv
+    <TagBox
       {...{ state, className }}
       {...(state === 'cancel' && { onClick: props.onCancel })}
     >
-      <TagSpan {...{ state }}>#{text}</TagSpan>
+      <TagText {...{ state }}>#{text}</TagText>
       {state === 'cancel' && (
         <Cancel width="15px" height="15px" color={colors.grayScale.white} />
       )}
-    </TagBoxDiv>
+    </TagBox>
   );
 };
 

@@ -8,7 +8,7 @@ type Props = {
   src?: string;
 };
 
-const CircleDiv = styled.div`
+const Circle = styled.div`
   width: 44px;
   height: 44px;
   border-radius: 22px;
@@ -33,9 +33,9 @@ const ProfileImg = styled(Image)`
 
 const Avatar = ({ className, src }: Props) => {
   return (
-    <CircleDiv className={className}>
+    <Circle className={className}>
       {src && <ProfileImg src={src} alt="avatar" layout="fill" />}
-    </CircleDiv>
+    </Circle>
   );
 };
 

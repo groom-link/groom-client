@@ -19,7 +19,7 @@ const Box = styled.div<Pick<Props, 'width'>>`
   width: ${({ width }) => width};
 `;
 
-const StyledTextArea = styled.textarea<Pick<Props, 'errorMessage'>>`
+const TextAreaStyled = styled.textarea<Pick<Props, 'errorMessage'>>`
   ${regular16}
   box-sizing: border-box;
   width: 100%;
@@ -64,7 +64,7 @@ const TextArea = ({
   return (
     <Box {...{ className, width }}>
       {label && <Label text={label} marginBottom="4px" />}
-      <StyledTextArea
+      <TextAreaStyled
         {...{ label, placeholder, errorMessage, value, onChange }}
       />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}

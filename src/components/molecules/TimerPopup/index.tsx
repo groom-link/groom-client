@@ -5,7 +5,7 @@ import { shadow01 } from '../../../styles/mixins';
 import { bold16, medium12, semiBold16 } from '../../../styles/typography';
 import { Clock } from '../../atoms/icons';
 
-const PopupBoxDiv = styled.div`
+const PopupBox = styled.div`
   ${shadow01}
   display: flex;
   align-items: center;
@@ -18,35 +18,35 @@ const PopupBoxDiv = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
-const TextBoxDiv = styled.div`
+const TextBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
 `;
 
-const TitleStrong = styled.b`
+const Title = styled.b`
   ${bold16}
   color: ${colors.grayScale.gray05};
 `;
 
-const WarningStrong = styled.strong`
+const Warning = styled.strong`
   ${semiBold16}
   color: ${colors.grayScale.gray04};
 `;
 
-const TimerBoxDiv = styled.div`
+const TimerBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
-const DescriptionSpan = styled.span`
+const Description = styled.span`
   ${medium12}
   color: ${colors.grayScale.gray03};
 `;
 
-const TimerSpan = styled.span`
+const Timer = styled.span`
   ${bold16}
   color: ${colors.mainColor.purple};
 `;
@@ -58,17 +58,17 @@ type Props = {
 
 const TimerPopup = ({ groupName, timer }: Props) => {
   return (
-    <PopupBoxDiv>
-      <TextBoxDiv>
-        <TitleStrong>{groupName}</TitleStrong>
-        <WarningStrong>회의 시간까지 얼마 남지 않았어요!</WarningStrong>
-        <DescriptionSpan>지각 시 기여도 10% 차감 예정입니다.</DescriptionSpan>
-      </TextBoxDiv>
-      <TimerBoxDiv>
+    <PopupBox>
+      <TextBox>
+        <Title>{groupName}</Title>
+        <Warning>회의 시간까지 얼마 남지 않았어요!</Warning>
+        <Description>지각 시 기여도 10% 차감 예정입니다.</Description>
+      </TextBox>
+      <TimerBox>
         <Clock width="24px" height="24px" color={colors.mainColor.purple} />
-        <TimerSpan>{timer}</TimerSpan>
-      </TimerBoxDiv>
-    </PopupBoxDiv>
+        <Timer>{timer}</Timer>
+      </TimerBox>
+    </PopupBox>
   );
 };
 
