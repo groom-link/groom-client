@@ -45,17 +45,17 @@ const IconButton = ({ type, onClick, disabled, color }: Props) => {
   return color === 'navy' ? (
     <NavyButton {...{ onClick, disabled }}>
       {type === 'decrease' ? (
-        <Remove width="16px" height="16px" color={colors.grayScale.white} />
+        <Remove width="16px" color={colors.grayScale.white} />
       ) : (
-        <Add width="16px" height="16px" color={colors.grayScale.white} />
+        <Add width="16px" color={colors.grayScale.white} />
       )}
     </NavyButton>
   ) : (
     <GhostButton {...{ onClick, disabled }}>
       {type === 'decrease' ? (
-        <Remove width="16px" height="16px" color={colors.grayScale.gray04} />
+        <Remove width="16px" color={colors.grayScale.gray04} />
       ) : (
-        <Add width="16px" height="16px" color={colors.grayScale.gray04} />
+        <Add width="16px" color={colors.grayScale.gray04} />
       )}
     </GhostButton>
   );

@@ -31,12 +31,12 @@ const TopNavBar = (prop: Props) => {
     <NavBox>
       <Link href={backURL}>
         <a>
-          <ArrowLeft width="24px" height="24px" />
+          <ArrowLeft width="24px" />
         </a>
       </Link>
       {setting && (
         <Link href={prop.settingURL}>
-          <Setting width="24px" height="24px" />
+          <Setting width="24px" />
         </Link>
       )}
     </NavBox>

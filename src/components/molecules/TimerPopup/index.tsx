@@ -65,7 +65,7 @@ const TimerPopup = ({ groupName, timer }: Props) => {
         <Description>지각 시 기여도 10% 차감 예정입니다.</Description>
       </TextBox>
       <TimerBox>
-        <Clock width="24px" height="24px" color={colors.mainColor.purple} />
+        <Clock width="24px" color={colors.mainColor.purple} />
         <Timer>{timer}</Timer>
       </TimerBox>
     </PopupBox>

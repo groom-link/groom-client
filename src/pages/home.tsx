@@ -103,7 +103,7 @@ const Home = () => {
         <Header>
           <TopBox>
             <Title>내 모임</Title>
-            <NotificationOff width="36px" height="36px" />
+            <NotificationOff width="36px" />
           </TopBox>
           <BottomBox>
             <SearchInput

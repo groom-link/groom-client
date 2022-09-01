@@ -45,7 +45,7 @@ const Tag = (props: Props) => {
     >
       <TagText {...{ state }}>#{text}</TagText>
       {state === 'cancel' && (
-        <Cancel width="15px" height="15px" color={colors.grayScale.white} />
+        <Cancel width="15px" color={colors.grayScale.white} />
       )}
     </TagBox>
   );
