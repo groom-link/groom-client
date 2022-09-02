@@ -12,13 +12,11 @@ const DEMO_GROUP_IMAGE_URL =
   'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
 const DEMO_PROFILE_IMAGE_URL =
   'https://media.istockphoto.com/photos/headshot-portrait-of-smiling-male-employee-in-office-picture-id1309328823?b=1&k=20&m=1309328823&s=170667a&w=0&h=a-f8vR5TDFnkMY5poQXfQhDSnK1iImIfgVTVpFZi_KU=' as const;
-const TOP_NAV_BAR_HEIGHT = '44px' as const;
-const PROFILE_IMAGE_HEIGHT = '250px' as const;
 
 const Background = styled.div`
+  height: 100vh;
   padding-bottom: 80px;
   background-color: ${colors.grayScale.gray01};
-  min-height: calc(100vh - ${TOP_NAV_BAR_HEIGHT} - ${PROFILE_IMAGE_HEIGHT});
 `;
 
 const WhiteBox = styled.div`
@@ -77,7 +75,7 @@ const Detail = () => (
       src={DEMO_GROUP_IMAGE_URL}
       alt="모임 프로필 이미지"
       layout="responsive"
-      height={PROFILE_IMAGE_HEIGHT}
+      height="250px"
       width="414"
     />
     <WhiteBox>
