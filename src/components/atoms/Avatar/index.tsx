@@ -9,24 +9,14 @@ type Props = {
 };
 
 const Circle = styled.div`
+  position: relative;
   width: 44px;
   height: 44px;
   border-radius: 22px;
   background-color: ${colors.grayScale.gray03};
-
-  & > span {
-    // To remove next/image default styling
-    position: static !important;
-    width: 100% !important;
-    height: 100% !important;
-  }
 `;
 
 const ProfileImg = styled(Image)`
-  // To remove next/image default styling
-  position: static !important;
-  width: initial !important;
-  height: initial !important;
   border-radius: 22px;
   object-fit: cover;
 `;
@@ -34,7 +24,9 @@ const ProfileImg = styled(Image)`
 const Avatar = ({ className, src }: Props) => {
   return (
     <Circle className={className}>
-      {src && <ProfileImg src={src} alt="avatar" layout="fill" />}
+      {src && (
+        <ProfileImg src={src} alt="avatar" layout="fill" objectFit="cover" />
+      )}
     </Circle>
   );
 };
