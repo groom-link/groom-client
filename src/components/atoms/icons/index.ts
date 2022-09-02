@@ -9,6 +9,7 @@ export { default as CheckCircle } from './CheckCircle';
 export { default as Clock } from './Clock';
 export { default as Delete } from './Delete';
 export { default as Edit } from './Edit';
+export { default as GPS } from './GPS';
 export { default as HambergerMenu } from './HambergerMenu';
 export { default as Home } from './Home';
 export { default as HomeFill } from './HomeFill';
