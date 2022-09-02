@@ -25,7 +25,7 @@ const WhiteBox = styled.div`
   padding: 20px;
   background-color: ${colors.grayScale.white};
 
-  &:not(:first-of-type) {
+  &:not(:nth-of-type(2)) {
     margin-top: 16px;
   }
 `;
@@ -71,7 +71,7 @@ const Money = styled.strong`
 `;
 
 const Detail = () => (
-  <>
+  <Background>
     <TopNavBar backURL="/home" setting={false} />
     <Image
       src={DEMO_GROUP_IMAGE_URL}
@@ -80,43 +80,41 @@ const Detail = () => (
       height={PROFILE_IMAGE_HEIGHT}
       width="414"
     />
-    <Background>
-      <WhiteBox>
-        <GroupName>모임 이름</GroupName>
-        <Description>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut
-          accusantium autem fugit, odio in, excepturi voluptatum quia quaerat
-          exercitationem, quidem esse corporis sequi. Officiis asperiores illo,
-          necessitatibus ex tempore molestiae voluptas ullam maxime beatae
-          quaerat hic earum. Nemo voluptas a, molestiae rerum et unde esse.
-          Suscipit illum sit tenetur provident.
-        </Description>
-        <TagBox>
-          <GroupTag state="default" text="태그" />
-          <GroupTag state="default" text="태그" />
-          <GroupTag state="default" text="태그" />
-          <GroupTag state="default" text="태그" />
-        </TagBox>
-      </WhiteBox>
-      <WhiteBox>
-        <SubTitle>팀원(5)</SubTitle>
-        <ProfileBox>
-          <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
-          <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
-          <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
-        </ProfileBox>
-      </WhiteBox>
-      <WhiteBox>
-        <SubTitle>모임비</SubTitle>
-        <Money>50,000원</Money>
-      </WhiteBox>
-      <ButtonFooter
-        label="가입 초대받기"
-        disabled={false}
-        onClick={() => Router.push('./join')}
-      />
-    </Background>
-  </>
+    <WhiteBox>
+      <GroupName>모임 이름</GroupName>
+      <Description>
+        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut
+        accusantium autem fugit, odio in, excepturi voluptatum quia quaerat
+        exercitationem, quidem esse corporis sequi. Officiis asperiores illo,
+        necessitatibus ex tempore molestiae voluptas ullam maxime beatae quaerat
+        hic earum. Nemo voluptas a, molestiae rerum et unde esse. Suscipit illum
+        sit tenetur provident.
+      </Description>
+      <TagBox>
+        <GroupTag state="default" text="태그" />
+        <GroupTag state="default" text="태그" />
+        <GroupTag state="default" text="태그" />
+        <GroupTag state="default" text="태그" />
+      </TagBox>
+    </WhiteBox>
+    <WhiteBox>
+      <SubTitle>팀원(5)</SubTitle>
+      <ProfileBox>
+        <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
+        <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
+        <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
+      </ProfileBox>
+    </WhiteBox>
+    <WhiteBox>
+      <SubTitle>모임비</SubTitle>
+      <Money>50,000원</Money>
+    </WhiteBox>
+    <ButtonFooter
+      label="가입 초대받기"
+      disabled={false}
+      onClick={() => Router.push('./join')}
+    />
+  </Background>
 );
 
 export default Detail;
