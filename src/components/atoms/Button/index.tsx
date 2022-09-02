@@ -13,7 +13,7 @@ type Props = {
   onClick: () => void;
 };
 
-const BasicButton = styled.button<Pick<Props, 'size' | 'disabled' | 'width'>>`
+const BasicButton = styled.button<Pick<Props, 'size' | 'width'>>`
   ${semiBold16}
   width: ${({ width }) => width};
   padding: 0;
@@ -23,30 +23,48 @@ const BasicButton = styled.button<Pick<Props, 'size' | 'disabled' | 'width'>>`
 
 const PurpleButton = styled(BasicButton)`
   color: ${colors.grayScale.white};
-  background-color: ${({ disabled }) =>
-    disabled ? colors.grayScale.gray02 : colors.mainColor.purple};
 
-  &:active {
+  &:enabled {
+    background-color: ${colors.mainColor.purple};
+  }
+
+  &:disabled {
+    background-color: ${colors.grayScale.gray02};
+  }
+
+  &:enabled:active {
     background-color: ${colors.mainColor.purpleLight};
   }
 `;
 
 const GrayButton = styled(BasicButton)`
-  color: ${({ disabled }) =>
-    disabled ? colors.grayScale.gray02 : colors.grayScale.gray04};
   background-color: ${colors.grayScale.gray01};
 
-  &:active {
+  &:enabled {
+    color: ${colors.grayScale.gray04};
+  }
+
+  &:disabled {
+    color: ${colors.grayScale.gray02};
+  }
+
+  &:enabled:active {
     color: ${colors.grayScale.gray03};
   }
 `;
 
 const GhostButton = styled(BasicButton)`
-  color: ${({ disabled }) =>
-    disabled ? colors.grayScale.gray02 : colors.grayScale.gray04};
   background-color: transparent;
 
-  &:active {
+  &:enabled {
+    color: ${colors.grayScale.gray04};
+  }
+
+  &:disabled {
+    color: ${colors.grayScale.gray02};
+  }
+
+  &:enabled:active {
     color: ${colors.grayScale.gray03};
     background-color: ${colors.grayScale.gray01};
   }

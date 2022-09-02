@@ -24,7 +24,7 @@ const StepButton = styled.button<Pick<Props, 'disabled'>>`
 const NavyButton = styled(StepButton)`
   background-color: ${colors.mainColor.navy};
 
-  &:active {
+  &:enabled:active {
     background-color: ${colors.mainColor.navyLight};
   }
 
@@ -36,7 +36,7 @@ const NavyButton = styled(StepButton)`
 const GhostButton = styled(StepButton)`
   background-color: transparent;
 
-  &:active {
+  &:enabled:active {
     background-color: ${colors.grayScale.gray01};
   }
 `;
