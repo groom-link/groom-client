@@ -7,53 +7,56 @@ type Props = {
   className?: string;
   color: 'navy' | 'ghost';
   label: string;
-  isDisabled: boolean;
+  disabled: boolean;
   onClick: () => void;
 };
 
-const Button = styled.button<Pick<Props, 'color'>>`
+const Button = styled.button`
   ${semiBold16}
   min-width: max-content;
   height: 44px;
   padding: 10px 12px;
-  color: ${({ color }) =>
-    color === 'ghost' ? colors.grayScale.gray04 : colors.grayScale.white};
   border-radius: 8px;
+`;
+
+const NavyButton = styled(Button)`
+  color: ${colors.grayScale.white};
 
   &:enabled {
-    background-color: ${({ color }) =>
-      color === 'ghost' ? 'transparant' : colors.mainColor.navy};
+    background-color: ${colors.mainColor.navy};
+
+    &:active {
+      background-color: ${colors.mainColor.navyLight};
+    }
   }
 
   &:disabled {
-    color: ${({ color }) =>
-      color === 'ghost' ? colors.grayScale.gray02 : colors.grayScale.white};
-    background-color: ${({ color }) =>
-      color === 'ghost' ? 'transparant' : colors.grayScale.gray02};
-  }
-
-  &:enabled:active {
-    background-color: ${({ color }) =>
-      color === 'ghost' ? colors.grayScale.gray01 : colors.mainColor.navyLight};
+    background-color: ${colors.grayScale.gray02};
   }
 `;
 
-const TextButton = ({
-  label,
-  color,
-  isDisabled,
-  onClick,
-  className
-}: Props) => {
+const GhostButton = styled(Button)`
+  &:enabled {
+    color: ${colors.grayScale.gray04};
+
+    &:active {
+      color: ${colors.grayScale.gray03};
+      background-color: ${colors.grayScale.gray01};
+    }
+  }
+
+  &:disabled {
+    color: ${colors.grayScale.gray02};
+  }
+`;
+
+const TextButton = ({ label, color, disabled, onClick, className }: Props) => {
+  if (color === 'navy')
+    return (
+      <NavyButton {...{ className, disabled, onClick }}>{label}</NavyButton>
+    );
   return (
-    <Button
-      type="button"
-      aria-label={`${label}누르기`}
-      disabled={isDisabled}
-      {...{ color, isDisabled, onClick, className }}
-    >
-      {label}
-    </Button>
+    <GhostButton {...{ className, disabled, onClick }}>{label}</GhostButton>
   );
 };
 

@@ -115,7 +115,7 @@ const Home = () => {
             <SearchButton
               color="navy"
               label="모임 가입"
-              isDisabled={false}
+              disabled={false}
               onClick={handleJoinClick}
             />
           </BottomBox>

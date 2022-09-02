@@ -10,7 +10,6 @@ export default {
 
 export const Primary: ComponentStory<typeof TextButton> = ({
   label = '텍스트 버튼',
-  color = 'ghost',
-  isDisabled = false,
-  onClick
-}) => <TextButton {...{ label, color, isDisabled, onClick }} />;
+  color = 'navy',
+  ...props
+}) => <TextButton {...{ label, color, ...props }} />;
