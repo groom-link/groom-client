@@ -107,7 +107,6 @@ const Home = () => {
           </TopBox>
           <BottomBox>
             <SearchInput
-              isError={false}
               value={searchText}
               placeholder="초대코드를 입력하세요."
               onChange={handleSearchChange}

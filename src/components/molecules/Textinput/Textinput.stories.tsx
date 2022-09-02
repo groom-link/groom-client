@@ -21,11 +21,6 @@ export default {
       control: {
         type: 'text'
       }
-    },
-    isError: {
-      control: {
-        type: 'boolean'
-      }
     }
   }
 } as ComponentMeta<typeof TextInput>;
@@ -33,6 +28,5 @@ export default {
 export const Primary: ComponentStory<typeof TextInput> = ({
   label = '라벨',
   placeholder = '플레이스홀더',
-  errorMessage = '에러가 발생했습니다',
   ...props
-}) => <TextInput {...{ label, placeholder, errorMessage, ...props }} />;
+}) => <TextInput {...{ label, placeholder, ...props }} />;

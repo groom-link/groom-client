@@ -10,7 +10,6 @@ type Props = {
   className?: string;
   label?: string;
   width?: string;
-  isError: boolean;
   placeholder?: string;
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
@@ -22,15 +21,16 @@ const InputBox = styled.div<Pick<Props, 'width'>>`
   width: ${({ width }) => width};
 `;
 
-const Input = styled.input<Pick<Props, 'isError'>>`
+const Input = styled.input<Pick<Props, 'errorMessage'>>`
   ${regular16}
   box-sizing: border-box;
   width: 100%;
   height: 44px;
-  padding: ${({ isError }) => (isError ? '10px 40px 10px 12px' : '10px 12px')};
+  padding: ${({ errorMessage }) =>
+    errorMessage ? '10px 40px 10px 12px' : '10px 12px'};
   border: 1px solid
-    ${({ isError }) =>
-      isError ? colors.etcColor.alertRed : colors.grayScale.gray02};
+    ${({ errorMessage }) =>
+      errorMessage ? colors.etcColor.alertRed : colors.grayScale.gray02};
   border-radius: 8px;
   color: ${colors.grayScale.gray05};
   background-color: ${colors.grayScale.white};
@@ -42,8 +42,8 @@ const Input = styled.input<Pick<Props, 'isError'>>`
   &:focus,
   &:active {
     border: 1px solid
-      ${({ isError }) =>
-        isError ? colors.etcColor.alertRed : colors.grayScale.gray03};
+      ${({ errorMessage }) =>
+        errorMessage ? colors.etcColor.alertRed : colors.grayScale.gray03};
     outline: none;
   }
 `;
@@ -63,7 +63,6 @@ const ErrorMessage = styled.span`
 const TextInput = ({
   className,
   label,
-  isError,
   width = 'auto',
   placeholder,
   value,
@@ -74,12 +73,15 @@ const TextInput = ({
     <div className={className}>
       {label && <Label text={label} marginBottom="4px" />}
       <InputBox width={width}>
-        <Input type="text" {...{ placeholder, isError, value, onChange }} />
-        {isError && (
+        <Input
+          type="text"
+          {...{ placeholder, value, onChange, errorMessage }}
+        />
+        {errorMessage && (
           <ErrorWarning color={colors.etcColor.alertRed} width="24px" />
         )}
       </InputBox>
-      {isError && errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
+      {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </div>
   );
 };

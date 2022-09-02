@@ -68,7 +68,6 @@ const MakeFormBasic = () => {
         <TextInput
           label="모임 이름"
           placeholder="모임 이름을 입력해주세요."
-          isError={false}
           value={groupName}
           onChange={handleGroupNameChange}
         />
