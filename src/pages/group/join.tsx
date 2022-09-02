@@ -7,8 +7,10 @@ import ButtonFooter from '../../components/molecules/ButtonFooter';
 import colors from '../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
 
-const TOP_NAV_BAR_HEIGHT = '44px' as const;
-const TEXT_AREA_BOX_HEIGHT = '348.5px' as const;
+const Background = styled.div`
+  height: 100vh;
+  background-color: ${colors.grayScale.gray01};
+`;
 
 const WhiteBox = styled.div`
   padding: 20px;
@@ -25,13 +27,6 @@ const Description = styled.p`
   ${regular16}
   margin-bottom: 20px;
   color: ${colors.grayScale.gray04};
-`;
-
-const Background = styled.div`
-  box-sizing: border-box;
-  height: calc(100vh - ${TOP_NAV_BAR_HEIGHT} - ${TEXT_AREA_BOX_HEIGHT});
-  padding-top: 16px;
-  background-color: ${colors.grayScale.gray01};
 `;
 
 const SubTitle = styled.h2`
@@ -53,7 +48,7 @@ const Join = () => {
   }) => setText(value);
 
   return (
-    <>
+    <Background>
       <TopNavBar setting={false} backURL="./detail" />
       <WhiteBox>
         <Title>자유롭게 본인을 소개해주세요!</Title>
@@ -68,18 +63,16 @@ const Join = () => {
           onChange={handleChange}
         />
       </WhiteBox>
-      <Background>
-        <WhiteBox>
-          <SubTitle>모임비</SubTitle>
-          <Money>50,000원</Money>
-        </WhiteBox>
-        <ButtonFooter
-          label="모임비 결제하기"
-          disabled={text === ''}
-          onClick={() => Router.push('./join-success')}
-        />
-      </Background>
-    </>
+      <WhiteBox>
+        <SubTitle>모임비</SubTitle>
+        <Money>50,000원</Money>
+      </WhiteBox>
+      <ButtonFooter
+        label="모임비 결제하기"
+        disabled={text === ''}
+        onClick={() => Router.push('./join-success')}
+      />
+    </Background>
   );
 };
 
