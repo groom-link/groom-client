@@ -1,6 +1,7 @@
-import styled from "@emotion/styled";
-import colors from "../../../styles/colors";
-import { GPS } from "../atoms/icons";
+import styled from '@emotion/styled';
+
+import colors from '../../../styles/colors';
+import { GPS } from '../../atoms/icons';
 
 type Props = {
   className?: string;
@@ -19,7 +20,7 @@ const Button = styled.button`
   box-shadow: 0px 2px 16px rgba(105, 112, 119, 0.2);
 `;
 
-const GPSButton = ({ selected, onClick }: Props) => {
+const GPSButton = ({ className, selected, onClick }: Props) => {
   return (
     <Button
       type="button"
@@ -28,7 +29,7 @@ const GPSButton = ({ selected, onClick }: Props) => {
     >
       <GPS
         width="28px"
-        color={selected ? colors.main.purple : colors.grayScale.gray05}
+        color={selected ? colors.mainColor.purple : colors.grayScale.gray05}
       />
     </Button>
   );
