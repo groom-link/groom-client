@@ -1,3 +1,4 @@
+export { default as GPSButton } from './GPSButton';
 export { default as RadioButton } from './RadioButton';
 export { default as Stepper } from './Stepper';
 export { default as Tab } from './Tab';
