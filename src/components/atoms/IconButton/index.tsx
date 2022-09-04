@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -41,8 +42,52 @@ const GhostButton = styled(StepButton)`
   }
 `;
 
-const IconButton = ({ type, onClick, disabled, color }: Props) => {
-  return color === 'navy' ? (
+const GhostButtonComponent = ({
+  onClick,
+  disabled,
+  type
+}: Omit<Props, 'color'>) => {
+  const [color, setColor] = useState<string>(colors.grayScale.gray04);
+
+  useEffect(() => {
+    if (disabled) {
+      setColor(colors.grayScale.gray02);
+      return;
+    }
+    setColor(colors.grayScale.gray04);
+  }, [disabled]);
+
+  const handleMouseDown = () => {
+    if (disabled) return;
+    setColor(colors.grayScale.gray03);
+  };
+
+  const handleMouseUp = () => {
+    if (disabled) return;
+    setColor(colors.grayScale.gray04);
+  };
+
+  return (
+    <GhostButton
+      {...{ onClick, disabled }}
+      onMouseUp={handleMouseUp}
+      onMouseDown={handleMouseDown}
+    >
+      {type === 'decrease' ? (
+        <Remove width="16px" color={color} />
+      ) : (
+        <Add width="16px" color={color} />
+      )}
+    </GhostButton>
+  );
+};
+
+const NavyButtonComponent = ({
+  onClick,
+  disabled,
+  type
+}: Omit<Props, 'color'>) => {
+  return (
     <NavyButton {...{ onClick, disabled }}>
       {type === 'decrease' ? (
         <Remove width="16px" color={colors.grayScale.white} />
@@ -50,14 +95,14 @@ const IconButton = ({ type, onClick, disabled, color }: Props) => {
         <Add width="16px" color={colors.grayScale.white} />
       )}
     </NavyButton>
+  );
+};
+
+const IconButton = ({ type, onClick, disabled, color }: Props) => {
+  return color === 'navy' ? (
+    <NavyButtonComponent {...{ type, onClick, disabled }} />
   ) : (
-    <GhostButton {...{ onClick, disabled }}>
-      {type === 'decrease' ? (
-        <Remove width="16px" color={colors.grayScale.gray04} />
-      ) : (
-        <Add width="16px" color={colors.grayScale.gray04} />
-      )}
-    </GhostButton>
+    <GhostButtonComponent {...{ type, onClick, disabled }} />
   );
 };
 
