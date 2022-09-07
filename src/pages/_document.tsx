@@ -5,6 +5,7 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <link rel="icon" href="#" />
         <link
           rel="stylesheet"
           as="style"
