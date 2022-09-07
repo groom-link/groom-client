@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { AppleLoginButton, KakaoLoginButton } from '../components/atoms';
@@ -24,15 +23,16 @@ const AppleLoginButtonStyled = styled(AppleLoginButton)`
 
 const Login = () => {
   useEffect(() => {
-    // window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string);
+    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string);
   }, []);
 
-  const handleLogin = () => {
-    // Kakao.Auth.authorize({
-    //   redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
-    // });
-    Router.push('/home');
+  const handleKakaoLogin = () => {
+    Kakao.Auth.authorize({
+      redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
+    });
   };
+
+  const handleAppleLogin = () => console.log('apple login is not supported.');
 
   return (
     <>
@@ -40,8 +40,8 @@ const Login = () => {
         <title>GRoom | Login</title>
       </Head>
       <Logo>GRoom</Logo>
-      <KakaoLoginButton onClick={handleLogin} width="100%" />
-      <AppleLoginButtonStyled onClick={handleLogin} width="100%" />
+      <KakaoLoginButton onClick={handleKakaoLogin} width="100%" />
+      <AppleLoginButtonStyled onClick={handleAppleLogin} width="100%" />
     </>
   );
 };

@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
 import { setCookie } from 'cookies-next';
 
-import customAxios from '../../../api/authenticationAxios';
+import customAxios from '../../api/authenticationAxios';
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY
-} from '../../../constants/authentication';
+} from '../../constants/authentication';
 
 const getToken = async (code: string) => {
   const response = await customAxios.get(
     //FIXME: response type 정의
-    process.env.NEXT_PUBLIC_KAKAO_LOGIN_URL as string,
+    '/api/auth/kakao/login',
     {
       params: { code },
       withCredentials: true
@@ -29,6 +29,8 @@ const Kakao = () => {
         const { accessToken, refreshToken } = await getToken(
           kakaoConfirmationCode
         );
+        console.log(accessToken, refreshToken);
+
         if (!accessToken || !refreshToken) throw Error('로그인 오류!');
         setCookie(ACCESS_TOKEN_KEY, accessToken); //FIXME: local storage, 쿠키 사용 가능한 webview
         setCookie(REFRESH_TOKEN_KEY, refreshToken);
@@ -36,11 +38,7 @@ const Kakao = () => {
         console.log(error);
       }
     };
-    const fullURL = window.location.href;
-    const kakaoConfirmationCode = fullURL.split('?code=')[1];
-    console.log(kakaoConfirmationCode);
-
-    // kakaoLogin();
+    kakaoLogin();
   }, []);
 
   return <div>로그인중</div>;
