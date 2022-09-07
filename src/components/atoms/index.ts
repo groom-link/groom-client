@@ -8,3 +8,4 @@ export { default as Logo } from './Logo';
 export { default as Tag } from './Tag';
 export { default as TextButton } from './TextButton';
 export { default as Thumbnail } from './Thumbnail';
+export { default as Toggle } from './Toggle';
