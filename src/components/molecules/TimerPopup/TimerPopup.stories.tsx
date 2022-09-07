@@ -8,7 +8,31 @@ export default {
   component: TimerPopup
 } as ComponentMeta<typeof TimerPopup>;
 
-export const Primary: ComponentStory<typeof TimerPopup> = ({
-  groupName = '모임 이름',
-  timer = '03:30'
-}) => <TimerPopup {...{ groupName, timer }} />;
+export const Primary: ComponentStory<typeof TimerPopup> = (props) => {
+  const { groupName, timer, type } = props;
+
+  if (type === 'button') {
+    const { disabled, onClick } = props;
+    return (
+      <TimerPopup
+        {...{
+          groupName: groupName ?? 'SW 개발 모임',
+          timer: timer ?? '10:12',
+          type,
+          disabled,
+          onClick
+        }}
+      />
+    );
+  }
+
+  return (
+    <TimerPopup
+      {...{
+        groupName: groupName ?? 'SW 개발 모임',
+        timer: timer ?? '10:12',
+        type
+      }}
+    />
+  );
+};
