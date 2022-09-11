@@ -1,9 +1,10 @@
 import { useEffect, useRef } from 'react';
-import Script from 'next/script';
 import styled from '@emotion/styled';
 
+import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
 import { TimerPopup, TopNavBar } from '../../components/molecules';
 import colors from '../../styles/colors';
+import { renderKakapMap, renderProfileMarker } from '../../utils/kakaoMaps';
 
 const Map = styled.div`
   box-sizing: border-box;
@@ -20,23 +21,26 @@ const Timer = styled(TimerPopup)`
   z-index: 3;
 `;
 
-declare global {
-  interface Window {
-    kakao: any;
-  }
-}
-
 const TimerMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  const handleGetCurrentPositionSuccess: PositionCallback = ({
+    coords: { latitude, longitude }
+  }) => {
     window.kakao.maps.load(() => {
-      const options = {
-        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-        level: 3
-      };
-      new window.kakao.maps.Map(mapRef.current, options);
+      const map = renderKakapMap(latitude, longitude, mapRef);
+      renderProfileMarker(latitude, longitude, DEMO_PROFILE_IMAGE_URL, map);
     });
+  };
+
+  const handleGetCurrentPositionError: PositionErrorCallback = ({ message }) =>
+    alert(message);
+
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      handleGetCurrentPositionSuccess,
+      handleGetCurrentPositionError
+    );
   }, []);
 
   const handleClearTimerButtonClick = () => console.log('clicked');
