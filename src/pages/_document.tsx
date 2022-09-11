@@ -14,6 +14,13 @@ export default function Document() {
           src="https://developers.kakao.com/sdk/js/kakao.js"
           strategy="beforeInteractive"
         />
+        <Script
+          type="text/javascript"
+          strategy="beforeInteractive"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${
+            process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string
+          }&autoload=false`}
+        />
       </Head>
       <body>
         <Main />
