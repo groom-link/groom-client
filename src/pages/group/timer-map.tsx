@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react';
+import Script from 'next/script';
 import styled from '@emotion/styled';
 
 import { TimerPopup, TopNavBar } from '../../components/molecules';
@@ -14,14 +16,36 @@ const Map = styled.div`
   background-color: ${colors.grayScale.gray02};
 `;
 
+const Timer = styled(TimerPopup)`
+  z-index: 3;
+`;
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
+
 const TimerMap = () => {
+  const mapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    window.kakao.maps.load(() => {
+      const options = {
+        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3
+      };
+      new window.kakao.maps.Map(mapRef.current, options);
+    });
+  }, []);
+
   const handleClearTimerButtonClick = () => console.log('clicked');
 
   return (
     <>
       <TopNavBar backURL="/home" setting={false} />
-      <Map>
-        <TimerPopup
+      <Map id="map" ref={mapRef}>
+        <Timer
           type="button"
           onClick={handleClearTimerButtonClick}
           disabled={false}

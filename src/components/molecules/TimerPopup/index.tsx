@@ -68,12 +68,14 @@ const ButtonDescription = styled.span`
 `;
 
 type DefaultProps = {
+  className?: string;
   type: 'normal';
   groupName: string;
   timer: string;
 };
 
 type ButtonProps = {
+  className?: string;
   type: 'button';
   onClick: () => void;
   disabled: boolean;
@@ -84,9 +86,9 @@ type ButtonProps = {
 type Props = DefaultProps | ButtonProps;
 
 const TimerPopup = (props: Props) => {
-  const { groupName, timer, type } = props;
+  const { className, groupName, timer, type } = props;
   return (
-    <PopupBox>
+    <PopupBox className={className}>
       <Top>
         <TextBox>
           <Title>{groupName}</Title>
