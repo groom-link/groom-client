@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
+import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
 import { Avatar, Tag } from '../../components/atoms';
 import { TopNavBar } from '../../components/molecules';
 import ButtonFooter from '../../components/molecules/ButtonFooter';
@@ -10,8 +11,6 @@ import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
 
 const DEMO_GROUP_IMAGE_URL =
   'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
-const DEMO_PROFILE_IMAGE_URL =
-  'https://media.istockphoto.com/photos/headshot-portrait-of-smiling-male-employee-in-office-picture-id1309328823?b=1&k=20&m=1309328823&s=170667a&w=0&h=a-f8vR5TDFnkMY5poQXfQhDSnK1iImIfgVTVpFZi_KU=' as const;
 
 const Background = styled.div`
   height: 100vh;
