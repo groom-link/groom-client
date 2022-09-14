@@ -5,7 +5,12 @@ import styled from '@emotion/styled';
 
 import { Button, Logo, TextButton } from '../components/atoms';
 import { NotificationOff, NotificationOn } from '../components/atoms/icons';
-import { Tab, TextInput, ThumbnailList } from '../components/molecules';
+import {
+  Tab,
+  TextInput,
+  ThumbnailList,
+  TimerPopup
+} from '../components/molecules';
 import colors from '../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
@@ -48,6 +53,10 @@ const BottomBox = styled.div`
   margin-top: 20px;
 `;
 
+const LinkContainer = styled.a`
+  text-decoration: none;
+`;
+
 const TemporaryLogo = styled(Logo)`
   margin-top: 100px;
 `;
@@ -88,6 +97,7 @@ const Home = () => {
   const [searchText, setSearchText] = useState('');
   const [hasNotification, setHasNotification] = useState(true); // TODO: 알림 존재 여부 API 연동하기.
   const [isGroup, setIsGroup] = useState(false);
+  const [isDisplayTimer, setIsDisplayTimer] = useState(false); // TODO: 서버에서 푸쉬 메시지 받아서 타이머 켜기.
 
   useEffect(() => {
     setIsGroup(Router.asPath.includes('group'));
@@ -129,6 +139,13 @@ const Home = () => {
             />
           </BottomBox>
         </Header>
+        {isDisplayTimer && (
+          <Link href="/group/timer-map">
+            <LinkContainer>
+              <TimerPopup type="normal" groupName="소마 그룹" timer="10:30" />
+            </LinkContainer>
+          </Link>
+        )}
         {isGroup ? (
           <Groups />
         ) : (
