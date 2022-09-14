@@ -1,5 +1,3 @@
-import { RefObject } from 'react';
-
 import colors from '../styles/colors';
 
 export const getProfileMarkerMarkup = (profileURL: string) => `
@@ -118,26 +116,21 @@ export const getDestinationMarkerMarkup = () => `
   <div class='pulse'></div>
 `;
 
-export const renderKakapMap = (
-  latitude: number,
-  longitude: number,
-  mapRef: RefObject<HTMLDivElement>
-) => {
+export const renderKakapMap = ({ coords, mapRef }: RenderKakaoMapProps) => {
   const options = {
-    center: new window.kakao.maps.LatLng(latitude, longitude),
+    center: new window.kakao.maps.LatLng(coords[0], coords[1]),
     level: 3
   };
   const map = new window.kakao.maps.Map(mapRef.current, options);
   return map;
 };
 
-export const renderCustomOverlay = (
-  latitude: number,
-  longitude: number,
-  content: string,
-  map: any
-) => {
-  const position = new window.kakao.maps.LatLng(latitude, longitude);
+export const renderCustomOverlay = ({
+  coords,
+  content,
+  map
+}: RenderCustomOverlayProps) => {
+  const position = new window.kakao.maps.LatLng(coords[0], coords[1]);
   const customMarker = new window.kakao.maps.CustomOverlay({
     map,
     position,
@@ -145,4 +138,21 @@ export const renderCustomOverlay = (
     yAnchor: 1
   });
   return customMarker;
+};
+
+export const addMapDragEventHandler = ({
+  mapObj,
+  eventHandler
+}: MapDragEventProps) =>
+  window.kakao.maps.event.addListener(mapObj, 'dragend', eventHandler);
+
+export const removeMapDragEventHandler = ({
+  mapObj,
+  eventHandler
+}: MapDragEventProps) =>
+  window.kakao.maps.event.removeListener(mapObj, 'dragend', eventHandler);
+
+export const moveCenterOfMap = ({ mapObj, coords }: MoveCenterOfMapProps) => {
+  const latlng = new window.kakao.maps.LatLng(coords[0], coords[1]);
+  mapObj.panTo(latlng);
 };
