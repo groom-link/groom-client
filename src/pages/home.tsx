@@ -1,4 +1,5 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
+import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -85,7 +86,7 @@ const Footer = styled(Tab)`
 
 const Home = () => {
   const [searchText, setSearchText] = useState('');
-  const [hasNotification, setHasNotification] = useState(false); // TODO: 알림 존재 여부 API 연동하기.
+  const [hasNotification, setHasNotification] = useState(true); // TODO: 알림 존재 여부 API 연동하기.
   const [isGroup, setIsGroup] = useState(false);
 
   useEffect(() => {
@@ -104,11 +105,15 @@ const Home = () => {
         <Header>
           <TopBox>
             <Title>내 모임</Title>
-            {hasNotification ? (
-              <NotificationOn width="36px" />
-            ) : (
-              <NotificationOff width="36px" />
-            )}
+            <Link href="/notifications">
+              <a>
+                {hasNotification ? (
+                  <NotificationOn width="36px" />
+                ) : (
+                  <NotificationOff width="36px" />
+                )}
+              </a>
+            </Link>
           </TopBox>
           <BottomBox>
             <SearchInput
