@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
@@ -35,40 +35,61 @@ const GPSButtonStyled = styled(GPSButton)`
 
 const TimerMap = () => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const [coords, setCoords] = useState<[number, number]>([0, 0]);
+  const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
+  const [mapObj, setMapObj] = useState<any>();
+  const [isMaploaded, setIsMapLoaded] = useState(false);
 
-  const handleGetCurrentPositionSuccess: PositionCallback = ({
-    coords: { latitude, longitude }
-  }) => {
+  useEffect(() => {
+    navigator.geolocation.getCurrentPosition(
+      ({ coords: { latitude, longitude } }) => setCoords([latitude, longitude]),
+      ({ message }) => alert(message)
+    );
+  }, []);
+
+  useEffect(() => {
     window.kakao.maps.load(() => {
-      const map = renderKakapMap(latitude, longitude, mapRef);
+      const map = renderKakapMap(coords[0], coords[1], mapRef);
+      setMapObj(map);
       renderCustomOverlay(
-        latitude,
-        longitude,
+        coords[0],
+        coords[1],
         getProfileMarkerMarkup(DEMO_PROFILE_IMAGE_URL),
         map
       );
       renderCustomOverlay(
         // TODO: 실제 약속 장소의 위도, 경도 연동하기.
         // 사용자의 프로필 마커와 도착 장소 마커를 한 눈에 볼 수 있도록 임시로 설정해놓았습니다.
-        latitude + 0.001,
-        longitude + 0.001,
+        coords[0] + 0.001,
+        coords[1] + 0.001,
         getDestinationMarkerMarkup(),
         map
       );
     });
-  };
-
-  const handleGetCurrentPositionError: PositionErrorCallback = ({ message }) =>
-    alert(message);
+    setIsMapLoaded(true);
+  }, [coords]);
 
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition(
-      handleGetCurrentPositionSuccess,
-      handleGetCurrentPositionError
-    );
-  }, []);
+    if (!isMaploaded || !mapObj) return;
+
+    const handleMapMoveEvent = () => setIsGPSButtonActive(false);
+
+    window.kakao.maps.event.addListener(mapObj, 'dragend', handleMapMoveEvent);
+    return () =>
+      window.kakao.maps.event.removeListener(
+        mapObj,
+        'dragend',
+        handleMapMoveEvent
+      );
+  }, [isMaploaded, mapObj]);
 
   const handleClearTimerButtonClick = () => console.log('clicked');
+
+  const handleGPSButtonClick = () => {
+    const latlng = new window.kakao.maps.LatLng(coords[0], coords[1]);
+    mapObj.panTo(latlng);
+    setIsGPSButtonActive(true);
+  };
 
   return (
     <>
@@ -76,8 +97,8 @@ const TimerMap = () => {
       <Map id="map" ref={mapRef}>
         <TimerMenuContainer>
           <GPSButtonStyled
-            selected={false}
-            onClick={() => console.log('clicked!s')}
+            selected={isGPSButtonActive}
+            onClick={handleGPSButtonClick}
           />
           <TimerPopup
             type="button"
