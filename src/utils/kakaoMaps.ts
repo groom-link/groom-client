@@ -139,8 +139,8 @@ export const renderCustomOverlay = (
 ) => {
   const position = new window.kakao.maps.LatLng(latitude, longitude);
   const customMarker = new window.kakao.maps.CustomOverlay({
-    map: map,
-    position: position,
+    map,
+    position,
     content,
     yAnchor: 1
   });
