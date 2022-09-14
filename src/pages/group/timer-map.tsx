@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
-import { TimerPopup, TopNavBar } from '../../components/molecules';
+import { GPSButton, TimerPopup, TopNavBar } from '../../components/molecules';
 import colors from '../../styles/colors';
 import {
   getDestinationMarkerMarkup,
@@ -14,16 +14,23 @@ import {
 const Map = styled.div`
   box-sizing: border-box;
   display: flex;
-  flex-direction: center;
-  align-items: flex-end;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   height: calc(100vh - 44px);
   padding-bottom: 42px;
   background-color: ${colors.grayScale.gray02};
 `;
 
-const Timer = styled(TimerPopup)`
+const TimerMenuContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
   z-index: 3;
+`;
+
+const GPSButtonStyled = styled(GPSButton)`
+  margin-bottom: 16px;
 `;
 
 const TimerMap = () => {
@@ -67,13 +74,19 @@ const TimerMap = () => {
     <>
       <TopNavBar backURL="/home" setting={false} />
       <Map id="map" ref={mapRef}>
-        <Timer
-          type="button"
-          onClick={handleClearTimerButtonClick}
-          disabled={false}
-          groupName="소마 그룹"
-          timer="10:31"
-        />
+        <TimerMenuContainer>
+          <GPSButtonStyled
+            selected={false}
+            onClick={() => console.log('clicked!s')}
+          />
+          <TimerPopup
+            type="button"
+            onClick={handleClearTimerButtonClick}
+            disabled={false}
+            groupName="소마 그룹"
+            timer="10:31"
+          />
+        </TimerMenuContainer>
       </Map>
     </>
   );
