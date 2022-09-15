@@ -2,13 +2,20 @@ import { useEffect, useRef, useState } from 'react';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../__mocks__';
 import {
+  addMapDragEventHandler,
   getDestinationMarkerMarkup,
   getProfileMarkerMarkup,
+  removeMapDragEventHandler,
   renderCustomOverlay,
   renderKakapMap
 } from '../utils/kakaoMapsTools';
 
-const useKakaoMaps = (coords: Coords) => {
+type Props = {
+  coords: Coords;
+  onMapDragEvent: () => void;
+};
+
+const useKakaoMaps = ({ coords, onMapDragEvent }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [mapObj, setMapObj] = useState<any>();
   const [isMapLoaded, setIsMapLoaded] = useState(false);
@@ -34,6 +41,13 @@ const useKakaoMaps = (coords: Coords) => {
     });
     setIsMapLoaded(true);
   }, [coords, mapRef]);
+
+  useEffect(() => {
+    if (!isMapLoaded || !mapObj) return;
+    addMapDragEventHandler({ mapObj, eventHandler: onMapDragEvent });
+    return () =>
+      removeMapDragEventHandler({ mapObj, eventHandler: onMapDragEvent });
+  }, [mapObj, onMapDragEvent, isMapLoaded]);
 
   return { mapRef, mapObj, isMapLoaded };
 };

@@ -1,14 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import styled from '@emotion/styled';
 
 import { GPSButton, TimerPopup, TopNavBar } from '../../components/molecules';
 import { useCoords, usekakaoMaps } from '../../hooks';
 import colors from '../../styles/colors';
-import {
-  addMapDragEventHandler,
-  moveCenterOfMap,
-  removeMapDragEventHandler
-} from '../../utils/kakaoMapsTools';
+import { moveCenterOfMap } from '../../utils/kakaoMapsTools';
 
 const Map = styled.div`
   box-sizing: border-box;
@@ -35,17 +31,10 @@ const GPSButtonStyled = styled(GPSButton)`
 const TimerMap = () => {
   const coords = useCoords();
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
-  const { mapRef, mapObj, isMapLoaded } = usekakaoMaps(coords);
-
-  useEffect(() => {
-    if (!isMapLoaded || !mapObj) return;
-
-    const handleMapMoveEvent = () => setIsGPSButtonActive(false);
-
-    addMapDragEventHandler({ mapObj, eventHandler: handleMapMoveEvent });
-    return () =>
-      removeMapDragEventHandler({ mapObj, eventHandler: handleMapMoveEvent });
-  }, [isMapLoaded, mapObj]);
+  const { mapRef, mapObj } = usekakaoMaps({
+    coords,
+    onMapDragEvent: () => setIsGPSButtonActive(false)
+  });
 
   const handleClearTimerButtonClick = () => console.log('clicked');
 
