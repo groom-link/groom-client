@@ -141,18 +141,78 @@ export const renderCustomOverlay = ({
 };
 
 export const addMapDragEventHandler = ({
-  mapObj,
+  map,
   eventHandler
 }: MapDragEventProps) =>
-  window.kakao.maps.event.addListener(mapObj, 'dragend', eventHandler);
+  window.kakao.maps.event.addListener(map, 'dragend', eventHandler);
 
 export const removeMapDragEventHandler = ({
-  mapObj,
+  map,
   eventHandler
 }: MapDragEventProps) =>
-  window.kakao.maps.event.removeListener(mapObj, 'dragend', eventHandler);
+  window.kakao.maps.event.removeListener(map, 'dragend', eventHandler);
 
-export const moveCenterOfMap = ({ mapObj, coords }: MoveCenterOfMapProps) => {
+export const moveCenterOfMap = ({ map, coords }: MoveCenterOfMapProps) => {
   const latlng = new window.kakao.maps.LatLng(coords[0], coords[1]);
-  mapObj.panTo(latlng);
+  map.panTo(latlng);
+};
+
+export const calculateDestanceBetweenTwoPosition = ({
+  coords1,
+  coords2
+}: CalculateDestanceBetweenTwoPosition) => {
+  const destanceLine = new window.kakao.maps.Polyline();
+  const currentLatLng = new window.kakao.maps.LatLng(...coords1);
+  const destinationLatLng = new window.kakao.maps.LatLng(...coords2);
+  destanceLine.setPath([currentLatLng, destinationLatLng]);
+  const destanceMeter = destanceLine.getLength();
+
+  return destanceMeter;
+};
+
+export const renderDestinationMarker: RenderDestinationMarker = ({
+  coords,
+  map
+}) => {
+  window.kakao.maps.load(() => {
+    renderCustomOverlay({
+      coords,
+      content: getDestinationMarkerMarkup(),
+      map
+    });
+  });
+};
+
+export const renderProfileMarker: RenderProfileMarker = ({
+  coords,
+  map,
+  profileImageURL
+}) => {
+  window.kakao.maps.load(() => {
+    renderCustomOverlay({
+      coords,
+      content: getProfileMarkerMarkup(profileImageURL),
+      map
+    });
+  });
+};
+
+export const checkArrival: CheckArrival = ({
+  coords1,
+  coords2,
+  radiusMeter,
+  onArrival,
+  onNotArrival
+}) => {
+  window.kakao.maps.load(() => {
+    const destanceMeter = calculateDestanceBetweenTwoPosition({
+      coords1,
+      coords2
+    });
+    if (destanceMeter <= radiusMeter) {
+      onArrival();
+      return;
+    }
+    onNotArrival();
+  });
 };
