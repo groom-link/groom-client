@@ -36,7 +36,9 @@ const TopNavBar = (prop: Props) => {
       </Link>
       {setting && (
         <Link href={prop.settingURL}>
-          <Setting width="24px" />
+          <a>
+            <Setting width="24px" />
+          </a>
         </Link>
       )}
     </NavBox>

@@ -183,15 +183,11 @@ const GroupType = styled.h2`
   color: ${colors.grayScale.gray04};
 `;
 
-const LinkContainer = styled.a`
-  text-decoration: none;
-`;
-
 const Groups = () => {
   return (
     <GroupContainer>
       <GroupType>가입된 모임</GroupType>
-      <Link href="/home">
+      <Link href="/group/home">
         <LinkContainer>
           <ThumbnailList />
         </LinkContainer>
