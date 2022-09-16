@@ -1,10 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import styled from '@emotion/styled';
 
+import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
 import { GPSButton, TimerPopup, TopNavBar } from '../../components/molecules';
 import { useCoords, usekakaoMaps } from '../../hooks';
 import colors from '../../styles/colors';
-import { moveCenterOfMap } from '../../utils/kakaoMapsTools';
+import {
+  checkArrival,
+  moveCenterOfMap,
+  renderDestinationMarker,
+  renderProfileMarker
+} from '../../utils/kakaoMapsTools';
+
+const ARRIVAL_ARIA_CIRCLE_RADIUS = 30 as const;
 
 const Map = styled.div`
   box-sizing: border-box;
@@ -30,16 +38,45 @@ const GPSButtonStyled = styled(GPSButton)`
 
 const TimerMap = () => {
   const coords = useCoords();
+  // TODO: 실제 약속 장소의 위도, 경도 연동하기.
+  // 사용자의 프로필 마커와 도착 장소 마커를 한 눈에 볼 수 있도록 임시로 설정해놓았습니다.
+  const destinationCoords: [number, number] = useMemo(
+    () => [coords[0] + 0.001, coords[1] + 0.001],
+    [coords]
+  );
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
-  const { mapRef, mapObj } = usekakaoMaps({
+  const [isTimerButtonDisabled, setIsTimerButtonDisabled] = useState(true);
+  const { mapRef, map } = usekakaoMaps({
     coords,
     onMapDragEvent: () => setIsGPSButtonActive(false)
   });
 
+  useEffect(() => {
+    renderDestinationMarker({ coords: destinationCoords, map });
+  }, [destinationCoords, map]);
+
+  useEffect(() => {
+    renderProfileMarker({
+      coords,
+      map,
+      profileImageURL: DEMO_PROFILE_IMAGE_URL
+    });
+  }, [map, coords]);
+
+  useEffect(() => {
+    checkArrival({
+      coords1: coords,
+      coords2: destinationCoords,
+      radiusMeter: ARRIVAL_ARIA_CIRCLE_RADIUS,
+      onArrival: () => setIsTimerButtonDisabled(false),
+      onNotArrival: () => setIsTimerButtonDisabled(true)
+    });
+  }, [coords, destinationCoords]);
+
   const handleClearTimerButtonClick = () => console.log('clicked');
 
   const handleGPSButtonClick = () => {
-    moveCenterOfMap({ mapObj, coords });
+    moveCenterOfMap({ map, coords });
     setIsGPSButtonActive(true);
   };
 
@@ -55,7 +92,7 @@ const TimerMap = () => {
           <TimerPopup
             type="button"
             onClick={handleClearTimerButtonClick}
-            disabled={false}
+            disabled={isTimerButtonDisabled}
             groupName="소마 그룹"
             timer="10:31"
           />
