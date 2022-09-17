@@ -187,7 +187,11 @@ const Groups = () => {
   return (
     <GroupContainer>
       <GroupType>가입된 모임</GroupType>
-      <ThumbnailList />
+      <Link href="/group/home">
+        <LinkContainer>
+          <ThumbnailList />
+        </LinkContainer>
+      </Link>
     </GroupContainer>
   );
 };
