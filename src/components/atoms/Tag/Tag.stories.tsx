@@ -5,7 +5,12 @@ import Tag from './index';
 
 export default {
   title: 'atoms/Tag',
-  component: Tag
+  component: Tag,
+  argTypes: {
+    children: {
+      type: 'string'
+    }
+  }
 } as ComponentMeta<typeof Tag>;
 
 export const Primary: ComponentStory<typeof Tag> = ({
