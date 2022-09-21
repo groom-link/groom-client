@@ -78,12 +78,21 @@ const ThumbnailList = ({ className }: Props) => (
       </div>
     </TopBox>
     <TagBox>
-      <GroupTag text="태그" state="default" />
-      <GroupTag text="태그" state="default" />
-      <GroupTag text="태그" state="default" />
-      <GroupTag text="태그" state="default" />
-      <GroupTag text="태그" state="default" />
-      <GroupTag text="태그" state="default" />
+      <GroupTag type="default" onTyping={false}>
+        태그
+      </GroupTag>
+      <GroupTag type="default" onTyping={false}>
+        태그
+      </GroupTag>
+      <GroupTag type="default" onTyping={false}>
+        태그
+      </GroupTag>
+      <GroupTag type="default" onTyping={false}>
+        태그
+      </GroupTag>
+      <GroupTag type="default" onTyping={false}>
+        태그
+      </GroupTag>
     </TagBox>
   </Container>
 );
