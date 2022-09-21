@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
-import { Avatar } from '../../components/atoms';
+import { Avatar, Tab } from '../../components/atoms';
 import { TopNavBar } from '../../components/molecules';
 import colors from '../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../styles/typography';
@@ -37,18 +37,6 @@ const CardBox = styled.div`
 const SubTitle = styled.h2`
   ${semiBold16};
   color: ${colors.grayScale.gray04};
-`;
-
-const NavigationButton = styled.button`
-  ${semiBold16}
-
-  &:enabled {
-    color: ${colors.grayScale.gray05};
-  }
-
-  &:disabled {
-    color: ${colors.grayScale.gray03};
-  }
 `;
 
 const Card = styled.div`
@@ -109,9 +97,9 @@ const Home = () => {
       <TopNavBar backURL="/home" setting={true} settingURL="" />
       <GroupName>그룹 이름</GroupName>
       <NavigationBox>
-        <NavigationButton>홈</NavigationButton>
-        <NavigationButton>회의 시간</NavigationButton>
-        <NavigationButton>초대하기</NavigationButton>
+        <Tab isSelected={true}>홈</Tab>
+        <Tab isSelected={false}>회의 시간</Tab>
+        <Tab isSelected={false}>초대하기</Tab>
       </NavigationBox>
       <CardBox>
         <SubTitle>가까운 회의 일정</SubTitle>
