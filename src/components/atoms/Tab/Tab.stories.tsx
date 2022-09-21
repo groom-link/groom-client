@@ -8,6 +8,7 @@ export default {
   component: Tab
 } as ComponentMeta<typeof Tab>;
 
-export const Primary: ComponentStory<typeof Tab> = ({ isSelected }) => (
-  <Tab isSelected={isSelected} />
-);
+export const Primary: ComponentStory<typeof Tab> = ({
+  isSelected,
+  children = '탭'
+}) => <Tab isSelected={isSelected}>{children}</Tab>;
