@@ -1,52 +1,65 @@
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
-import { medium10 } from '../../../styles/typography';
+import { medium12 } from '../../../styles/typography';
 import { Cancel } from '../icons';
 
 type Props =
   | {
-      state: 'default';
-      text: string;
+      type: 'default';
+      onTyping: boolean;
+      children: string;
       className?: string;
     }
   | {
-      state: 'cancel';
-      text: string;
+      type: 'cancel';
+      children: string;
       className?: string;
       onCancel: () => void;
     };
 
-type StateProps = Pick<Props, 'state'>;
+type TagBoxProps = {
+  onTyping: boolean;
+};
 
-const TagBox = styled.div<StateProps>`
+const TagBox = styled.div<TagBoxProps>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: ${({ state }) => (state === 'cancel' ? '57px' : '40px')};
-  height: 19px;
-  border-radius: 8px;
-  background-color: ${colors.mainColor.navy};
+  width: max-content;
+  padding: 3px 7px;
+  border: 1px solid
+    ${({ onTyping }) => (onTyping ? 'transparent' : colors.grayScale.gray02)};
+  border-radius: 12px;
+  background-color: ${({ onTyping }) =>
+    onTyping ? colors.grayScale.gray02 : colors.grayScale.white};
 `;
 
-const TagText = styled.span<StateProps>`
-  ${medium10}
-  margin-right: ${({ state }) => (state === 'cancel' ? '2px;' : '0')};
-  color: ${colors.grayScale.white};
+const TagText = styled.span`
+  ${medium12}
+  color: ${colors.grayScale.gray04};
 `;
 
 const Tag = (props: Props) => {
-  const { state, text, className } = props;
+  const { type, children, className } = props;
+
+  if (type === 'cancel') {
+    const { onCancel } = props;
+    return (
+      <button type="button" onClick={onCancel}>
+        <TagBox {...{ type, className, onTyping: false }}>
+          <TagText>#{children}</TagText>
+          <Cancel width="15px" color={colors.grayScale.gray03} />
+        </TagBox>
+      </button>
+    );
+  }
+
+  const { onTyping } = props;
 
   return (
-    <TagBox
-      {...{ state, className }}
-      {...(state === 'cancel' && { onClick: props.onCancel })}
-    >
-      <TagText {...{ state }}>#{text}</TagText>
-      {state === 'cancel' && (
-        <Cancel width="15px" color={colors.grayScale.white} />
-      )}
+    <TagBox {...{ type, className, onTyping }}>
+      <TagText>#{children}</TagText>
     </TagBox>
   );
 };
