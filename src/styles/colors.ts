@@ -17,6 +17,19 @@ const colors = {
   etcColor: {
     alertRed: '#FF655C',
     dim: '#343A3F' // alpha 0.6
+  },
+  toDoColor: {
+    redText: '#D9484E',
+    red: '#F7C8CB',
+    redLight: '#FCEEEF',
+    greenText: '#56AE6F',
+    green: '#B4E2C2',
+    greenLight: '#ECF9F0',
+    orangeText: '#FF8452',
+    orange: '#FCCEBC',
+    orangeLight: '#FCF2EE',
+    gray: '#CCCCE4',
+    grayLight: '#E7E7EE'
   }
 } as const;
 
