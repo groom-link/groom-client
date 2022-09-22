@@ -1,3 +1,9 @@
+import {
+  ChangeEventHandler,
+  FocusEventHandler,
+  KeyboardEventHandler,
+  RefObject
+} from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -7,7 +13,6 @@ import { Cancel } from '../icons';
 type Props =
   | {
       type: 'default';
-      onTyping: boolean;
       children: string;
       className?: string;
     }
@@ -16,23 +21,40 @@ type Props =
       children: string;
       className?: string;
       onCancel: () => void;
+    }
+  | {
+      type: 'input';
+      className?: string;
+      value: string;
+      inputRef: RefObject<HTMLInputElement>;
+      onChange: ChangeEventHandler<HTMLInputElement>;
+      onKeyDown: KeyboardEventHandler<HTMLInputElement>;
+      onBlur: FocusEventHandler<HTMLInputElement>;
     };
 
-type TagBoxProps = {
-  onTyping: boolean;
-};
-
-const TagBox = styled.div<TagBoxProps>`
+const TagBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: max-content;
-  padding: 3px 7px;
-  border: 1px solid
-    ${({ onTyping }) => (onTyping ? 'transparent' : colors.grayScale.gray02)};
+  padding: 2px 7px;
+  border: 1px solid ${colors.grayScale.gray02};
   border-radius: 12px;
-  background-color: ${({ onTyping }) =>
-    onTyping ? colors.grayScale.gray02 : colors.grayScale.white};
+  background-color: ${colors.grayScale.white};
+`;
+
+const TagInput = styled.input`
+  ${medium12}
+  width: 88px;
+  padding: 3px 8px;
+  border: none;
+  border-radius: 12px;
+  color: ${colors.grayScale.gray05};
+  background-color: ${colors.grayScale.gray02};
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 const TagText = styled.span`
@@ -41,25 +63,37 @@ const TagText = styled.span`
 `;
 
 const Tag = (props: Props) => {
-  const { type, children, className } = props;
+  const { type, className } = props;
+
+  if (type === 'input') {
+    const { onChange, onKeyDown, value, inputRef, onBlur } = props;
+
+    return (
+      <TagInput
+        type="text"
+        ref={inputRef}
+        {...{ onChange, onKeyDown, value, onBlur }}
+      />
+    );
+  }
+
+  const { children } = props;
 
   if (type === 'cancel') {
     const { onCancel } = props;
     return (
       <button type="button" onClick={onCancel}>
-        <TagBox {...{ type, className, onTyping: false }}>
-          <TagText>#{children}</TagText>
-          <Cancel width="15px" color={colors.grayScale.gray03} />
+        <TagBox {...{ type, className, isTyping: false }}>
+          <TagText>{children}</TagText>
+          <Cancel width="14px" color={colors.grayScale.gray03} />
         </TagBox>
       </button>
     );
   }
 
-  const { onTyping } = props;
-
   return (
-    <TagBox {...{ type, className, onTyping }}>
-      <TagText>#{children}</TagText>
+    <TagBox {...{ type, className }}>
+      <TagText>{children}</TagText>
     </TagBox>
   );
 };
