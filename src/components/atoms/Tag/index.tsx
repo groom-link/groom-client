@@ -20,7 +20,7 @@ type Props =
       type: 'cancel';
       children: string;
       className?: string;
-      onCancel: () => void;
+      onDeleteClick: () => void;
     }
   | {
       type: 'input';
@@ -80,9 +80,9 @@ const Tag = (props: Props) => {
   const { children } = props;
 
   if (type === 'cancel') {
-    const { onCancel } = props;
+    const { onDeleteClick } = props;
     return (
-      <button type="button" onClick={onCancel}>
+      <button type="button" onClick={onDeleteClick}>
         <TagBox {...{ type, className, isTyping: false }}>
           <TagText>{children}</TagText>
           <Cancel width="14px" color={colors.grayScale.gray03} />

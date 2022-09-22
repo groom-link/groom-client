@@ -1,6 +1,7 @@
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
+  RefObject,
   useEffect,
   useRef,
   useState
@@ -10,6 +11,8 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 import { regular16 } from '../../../styles/typography';
 import { Label, Tag } from '../../atoms';
+
+const SINGLE_LINE_HEIGHT = 50;
 
 type InputProps = {
   isTagMode: boolean;
@@ -29,7 +32,14 @@ const Container = styled.div`
   position: relative;
 `;
 
-const TagStyled = styled(Tag)``;
+type TagStyledProps = {
+  isOverLine: boolean;
+};
+
+const TagStyled = styled(Tag)<TagStyledProps>`
+  margin-right: 6px;
+  margin-top: ${({ isOverLine }) => isOverLine && '6px'};
+`;
 
 type TagInputProps = {
   placeholder?: string;
@@ -50,11 +60,23 @@ const TagInput = ({
 }: TagInputProps) => {
   const [text, setText] = useState('#');
   const [isTyping, setIsTyping] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  const [isOverLine, setIsOverLine] = useState(false);
+  const tagInputRef = useRef<HTMLInputElement>(null);
+  const dummyInputRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (isTyping) inputRef.current?.focus();
+    if (isTyping) tagInputRef.current?.focus();
   }, [isTyping]);
+
+  useEffect(() => {
+    if (!dummyInputRef?.current) return;
+    const isOver = dummyInputRef.current.clientHeight > SINGLE_LINE_HEIGHT;
+    if (!isOver) {
+      setIsOverLine(false);
+      return;
+    }
+    setIsOverLine(true);
+  }, [dummyInputRef, tagList]);
 
   const handleTextChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -83,13 +105,18 @@ const TagInput = ({
   return (
     <Container>
       {label && <Label text={label} marginBottom="4px" />}
-      <Input onClick={handleInputClick} isTagMode={isTyping || isTagExists}>
+      <Input
+        onClick={handleInputClick}
+        isTagMode={isTyping || isTagExists}
+        ref={dummyInputRef}
+      >
         {isTyping || isTagExists || placeholder}
         {tagList.map((text, index) => (
           <TagStyled
             key={`text-${index}`}
             type="cancel"
-            onCancel={() => deleteTag(index)}
+            onDeleteClick={() => deleteTag(index)}
+            isOverLine={isOverLine}
           >
             {text}
           </TagStyled>
@@ -97,11 +124,12 @@ const TagInput = ({
         {isTyping && (
           <TagStyled
             type="input"
-            inputRef={inputRef}
+            inputRef={tagInputRef}
             value={text}
             onKeyDown={handleKeyDown}
             onChange={handleTextChange}
             onBlur={handleInputBlur}
+            isOverLine={isOverLine}
           />
         )}
       </Input>

@@ -49,7 +49,7 @@ export const Primary: ComponentStory<typeof Tag> = (props) => {
 
   if (type === 'cancel') {
     return (
-      <Tag type="cancel" onCancel={handleCancel}>
+      <Tag type="cancel" onDeleteClick={handleCancel}>
         {children}
       </Tag>
     );
