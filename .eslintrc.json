@@ -1,7 +1,8 @@
 {
   "extends": ["next", "prettier"],
-  "plugins": ["simple-import-sort"],
+  "plugins": ["simple-import-sort", "unused-imports"],
   "rules": {
+    "unused-imports/no-unused-imports": "error",
     "simple-import-sort/imports": [
       "error",
       {
