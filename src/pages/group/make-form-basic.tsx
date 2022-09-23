@@ -2,8 +2,10 @@ import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
+import { Upload } from '../../components/atoms/icons';
 import {
   Stepper,
+  TagInput,
   TextArea,
   TextInput,
   TopNavBar
@@ -14,7 +16,36 @@ import { semiBold20 } from '../../styles/typography';
 
 const Background = styled.div`
   min-height: 100vh;
+  padding-bottom: 84px;
   background-color: ${colors.grayScale.gray01};
+`;
+
+const Title = styled.h1`
+  ${semiBold20}
+  margin-bottom: 12px;
+  color: ${colors.grayScale.gray05};
+`;
+
+const ProfileImageInput = styled.input`
+  display: none;
+`;
+
+const ProfileImageInputLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: ${colors.grayScale.gray01};
+`;
+
+const UploadIcon = styled(Upload)`
+  height: 44px;
+`;
+
+const UploadDiscription = styled.span`
+  margin-top: 4px;
+  color: ${colors.grayScale.gray03};
 `;
 
 const WhiteBox = styled.div`
@@ -26,16 +57,15 @@ const WhiteBox = styled.div`
   }
 `;
 
-const Title = styled.h1`
-  ${semiBold20}
-  margin-bottom: 12px;
-  color: ${colors.grayScale.gray05};
+const TagInputStyled = styled(TagInput)`
+  margin-bottom: 20px;
 `;
 
 const MakeFormBasic = () => {
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(0);
+  const [tagList, setTagList] = useState<string[]>([]);
 
   const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -60,11 +90,28 @@ const MakeFormBasic = () => {
     Router.push('./make-form-additional');
   };
 
+  const addTag = (text: string) => setTagList((pre) => [...pre, text]);
+
+  const deleteTag = (index: number) => {
+    setTagList((pre) => {
+      const deforeTarget = pre.slice(0, index);
+      const afterTarget = pre.slice(index + 1);
+      return [...deforeTarget, ...afterTarget];
+    });
+  };
+
   return (
     <Background>
       <TopNavBar setting={false} backURL="/home" />
       <WhiteBox>
         <Title>새로운 모임을 만들어보세요.</Title>
+      </WhiteBox>
+      <ProfileImageInput type="file" id="image-input" />
+      <ProfileImageInputLabel htmlFor="image-input">
+        <UploadIcon width="44px" color={colors.grayScale.gray03} />
+        <UploadDiscription>모임 대표 사진을 업로드해보세요.</UploadDiscription>
+      </ProfileImageInputLabel>
+      <WhiteBox>
         <TextInput
           label="모임 이름"
           placeholder="모임 이름을 입력해주세요."
@@ -81,6 +128,12 @@ const MakeFormBasic = () => {
         />
       </WhiteBox>
       <WhiteBox>
+        <TagInputStyled
+          label="태그"
+          placeholder="태그를 입력하세요."
+          isTagExists={!!tagList.length}
+          {...{ addTag, deleteTag, tagList }}
+        />
         <Stepper
           label="모임 구성원 수"
           value={numberOfPeople}
