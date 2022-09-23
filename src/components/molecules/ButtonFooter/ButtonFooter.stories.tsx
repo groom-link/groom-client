@@ -8,7 +8,7 @@ export default {
 } as ComponentMeta<typeof ButtonFooter>;
 
 export const Primary: ComponentStory<typeof ButtonFooter> = ({
-  label,
+  children = '버튼',
   onClick,
   disabled
-}) => <ButtonFooter {...{ label, onClick, disabled }} />;
+}) => <ButtonFooter {...{ onClick, disabled }}>{children}</ButtonFooter>;

@@ -6,7 +6,7 @@ import { semiBold16 } from '../../../styles/typography';
 type Props = {
   width?: string;
   className?: string;
-  label: string;
+  children: string;
   size: 'large' | 'medium';
   disabled: boolean;
   color: 'purple' | 'gray' | 'ghost';
@@ -73,7 +73,7 @@ const GhostButton = styled(BasicButton)`
 const Button = ({
   width = '100%',
   className,
-  label,
+  children,
   size,
   disabled,
   color,
@@ -85,7 +85,7 @@ const Button = ({
         type="button"
         {...{ className, size, disabled, onClick, width }}
       >
-        {label}
+        {children}
       </PurpleButton>
     );
   if (color === 'gray')
@@ -94,7 +94,7 @@ const Button = ({
         type="button"
         {...{ className, size, disabled, onClick, width }}
       >
-        {label}
+        {children}
       </GrayButton>
     );
   return (
@@ -102,7 +102,7 @@ const Button = ({
       type="button"
       {...{ className, size, disabled, onClick, width }}
     >
-      {label}
+      {children}
     </GhostButton>
   );
 };

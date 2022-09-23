@@ -71,7 +71,7 @@ const TextInput = ({
 }: Props) => {
   return (
     <div className={className}>
-      {label && <Label text={label} marginBottom="4px" />}
+      {label && <Label marginBottom="4px">{label}</Label>}
       <InputBox width={width}>
         <Input
           type="text"

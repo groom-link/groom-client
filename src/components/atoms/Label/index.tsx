@@ -5,7 +5,7 @@ import { medium12 } from '../../../styles/typography';
 
 type Props = {
   className?: string;
-  text: string;
+  children: string;
   marginBottom: '4px' | '8px';
 };
 
@@ -16,8 +16,8 @@ const LabelText = styled.span<Pick<Props, 'marginBottom'>>`
   color: ${colors.grayScale.gray05};
 `;
 
-const Label = ({ text, marginBottom, className }: Props) => {
-  return <LabelText {...{ marginBottom, className }}>{text}</LabelText>;
+const Label = ({ children, marginBottom, className }: Props) => {
+  return <LabelText {...{ marginBottom, className }}>{children}</LabelText>;
 };
 
 export default Label;

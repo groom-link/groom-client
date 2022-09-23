@@ -103,12 +103,13 @@ const TimerPopup = (props: Props) => {
       {type === 'button' && (
         <>
           <ClearTimerButton
-            label="타이머 해제"
             size="medium"
             disabled={props.disabled}
             color={'purple'}
             onClick={props.onClick}
-          />
+          >
+            타이머 해제
+          </ClearTimerButton>
           <ButtonDescription>
             모임 장소 20m 이내에서 해제 가능합니다.
           </ButtonDescription>

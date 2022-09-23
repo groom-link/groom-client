@@ -9,6 +9,6 @@ export default {
 } as ComponentMeta<typeof Button>;
 
 export const DefaultImage: ComponentStory<typeof Button> = ({
-  label = '버튼 이름',
+  children = '버튼 이름',
   ...props
-}) => <Button {...{ label, ...props }} />;
+}) => <Button {...props}>{children}</Button>;

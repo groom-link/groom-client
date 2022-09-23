@@ -56,13 +56,14 @@ const MakeSuccess = () => {
         <Description>이제 모임원들을 초대해보세요.</Description>
         <BoldText>247 342</BoldText>
         <CodePasteButton
-          label="모임 초대 링크 복사하기"
           width="250px"
           size="large"
           disabled={false}
           color="gray"
           onClick={() => console.log('clicked')}
-        />
+        >
+          모임 초대 링크 복사하기
+        </CodePasteButton>
         <KakaoShareButton>
           <Kakao />
           카카오톡으로 공유하기

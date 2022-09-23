@@ -39,7 +39,9 @@ const Stepper = ({
 }: Props) => {
   return (
     <div>
-      <Label text={label} marginBottom="8px" className={className} />
+      <Label marginBottom="8px" className={className}>
+        {label}
+      </Label>
       <StepperBoxDiv>
         <IconButton
           type="decrease"

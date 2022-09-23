@@ -42,12 +42,13 @@ const GoBackHome = ({ title, description }: Props) => {
       <Description>{description}</Description>
       <ButtonBox>
         <Button
-          label="홈화면으로 돌아가기"
           size="large"
           disabled={false}
           color="purple"
           onClick={() => Router.push('/home?group=true')}
-        />
+        >
+          홈화면으로 돌아가기
+        </Button>
       </ButtonBox>
     </>
   );

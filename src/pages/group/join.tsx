@@ -68,10 +68,11 @@ const Join = () => {
         <Money>50,000원</Money>
       </WhiteBox>
       <ButtonFooter
-        label="모임비 결제하기"
         disabled={text === ''}
         onClick={() => Router.push('./join-success')}
-      />
+      >
+        모임비 결제하기
+      </ButtonFooter>
     </Background>
   );
 };

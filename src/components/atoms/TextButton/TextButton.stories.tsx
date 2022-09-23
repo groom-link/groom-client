@@ -9,7 +9,7 @@ export default {
 } as ComponentMeta<typeof TextButton>;
 
 export const Primary: ComponentStory<typeof TextButton> = ({
-  label = '텍스트 버튼',
+  children = '텍스트 버튼',
   color = 'navy',
   ...props
-}) => <TextButton {...{ label, color, ...props }} />;
+}) => <TextButton {...{ color, ...props }}>{children}</TextButton>;

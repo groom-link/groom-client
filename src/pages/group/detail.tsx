@@ -106,11 +106,9 @@ const Detail = () => (
       <SubTitle>모임비</SubTitle>
       <Money>50,000원</Money>
     </WhiteBox>
-    <ButtonFooter
-      label="가입 초대받기"
-      disabled={false}
-      onClick={() => Router.push('./join')}
-    />
+    <ButtonFooter disabled={false} onClick={() => Router.push('./join')}>
+      가입 초대받기
+    </ButtonFooter>
   </Background>
 );
 
