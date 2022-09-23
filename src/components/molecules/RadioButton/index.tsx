@@ -42,7 +42,7 @@ const RadioButtom = ({
 }: Props) => {
   return (
     <div>
-      {radioLabel && <Label text={radioLabel} marginBottom="8px" />}
+      {radioLabel && <Label marginBottom="8px">{radioLabel}</Label>}
       <RadioLabel htmlFor="radio1">
         {selectedValue === 1 ? (
           <RadioOnStyled width="24px" />
