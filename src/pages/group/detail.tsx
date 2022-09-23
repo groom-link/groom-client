@@ -88,18 +88,10 @@ const Detail = () => (
         sit tenetur provident.
       </Description>
       <TagBox>
-        <GroupTag type="default" onTyping={false}>
-          태그
-        </GroupTag>
-        <GroupTag type="default" onTyping={false}>
-          태그
-        </GroupTag>
-        <GroupTag type="default" onTyping={false}>
-          태그
-        </GroupTag>
-        <GroupTag type="default" onTyping={false}>
-          태그
-        </GroupTag>
+        <GroupTag type="default">태그</GroupTag>
+        <GroupTag type="default">태그</GroupTag>
+        <GroupTag type="default">태그</GroupTag>
+        <GroupTag type="default">태그</GroupTag>
       </TagBox>
     </WhiteBox>
     <WhiteBox>
