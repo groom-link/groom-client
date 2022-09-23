@@ -7,7 +7,6 @@ import { Cancel } from '../icons';
 type Props =
   | {
       type: 'default';
-      onTyping: boolean;
       children: string;
       className?: string;
     }
@@ -15,24 +14,18 @@ type Props =
       type: 'cancel';
       children: string;
       className?: string;
-      onCancel: () => void;
+      onDeleteClick: () => void;
     };
 
-type TagBoxProps = {
-  onTyping: boolean;
-};
-
-const TagBox = styled.div<TagBoxProps>`
+const TagBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   width: max-content;
-  padding: 3px 7px;
-  border: 1px solid
-    ${({ onTyping }) => (onTyping ? 'transparent' : colors.grayScale.gray02)};
+  padding: 2px 7px;
+  border: 1px solid ${colors.grayScale.gray02};
   border-radius: 12px;
-  background-color: ${({ onTyping }) =>
-    onTyping ? colors.grayScale.gray02 : colors.grayScale.white};
+  background-color: ${colors.grayScale.white};
 `;
 
 const TagText = styled.span`
@@ -41,25 +34,24 @@ const TagText = styled.span`
 `;
 
 const Tag = (props: Props) => {
-  const { type, children, className } = props;
+  const { type, className, children } = props;
 
   if (type === 'cancel') {
-    const { onCancel } = props;
+    const { onDeleteClick } = props;
+
     return (
-      <button type="button" onClick={onCancel}>
-        <TagBox {...{ type, className, onTyping: false }}>
-          <TagText>#{children}</TagText>
-          <Cancel width="15px" color={colors.grayScale.gray03} />
+      <button type="button" onClick={onDeleteClick}>
+        <TagBox {...{ type, className, isTyping: false }}>
+          <TagText>{children}</TagText>
+          <Cancel width="14px" color={colors.grayScale.gray03} />
         </TagBox>
       </button>
     );
   }
 
-  const { onTyping } = props;
-
   return (
-    <TagBox {...{ type, className, onTyping }}>
-      <TagText>#{children}</TagText>
+    <TagBox {...{ type, className }}>
+      <TagText>{children}</TagText>
     </TagBox>
   );
 };
