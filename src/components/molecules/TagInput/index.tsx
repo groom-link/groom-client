@@ -12,6 +12,7 @@ import { regular16 } from '../../../styles/typography';
 import { Label, Tag, TagMaker } from '../../atoms';
 
 type Props = {
+  className?: string;
   placeholder?: string;
   label?: string;
   tagList: string[];
@@ -24,12 +25,14 @@ const SINGLE_LINE_HEIGHT = 50;
 
 const Input = styled.div<{ isTagMode: boolean }>`
   ${regular16}
-  line-height: ${({ isTagMode }) => isTagMode && 0};
+  box-sizing: border-box;
+  min-height: 44px;
   padding: 9px 11px;
   border: 1px solid ${colors.grayScale.gray02};
   border-radius: 8px;
   background-color: ${colors.grayScale.white};
   color: ${colors.grayScale.gray03};
+  line-height: ${({ isTagMode }) => isTagMode && 0};
 `;
 
 const Container = styled.div`
@@ -47,6 +50,7 @@ const TagMakerStyled = styled(TagMaker)<{ isOverLine: boolean }>`
 `;
 
 const TagInput = ({
+  className,
   placeholder,
   label,
   tagList,
@@ -99,7 +103,7 @@ const TagInput = ({
   const handleInputBlur = () => setIsTyping(false);
 
   return (
-    <Container>
+    <Container className={className}>
       {label && <Label marginBottom="4px">{label}</Label>}
       <Input
         onClick={handleInputClick}
