@@ -4,7 +4,7 @@ import colors from '../../../styles/colors';
 import { Button } from '../../atoms';
 
 type Props = {
-  label: string;
+  children: string;
   disabled: boolean;
   onClick: () => void;
 };
@@ -20,16 +20,17 @@ const ButtonBox = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
-const ButtonFooter = ({ label, onClick, disabled }: Props) => {
+const ButtonFooter = ({ children, onClick, disabled }: Props) => {
   return (
     <ButtonBox>
       <Button
-        label={label}
         size="medium"
         disabled={disabled}
         color="purple"
         onClick={onClick}
-      />
+      >
+        {children}
+      </Button>
     </ButtonBox>
   );
 };

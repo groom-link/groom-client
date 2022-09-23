@@ -100,7 +100,7 @@ const TagInput = ({
 
   return (
     <Container>
-      {label && <Label text={label} marginBottom="4px" />}
+      {label && <Label marginBottom="4px">{label}</Label>}
       <Input
         onClick={handleInputClick}
         isTagMode={isTyping || isTagExists}

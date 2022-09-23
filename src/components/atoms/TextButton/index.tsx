@@ -6,7 +6,7 @@ import { semiBold16 } from '../../../styles/typography';
 type Props = {
   className?: string;
   color: 'navy' | 'ghost';
-  label: string;
+  children: string;
   disabled: boolean;
   onClick: () => void;
 };
@@ -50,13 +50,19 @@ const GhostButton = styled(Button)`
   }
 `;
 
-const TextButton = ({ label, color, disabled, onClick, className }: Props) => {
+const TextButton = ({
+  children,
+  color,
+  disabled,
+  onClick,
+  className
+}: Props) => {
   if (color === 'navy')
     return (
-      <NavyButton {...{ className, disabled, onClick }}>{label}</NavyButton>
+      <NavyButton {...{ className, disabled, onClick }}>{children}</NavyButton>
     );
   return (
-    <GhostButton {...{ className, disabled, onClick }}>{label}</GhostButton>
+    <GhostButton {...{ className, disabled, onClick }}>{children}</GhostButton>
   );
 };
 

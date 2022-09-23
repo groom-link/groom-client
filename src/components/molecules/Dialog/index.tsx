@@ -82,20 +82,22 @@ const Dialog = (props: Props) => {
       <ButtonBox>
         {buttonType === 'two' && (
           <GrayButton
-            label={props.grayButtonText}
             size="medium"
             disabled={props.isGrayButtonDisabled}
             color="gray"
             onClick={props.onGrayButtonClick}
-          />
+          >
+            {props.grayButtonText}
+          </GrayButton>
         )}
         <Button
-          label={purpleButtonText}
           size="medium"
           disabled={isPurpleButtonDisabled}
           color="purple"
           onClick={onPurpleButtonClick}
-        />
+        >
+          {purpleButtonText}
+        </Button>
       </ButtonBox>
     </Container>
   );

@@ -63,7 +63,7 @@ const TextArea = ({
 }: Props) => {
   return (
     <Box {...{ className, width }}>
-      {label && <Label text={label} marginBottom="4px" />}
+      {label && <Label marginBottom="4px">{label}</Label>}
       <TextAreaStyled
         {...{ label, placeholder, errorMessage, value, onChange }}
       />
