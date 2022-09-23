@@ -1,7 +1,6 @@
 import {
   ChangeEventHandler,
   KeyboardEventHandler,
-  RefObject,
   useEffect,
   useRef,
   useState
@@ -10,15 +9,20 @@ import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { regular16 } from '../../../styles/typography';
-import { Label, Tag } from '../../atoms';
+import { Label, Tag, TagMaker } from '../../atoms';
+
+type Props = {
+  placeholder?: string;
+  label?: string;
+  tagList: string[];
+  isTagExists: boolean;
+  addTag: (text: string) => void;
+  deleteTag: (index: number) => void;
+};
 
 const SINGLE_LINE_HEIGHT = 50;
 
-type InputProps = {
-  isTagMode: boolean;
-};
-
-const Input = styled.div<InputProps>`
+const Input = styled.div<{ isTagMode: boolean }>`
   ${regular16}
   line-height: ${({ isTagMode }) => isTagMode && 0};
   padding: 9px 11px;
@@ -32,23 +36,15 @@ const Container = styled.div`
   position: relative;
 `;
 
-type TagStyledProps = {
-  isOverLine: boolean;
-};
-
-const TagStyled = styled(Tag)<TagStyledProps>`
+const TagStyled = styled(Tag)<{ isOverLine: boolean }>`
   margin-right: 6px;
   margin-top: ${({ isOverLine }) => isOverLine && '6px'};
 `;
 
-type TagInputProps = {
-  placeholder?: string;
-  label?: string;
-  tagList: string[];
-  isTagExists: boolean;
-  addTag: (text: string) => void;
-  deleteTag: (index: number) => void;
-};
+const TagMakerStyled = styled(TagMaker)<{ isOverLine: boolean }>`
+  margin-right: 6px;
+  margin-top: ${({ isOverLine }) => isOverLine && '6px'};
+`;
 
 const TagInput = ({
   placeholder,
@@ -57,7 +53,7 @@ const TagInput = ({
   addTag,
   deleteTag,
   isTagExists
-}: TagInputProps) => {
+}: Props) => {
   const [text, setText] = useState('#');
   const [isTyping, setIsTyping] = useState(false);
   const [isOverLine, setIsOverLine] = useState(false);
@@ -122,8 +118,7 @@ const TagInput = ({
           </TagStyled>
         ))}
         {isTyping && (
-          <TagStyled
-            type="input"
+          <TagMakerStyled
             inputRef={tagInputRef}
             value={text}
             onKeyDown={handleKeyDown}
