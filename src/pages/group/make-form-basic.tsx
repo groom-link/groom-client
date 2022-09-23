@@ -91,11 +91,9 @@ const MakeFormBasic = () => {
           increaseDisabled={false}
         />
       </WhiteBox>
-      <ButtonFooter
-        label="다음"
-        disabled={!isValueExist()}
-        onClick={handleButtonClick}
-      />
+      <ButtonFooter disabled={!isValueExist()} onClick={handleButtonClick}>
+        다음
+      </ButtonFooter>
     </Background>
   );
 };

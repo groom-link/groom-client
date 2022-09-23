@@ -133,10 +133,11 @@ const Home = () => {
             />
             <SearchButton
               color="navy"
-              label="모임 가입"
               disabled={false}
               onClick={handleJoinClick}
-            />
+            >
+              모임 가입
+            </SearchButton>
           </BottomBox>
         </Header>
         {isDisplayTimer && (
@@ -159,12 +160,13 @@ const Home = () => {
           </div>
         )}
         <MakeGroupButton
-          label="모임 만들기"
           size="medium"
           disabled={false}
           color="purple"
           onClick={() => Router.push('/group/make-form-basic')}
-        />
+        >
+          모임 만들기
+        </MakeGroupButton>
         <Footer activeMenu="홈" />
       </Background>
     </>

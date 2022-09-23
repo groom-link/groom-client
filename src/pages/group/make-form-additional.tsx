@@ -210,10 +210,11 @@ const MakeFormAdditional = () => {
         />
       </WhiteBox>
       <ButtonFooter
-        label="모임비 결제하기"
         disabled={!(selectedGifticon && penaltyCount)}
         onClick={() => Router.push('./make-success')}
-      />
+      >
+        모임비 결제하기
+      </ButtonFooter>
     </Background>
   );
 };
