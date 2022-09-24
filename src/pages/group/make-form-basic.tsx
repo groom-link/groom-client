@@ -57,7 +57,7 @@ const WhiteBox = styled.div`
   }
 `;
 
-const TagInputStyled = styled(TagInput)`
+const GroupNameInput = styled(TextInput)`
   margin-bottom: 20px;
 `;
 
@@ -112,14 +112,12 @@ const MakeFormBasic = () => {
         <UploadDiscription>모임 대표 사진을 업로드해보세요.</UploadDiscription>
       </ProfileImageInputLabel>
       <WhiteBox>
-        <TextInput
+        <GroupNameInput
           label="모임 이름"
           placeholder="모임 이름을 입력해주세요."
           value={groupName}
           onChange={handleGroupNameChange}
         />
-      </WhiteBox>
-      <WhiteBox>
         <TextArea
           label="모임 내용"
           placeholder="예시) 저희는 OO을 하는 모임입니다."
@@ -128,12 +126,14 @@ const MakeFormBasic = () => {
         />
       </WhiteBox>
       <WhiteBox>
-        <TagInputStyled
+        <TagInput
           label="태그"
           placeholder="태그를 입력하세요."
           isTagExists={!!tagList.length}
           {...{ addTag, deleteTag, tagList }}
         />
+      </WhiteBox>
+      <WhiteBox>
         <Stepper
           label="모임 구성원 수"
           value={numberOfPeople}
