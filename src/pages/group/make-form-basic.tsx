@@ -53,6 +53,7 @@ const ImageUploadInput = ({ onChange }: ImageUploadInputProps) => {
         type="file"
         id="image-input"
         value=""
+        accept="image/*"
         onChange={onChange}
       />
     </>
