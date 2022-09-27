@@ -3,31 +3,3 @@ export const DEMO_PROFILE_IMAGE_URL =
 
 export const DEMO_GROUP_IMAGE_URL =
   'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
-
-export const NOTIFICATIONS = [
-  {
-    id: 0,
-    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
-    time: '2021-09-13T14:10:00'
-  },
-  {
-    id: 1,
-    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
-    time: '2022-08-13T12:13:01'
-  },
-  {
-    id: 2,
-    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
-    time: '2022-09-12T12:13:01'
-  },
-  {
-    id: 3,
-    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
-    time: '2022-09-13T12:13:01'
-  },
-  {
-    id: 4,
-    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
-    time: '2022-09-13T12:13:01'
-  }
-];

@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
+import { DEMO_GROUP_IMAGE_URL } from '../__mocks__';
 import { Button, Logo, TextButton } from '../components/atoms';
 import { NotificationOff, NotificationOn } from '../components/atoms/icons';
 import {
@@ -14,23 +15,65 @@ import {
 import colors from '../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
-const Groups = ({
-  title,
-  nearMeeting,
-  numberOfMember,
-  numberOfMyTodos,
-  tags
-}: GroupProps) => {
-  return (
-    <Link href="/group/home">
-      <LinkContainer>
-        <ThumbnailList />
-      </LinkContainer>
-    </Link>
-  );
-};
-
 const HEADER_HEIGHT = '136px' as const;
+
+const GROUPS = [
+  {
+    id: 1,
+    profileImageURL: DEMO_GROUP_IMAGE_URL,
+    title: '소마 개발 그룹',
+    numberOfMembers: 3,
+    numberOfMyTodos: 2,
+    tags: ['#태그1', '#태그2', '#태그3'],
+    nearMeeting: {
+      title: '개발 모임',
+      location: '서울시 강남구 선릉역 4번 출구',
+      date: '2022.06.17(목)'
+    }
+  },
+  {
+    id: 2,
+    profileImageURL: DEMO_GROUP_IMAGE_URL,
+    title:
+      '소마 개발 그룹소마 개발 그룹소마 개발 그룹소마 개발 그룹소마 개발 그룹소마 개발 그룹',
+    numberOfMembers: 3,
+    numberOfMyTodos: 2,
+    tags: ['#태그1', '#태그2', '#태그3'],
+    nearMeeting: {
+      title: '개발 모임개발 모임개발 모임개발 모임개발 모임개발 모임',
+      location:
+        '서울시 강남구 선릉역 4번 출구서울시 강남구 선릉역 4번 출구서울시 강남구 선릉역 4번 출구서울시 강남구 선릉역 4번 출구',
+      date: '2022.06.17(목)'
+    }
+  },
+  {
+    id: 3,
+    profileImageURL: DEMO_GROUP_IMAGE_URL,
+    title: '소마 개발 그룹',
+    numberOfMembers: 3,
+    numberOfMyTodos: 2,
+    tags: ['#태그1', '#태그2', '#태그3'],
+    nearMeeting: null
+  },
+  {
+    id: 4,
+    profileImageURL: DEMO_GROUP_IMAGE_URL,
+    title: '소마 개발 그룹',
+    numberOfMembers: 3,
+    numberOfMyTodos: 2,
+    tags: ['#태그1', '#태그2', '#태그3'],
+    nearMeeting: null
+  },
+  {
+    id: 5,
+    profileImageURL: DEMO_GROUP_IMAGE_URL,
+    title: '소마 개발 그룹',
+    numberOfMembers: 3,
+    numberOfMyTodos: 2,
+    tags: ['#태그1', '#태그2', '#태그3'],
+    nearMeeting: null
+  }
+];
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -38,13 +81,14 @@ const Background = styled.div`
   flex-direction: column;
   align-items: center;
   width: 100vw;
-  height: 100vh;
-  padding: 152px 20px 0;
+  min-height: 100vh;
+  padding: 152px 20px 100px;
   background-color: ${colors.grayScale.gray01};
 `;
 
 const Header = styled.header`
   position: fixed;
+  z-index: 1;
   top: 0;
   box-sizing: border-box;
   display: flex;
@@ -106,6 +150,10 @@ const GroupType = styled.h2`
   ${semiBold16}
   margin-bottom: 12px;
   color: ${colors.grayScale.gray04};
+`;
+
+const GroupCard = styled(ThumbnailList)`
+  margin-bottom: 32px;
 `;
 
 const MakeGroupButton = styled(Button)`
@@ -176,17 +224,42 @@ const Home = () => {
         {isGroup ? (
           <GroupContainer>
             <GroupType>가입된 모임</GroupType>
-            <Groups />
+            {GROUPS.map(
+              ({
+                id,
+                profileImageURL,
+                title,
+                numberOfMembers,
+                numberOfMyTodos,
+                tags,
+                nearMeeting
+              }) => (
+                <Link href="/group/home" key={id}>
+                  <LinkContainer>
+                    <GroupCard
+                      {...{
+                        profileImageURL,
+                        title,
+                        numberOfMembers,
+                        numberOfMyTodos,
+                        tags,
+                        nearMeeting
+                      }}
+                    />
+                  </LinkContainer>
+                </Link>
+              )
+            )}
           </GroupContainer>
         ) : (
-          <div>
+          <>
             <TemporaryLogo />
             <EmptyDescription>
               새 모임을 만들거나
               <br />
               초대 코드를 입력하세요!
             </EmptyDescription>
-          </div>
+          </>
         )}
         <MakeGroupButton
           size="medium"

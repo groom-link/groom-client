@@ -66,7 +66,7 @@ const Title = styled.strong`
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
   overflow: hidden;
-  width: 70%;
+  max-width: 70%;
   color: ${colors.grayScale.gray05};
 `;
 
@@ -139,8 +139,8 @@ const ThumbnailList = ({
   numberOfMyTodos,
   tags
 }: Props) => (
-  <>
-    <Container className={className} hasNearMeeting={nearMeeting !== null}>
+  <div className={className}>
+    <Container hasNearMeeting={nearMeeting !== null}>
       <TopBox>
         <ImageBox>
           <Image
@@ -173,7 +173,7 @@ const ThumbnailList = ({
         <MeetingDate>{nearMeeting.date}</MeetingDate>
       </MeetingInformationContainer>
     )}
-  </>
+  </div>
 );
 
 export default ThumbnailList;
