@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEventHandler, useRef, useState } from 'react';
+import { ChangeEventHandler, RefObject, useRef, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -15,17 +15,54 @@ import ButtonFooter from '../../components/molecules/ButtonFooter';
 import colors from '../../styles/colors';
 import { semiBold20 } from '../../styles/typography';
 
-const Background = styled.div`
-  min-height: 100vh;
-  padding-bottom: 84px;
-  background-color: ${colors.grayScale.gray01};
+type ImageUploadInputProps = {
+  onChange: ChangeEventHandler<HTMLInputElement>;
+};
+
+const UploadIcon = styled(Upload)`
+  height: 44px;
 `;
 
-const Title = styled.h1`
-  ${semiBold20}
-  margin-bottom: 12px;
-  color: ${colors.grayScale.gray05};
+const UploadDiscription = styled.span`
+  margin-top: 4px;
+  color: ${colors.grayScale.gray03};
 `;
+
+const ProfileImageInputLabel = styled.label`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 250px;
+  background-color: ${colors.grayScale.gray01};
+  cursor: pointer;
+`;
+
+const ProfileImageInput = styled.input`
+  display: none;
+`;
+
+const ImageUploadInput = ({ onChange }: ImageUploadInputProps) => {
+  return (
+    <>
+      <ProfileImageInputLabel htmlFor="image-input">
+        <UploadIcon width="44px" color={colors.grayScale.gray03} />
+        <UploadDiscription>모임 대표 사진을 업로드해보세요.</UploadDiscription>
+      </ProfileImageInputLabel>
+      <ProfileImageInput
+        type="file"
+        id="image-input"
+        value=""
+        onChange={onChange}
+      />
+    </>
+  );
+};
+
+type ThumbnailImageContainer = {
+  imageRef: RefObject<HTMLImageElement>;
+  onClick: () => void;
+};
 
 const ImageContainer = styled.div`
   position: relative;
@@ -44,26 +81,30 @@ const DeleteImageButton = styled.button`
   right: 13px;
 `;
 
-const ProfileImageInput = styled.input`
-  display: none;
-`;
+const ThumbnailImageContainer = ({
+  imageRef,
+  onClick
+}: ThumbnailImageContainer) => {
+  return (
+    <ImageContainer>
+      <ThumbnailImage alt="모임 프로필" ref={imageRef} />
+      <DeleteImageButton onClick={onClick}>
+        <FilledCancel />
+      </DeleteImageButton>
+    </ImageContainer>
+  );
+};
 
-const ProfileImageInputLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 250px;
+const Background = styled.div`
+  min-height: 100vh;
+  padding-bottom: 84px;
   background-color: ${colors.grayScale.gray01};
 `;
 
-const UploadIcon = styled(Upload)`
-  height: 44px;
-`;
-
-const UploadDiscription = styled.span`
-  margin-top: 4px;
-  color: ${colors.grayScale.gray03};
+const Title = styled.h1`
+  ${semiBold20}
+  margin-bottom: 12px;
+  color: ${colors.grayScale.gray05};
 `;
 
 const WhiteBox = styled.div<{ hasMargin: boolean }>`
@@ -146,26 +187,13 @@ const MakeFormBasic = () => {
         <Title>새로운 모임을 만들어보세요.</Title>
       </WhiteBox>
       {isImageAttached ? (
-        <ImageContainer>
-          <ThumbnailImage alt="모임 프로필" ref={imageRef} />
-          <DeleteImageButton onClick={handleClickDeleteImage}>
-            <FilledCancel />
-          </DeleteImageButton>
-        </ImageContainer>
+        <ThumbnailImageContainer
+          imageRef={imageRef}
+          onClick={handleClickDeleteImage}
+        />
       ) : (
-        <ProfileImageInputLabel htmlFor="image-input">
-          <UploadIcon width="44px" color={colors.grayScale.gray03} />
-          <UploadDiscription>
-            모임 대표 사진을 업로드해보세요.
-          </UploadDiscription>
-        </ProfileImageInputLabel>
+        <ImageUploadInput onChange={handleChangeImageFile} />
       )}
-      <ProfileImageInput
-        type="file"
-        id="image-input"
-        value=""
-        onChange={handleChangeImageFile}
-      />
       <WhiteBox hasMargin={false}>
         <GroupNameInput
           label="모임 이름"
