@@ -2,21 +2,32 @@ import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
-import { medium12, medium18 } from '../../../styles/typography';
+import { textEllipsis } from '../../../styles/mixins';
+import { medium10, medium12, medium18 } from '../../../styles/typography';
 import { Tag } from '../../atoms';
+
+type Meeting = {
+  title: string;
+  location: string;
+  date: string;
+};
 
 type Props = {
   className?: string;
+  profileImageURL: string;
+  title: string;
+  numberOfMembers: number;
+  numberOfMyTodos: number;
+  tags: string[];
+  nearMeeting: Meeting | null;
 };
 
-const DEMO_GROUP_IMAGE_URL =
-  'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
-
-const Container = styled.div`
+const Container = styled.div<{ hasNearMeeting: boolean }>`
   box-sizing: border-box;
   width: 100%;
   padding: 12px 16px;
-  border-radius: 8px;
+  border-radius: ${({ hasNearMeeting }) =>
+    hasNearMeeting ? '8px 8px 0 0' : '8px'};
   background-color: ${colors.grayScale.white};
 `;
 
@@ -26,6 +37,7 @@ const TopBox = styled.div`
 `;
 
 const ImageBox = styled.div`
+  flex-shrink: 0;
   position: relative;
   display: flex;
   align-items: center;
@@ -38,16 +50,42 @@ const ImageBox = styled.div`
   border-radius: 6px;
 `;
 
-const Name = styled.strong`
+const TextContainer = styled.div`
+  width: 100%;
+`;
+
+const TitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
+
+const Title = styled.strong`
   ${medium18}
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  width: 70%;
   color: ${colors.grayScale.gray05};
 `;
 
-const Description = styled.span`
-  ${medium12}
+const NumberOfMyTodos = styled.span`
+  ${medium10}
   display: block;
-  margin-top: 9.5px;
-  color: ${colors.grayScale.gray04};
+  width: fit-content;
+  margin-left: 8px;
+  padding: 4px 6px;
+  border-radius: 12px;
+  color: ${colors.grayScale.white};
+  background-color: ${colors.mainColor.purple};
+`;
+
+const NumberOfMembers = styled.span`
+  ${medium10}
+  display: block;
+  margin-top: 4px;
+  color: ${colors.grayScale.gray03};
 `;
 
 const TagBox = styled.div`
@@ -61,30 +99,81 @@ const GroupTag = styled(Tag)`
   margin: 4px 4px 0 0;
 `;
 
-const ThumbnailList = ({ className }: Props) => (
-  <Container className={className}>
-    <TopBox>
-      <ImageBox>
-        <Image
-          src={DEMO_GROUP_IMAGE_URL}
-          layout="fill"
-          objectFit="cover"
-          alt="모임 프로필"
-        />
-      </ImageBox>
-      <div>
-        <Name>모임 이름</Name>
-        <Description>모임 설명</Description>
-      </div>
-    </TopBox>
-    <TagBox>
-      <GroupTag type="default">태그</GroupTag>
-      <GroupTag type="default">태그</GroupTag>
-      <GroupTag type="default">태그</GroupTag>
-      <GroupTag type="default">태그</GroupTag>
-      <GroupTag type="default">태그</GroupTag>
-    </TagBox>
-  </Container>
+const MeetingInformationContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 12px;
+  border-radius: 0 0 12px 12px;
+  background-color: ${colors.grayScale.gray02};
+`;
+
+const MeetingTitle = styled.strong`
+  ${medium12}
+  ${textEllipsis}
+  flex: 2;
+  color: ${colors.grayScale.gray05};
+`;
+
+const MeetingLocation = styled.span`
+  ${medium10}
+  ${textEllipsis}
+  flex: 2;
+  color: ${colors.grayScale.gray04};
+`;
+
+const MeetingDate = styled.time`
+  ${medium10}
+  ${textEllipsis}
+  flex: 1;
+  margin-left: 8px;
+  color: ${colors.grayScale.gray04};
+`;
+
+const ThumbnailList = ({
+  className,
+  profileImageURL,
+  title,
+  nearMeeting,
+  numberOfMembers,
+  numberOfMyTodos,
+  tags
+}: Props) => (
+  <>
+    <Container className={className} hasNearMeeting={nearMeeting !== null}>
+      <TopBox>
+        <ImageBox>
+          <Image
+            src={profileImageURL}
+            layout="fill"
+            objectFit="cover"
+            alt="모임 프로필"
+          />
+        </ImageBox>
+        <TextContainer>
+          <TitleContainer>
+            <Title>{title}</Title>
+            <NumberOfMyTodos>할 일 {numberOfMyTodos}개</NumberOfMyTodos>
+          </TitleContainer>
+          <NumberOfMembers>인원 수 {numberOfMembers}명</NumberOfMembers>
+        </TextContainer>
+      </TopBox>
+      <TagBox>
+        {tags.map((tag) => (
+          <GroupTag type="default" key={tag}>
+            {tag}
+          </GroupTag>
+        ))}
+      </TagBox>
+    </Container>
+    {nearMeeting && (
+      <MeetingInformationContainer>
+        <MeetingTitle>{nearMeeting.title}</MeetingTitle>
+        <MeetingLocation>{nearMeeting.location}</MeetingLocation>
+        <MeetingDate>{nearMeeting.date}</MeetingDate>
+      </MeetingInformationContainer>
+    )}
+  </>
 );
 
 export default ThumbnailList;

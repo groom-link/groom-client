@@ -14,6 +14,22 @@ import {
 import colors from '../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
+const Groups = ({
+  title,
+  nearMeeting,
+  numberOfMember,
+  numberOfMyTodos,
+  tags
+}: GroupProps) => {
+  return (
+    <Link href="/group/home">
+      <LinkContainer>
+        <ThumbnailList />
+      </LinkContainer>
+    </Link>
+  );
+};
+
 const HEADER_HEIGHT = '136px' as const;
 
 const Background = styled.div`
@@ -79,6 +95,16 @@ const EmptyDescription = styled.span`
   margin-top: 16px;
   ${regular16}
   text-align: center;
+  color: ${colors.grayScale.gray04};
+`;
+
+const GroupContainer = styled.div`
+  width: 100%;
+`;
+
+const GroupType = styled.h2`
+  ${semiBold16}
+  margin-bottom: 12px;
   color: ${colors.grayScale.gray04};
 `;
 
@@ -148,7 +174,10 @@ const Home = () => {
           </Link>
         )}
         {isGroup ? (
-          <Groups />
+          <GroupContainer>
+            <GroupType>가입된 모임</GroupType>
+            <Groups />
+          </GroupContainer>
         ) : (
           <div>
             <TemporaryLogo />
@@ -174,26 +203,3 @@ const Home = () => {
 };
 
 export default Home;
-
-const GroupContainer = styled.div`
-  width: 100%;
-`;
-
-const GroupType = styled.h2`
-  ${semiBold16}
-  margin-bottom: 12px;
-  color: ${colors.grayScale.gray04};
-`;
-
-const Groups = () => {
-  return (
-    <GroupContainer>
-      <GroupType>가입된 모임</GroupType>
-      <Link href="/group/home">
-        <LinkContainer>
-          <ThumbnailList />
-        </LinkContainer>
-      </Link>
-    </GroupContainer>
-  );
-};
