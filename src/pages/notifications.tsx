@@ -49,8 +49,18 @@ const Time = styled.time`
   color: ${colors.grayScale.gray03};
 `;
 
+const EmptyDiscription = styled.span`
+  ${regular16};
+  display: block;
+  margin-top: 200px;
+  text-align: center;
+  color: ${colors.grayScale.gray04};
+`;
+
 const Notifications = () => {
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
+
+  const isNotificationExists = notifications.length !== 0;
 
   const handleReadAllButton = () => setNotifications([]);
   // TODO: 알림 불러오기, 삭제하기 -> 실제 API 연동하기.
@@ -63,19 +73,23 @@ const Notifications = () => {
           모두 읽기
         </ReadAllButton>
       </ButtonContainer>
-      <ul>
-        {notifications.map(({ id, content, time }) => (
-          <Notification key={id}>
-            <IconContainer>
-              <Calendar width="34px" color={colors.grayScale.white} />
-            </IconContainer>
-            <div>
-              <Content>{content}</Content>
-              <Time>{getElapsedTime(new Date(time), new Date())}</Time>
-            </div>
-          </Notification>
-        ))}
-      </ul>
+      {isNotificationExists ? (
+        <ul>
+          {notifications.map(({ id, content, time }) => (
+            <Notification key={id}>
+              <IconContainer>
+                <Calendar width="34px" color={colors.grayScale.white} />
+              </IconContainer>
+              <div>
+                <Content>{content}</Content>
+                <Time>{getElapsedTime(new Date(time), new Date())}</Time>
+              </div>
+            </Notification>
+          ))}
+        </ul>
+      ) : (
+        <EmptyDiscription>읽지 않은 알림이 없어요.</EmptyDiscription>
+      )}
     </>
   );
 };
