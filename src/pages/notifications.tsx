@@ -1,12 +1,39 @@
 import { useState } from 'react';
 import styled from '@emotion/styled';
 
-import { NOTIFICATIONS } from '../__mocks__';
 import { Calendar } from '../components/atoms/icons';
 import { TopNavBar } from '../components/molecules';
 import colors from '../styles/colors';
 import { medium12, regular16, semiBold16 } from '../styles/typography';
 import getElapsedTime from '../utils/getElapsedTime';
+
+export const NOTIFICATIONS = [
+  {
+    id: 0,
+    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
+    time: '2021-09-13T14:10:00'
+  },
+  {
+    id: 1,
+    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
+    time: '2022-08-13T12:13:01'
+  },
+  {
+    id: 2,
+    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
+    time: '2022-09-12T12:13:01'
+  },
+  {
+    id: 3,
+    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
+    time: '2022-09-13T12:13:01'
+  },
+  {
+    id: 4,
+    content: '개발 동아리 모임 시간이 1시간 남았습니다.',
+    time: '2022-09-13T12:13:01'
+  }
+];
 
 const ButtonContainer = styled.div`
   display: flex;
