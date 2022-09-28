@@ -104,7 +104,7 @@ const TimerMap = () => {
           <TimerPopup
             type="button"
             onClick={handleClearTimerButtonClick}
-            disabled={false}
+            disabled={isTimerButtonDisabled}
             groupName="소마 그룹"
             timer="10:31"
           />
