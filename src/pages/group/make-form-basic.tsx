@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 
 import { FilledCancel, Upload } from '../../components/atoms/icons';
 import {
+  Dialog,
   Stepper,
   TagInput,
   TextArea,
@@ -124,6 +125,8 @@ const MakeFormBasic = () => {
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [tagList, setTagList] = useState<string[]>([]);
   const [isImageAttached, setIsImageAttached] = useState(false);
+  const [isModalDisplay, setIsModalDisplay] = useState(false);
+
   const imageRef = useRef<HTMLImageElement>(null);
 
   const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
@@ -181,57 +184,81 @@ const MakeFormBasic = () => {
     setIsImageAttached(false);
   };
 
+  const backConfirmCallback = () => {
+    setIsModalDisplay(true);
+  };
+
   return (
-    <Background>
-      <TopNavBar setting={false} backURL="/home" />
-      <WhiteBox hasMargin={false}>
-        <Title>새로운 모임을 만들어보세요.</Title>
-      </WhiteBox>
-      {isImageAttached ? (
-        <ThumbnailImageContainer
-          imageRef={imageRef}
-          onClick={handleClickDeleteImage}
+    <>
+      {isModalDisplay && (
+        <Dialog
+          buttonType="two"
+          title="모임 만들기를 취소하시겠어요?"
+          description="취소한 모임은 저장되지 않습니다."
+          purpleButtonText="아니요"
+          grayButtonText="네, 취소할게요"
+          onGrayButtonClick={() => Router.push('/home')}
+          onPurpleButtonClick={() => setIsModalDisplay(false)}
+          isGrayButtonDisabled={false}
+          isPurpleButtonDisabled={false}
+          isIllustrationExists={true}
         />
-      ) : (
-        <ImageUploadInput onChange={handleChangeImageFile} />
       )}
-      <WhiteBox hasMargin={false}>
-        <GroupNameInput
-          label="모임 이름"
-          placeholder="모임 이름을 입력해주세요."
-          value={groupName}
-          onChange={handleGroupNameChange}
+      <Background>
+        <TopNavBar
+          setting={false}
+          backURL="/home"
+          backConfirmCallback={backConfirmCallback}
         />
-        <TextArea
-          label="모임 내용"
-          placeholder="예시) 저희는 OO을 하는 모임입니다."
-          value={description}
-          onChange={handleDescriptionChange}
-        />
-      </WhiteBox>
-      <WhiteBox hasMargin={true}>
-        <TagInput
-          label="태그"
-          placeholder="태그를 입력하세요."
-          isTagExists={!!tagList.length}
-          {...{ addTag, deleteTag, tagList }}
-        />
-      </WhiteBox>
-      <WhiteBox hasMargin={true}>
-        <Stepper
-          label="모임 구성원 수"
-          value={numberOfPeople}
-          onDecrease={decreasePeople}
-          onIncrease={increasePeople}
-          color="navy"
-          decreaseDisabled={false}
-          increaseDisabled={false}
-        />
-      </WhiteBox>
-      <ButtonFooter disabled={!isValueExist()} onClick={handleButtonClick}>
-        다음
-      </ButtonFooter>
-    </Background>
+        <WhiteBox hasMargin={false}>
+          <Title>새로운 모임을 만들어보세요.</Title>
+        </WhiteBox>
+        {isImageAttached ? (
+          <ThumbnailImageContainer
+            imageRef={imageRef}
+            onClick={handleClickDeleteImage}
+          />
+        ) : (
+          <ImageUploadInput onChange={handleChangeImageFile} />
+        )}
+        <WhiteBox hasMargin={false}>
+          <GroupNameInput
+            label="모임 이름"
+            placeholder="모임 이름을 입력해주세요."
+            value={groupName}
+            onChange={handleGroupNameChange}
+          />
+          <TextArea
+            label="모임 내용"
+            placeholder="예시) 저희는 OO을 하는 모임입니다."
+            value={description}
+            onChange={handleDescriptionChange}
+          />
+        </WhiteBox>
+        <WhiteBox hasMargin={true}>
+          <TagInput
+            label="태그"
+            placeholder="태그를 입력하세요."
+            isTagExists={!!tagList.length}
+            {...{ addTag, deleteTag, tagList }}
+          />
+        </WhiteBox>
+        <WhiteBox hasMargin={true}>
+          <Stepper
+            label="모임 구성원 수"
+            value={numberOfPeople}
+            onDecrease={decreasePeople}
+            onIncrease={increasePeople}
+            color="navy"
+            decreaseDisabled={false}
+            increaseDisabled={false}
+          />
+        </WhiteBox>
+        <ButtonFooter disabled={!isValueExist()} onClick={handleButtonClick}>
+          다음
+        </ButtonFooter>
+      </Background>
+    </>
   );
 };
 

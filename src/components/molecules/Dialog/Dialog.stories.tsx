@@ -10,7 +10,7 @@ export default {
 export const Primary: ComponentStory<typeof Dialog> = ({
   buttonType = 'one',
   title = '다이얼로그 제목',
-  discription = '다이얼로그 설명',
+  description = '다이얼로그 설명',
   isIllustrationExists = false,
   isPurpleButtonDisabled = false,
   purpleButtonText = '버튼 이름',
@@ -22,7 +22,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
         {...{
           buttonType,
           title,
-          discription,
+          description: description,
           isIllustrationExists,
           isPurpleButtonDisabled,
           purpleButtonText,
@@ -35,7 +35,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
       {...{
         buttonType,
         title,
-        discription,
+        description: description,
         isIllustrationExists,
         isPurpleButtonDisabled,
         purpleButtonText,

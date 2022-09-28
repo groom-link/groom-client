@@ -10,7 +10,7 @@ type DefaultProps = {
   purpleButtonText: string;
   isPurpleButtonDisabled: boolean;
   onPurpleButtonClick: () => void;
-  discription: string;
+  description: string;
 };
 
 type OneButtonProps = {
@@ -81,7 +81,7 @@ const Dialog = (props: Props) => {
   const {
     buttonType,
     title,
-    discription,
+    description,
     isIllustrationExists,
     isPurpleButtonDisabled,
     purpleButtonText,
@@ -92,7 +92,7 @@ const Dialog = (props: Props) => {
       <Container>
         <Title>{title}</Title>
         {isIllustrationExists && <MockIllustration />}
-        <Discription>{discription}</Discription>
+        <Discription>{description}</Discription>
         <ButtonBox>
           {buttonType === 'two' && (
             <GrayButton

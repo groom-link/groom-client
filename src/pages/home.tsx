@@ -204,7 +204,7 @@ const Home = () => {
           buttonType="one"
           isIllustrationExists={false}
           title="존재하지 않는 초대 코드입니다."
-          discription="초대 코드를 다시 확인해주세요."
+          description="초대 코드를 다시 확인해주세요."
           purpleButtonText="확인"
           isPurpleButtonDisabled={false}
           onPurpleButtonClick={handleCloseModal}
