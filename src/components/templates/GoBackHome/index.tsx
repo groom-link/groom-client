@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -6,10 +7,24 @@ import { regular16, semiBold24 } from '../../../styles/typography';
 import { Button, Logo } from '../../atoms';
 import { TopCancelBar } from '../../molecules';
 
-type Props = {
+type DefaultProps = {
   title: string;
-  description: string;
+  description: ReactNode | string;
+  purpleButtonLabel: string;
+  onPurpleButtonClick: () => void;
 };
+
+type OneButtonProps = {
+  proptype: 'one-button';
+} & DefaultProps;
+
+type TwoButtonProps = {
+  proptype: 'two-button';
+  grayButtonLabel: string;
+  grayButtonOnClick: () => void;
+} & DefaultProps;
+
+type Props = OneButtonProps | TwoButtonProps;
 
 const Title = styled.h1`
   ${semiBold24}
@@ -25,31 +40,53 @@ const Description = styled.p`
   color: ${colors.grayScale.gray04};
 `;
 
-const ButtonBox = styled.div`
-  padding: 0 82px;
+const PurpleButton = styled(Button)`
+  margin: 0 auto 20px;
+`;
+
+const GrayButton = styled(Button)`
+  margin: 0 auto;
 `;
 
 const TemporaryLogo = styled(Logo)`
   margin: 120px auto 120px;
 `;
 
-const GoBackHome = ({ title, description }: Props) => {
+const GoBackHome = (props: Props) => {
+  const {
+    proptype,
+    title,
+    description,
+    purpleButtonLabel,
+    onPurpleButtonClick
+  } = props;
+
   return (
     <>
       <TopCancelBar cancelURL="/home" />
       <TemporaryLogo />
       <Title>{title}</Title>
       <Description>{description}</Description>
-      <ButtonBox>
-        <Button
-          size="large"
+      <PurpleButton
+        width="250px"
+        size="large"
+        disabled={false}
+        color="purple"
+        onClick={() => Router.push('/home?group=true')}
+      >
+        {purpleButtonLabel}
+      </PurpleButton>
+      {proptype === 'two-button' && (
+        <GrayButton
+          width="250px"
+          color="gray"
           disabled={false}
-          color="purple"
-          onClick={() => Router.push('/home?group=true')}
+          size="large"
+          onClick={props.grayButtonOnClick}
         >
-          홈화면으로 돌아가기
-        </Button>
-      </ButtonBox>
+          {props.grayButtonLabel}
+        </GrayButton>
+      )}
     </>
   );
 };

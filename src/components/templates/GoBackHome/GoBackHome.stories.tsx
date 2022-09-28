@@ -10,5 +10,37 @@ export default {
 
 export const Primary: ComponentStory<typeof GoBackHome> = ({
   title = '제목입니다.',
-  description = '설명입니다. 설명입니다.'
-}) => <GoBackHome {...{ title, description }} />;
+  description = '설명입니다. 설명입니다.',
+  purpleButtonLabel = '확인',
+  onPurpleButtonClick,
+  ...props
+}) => {
+  if (props.proptype === 'one-button')
+    return (
+      <GoBackHome
+        proptype={props.proptype}
+        {...{
+          title,
+          description,
+          purpleButtonLabel,
+          onPurpleButtonClick
+        }}
+      />
+    );
+
+  const { grayButtonLabel, grayButtonOnClick } = props;
+
+  return (
+    <GoBackHome
+      proptype={props.proptype}
+      grayButtonLabel={grayButtonLabel ?? '취소'}
+      {...{
+        title,
+        description,
+        purpleButtonLabel,
+        onPurpleButtonClick,
+        grayButtonOnClick
+      }}
+    />
+  );
+};
