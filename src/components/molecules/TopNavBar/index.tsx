@@ -1,8 +1,25 @@
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { ArrowLeft, Setting } from '../../atoms/icons';
+
+type DefaultProps = {
+  backURL: string;
+  backConfirmCallback?: () => void;
+};
+
+type OnlyBackButtonProps = {
+  setting: false;
+} & DefaultProps;
+
+type BackButtonWithSettingProps = {
+  setting: true;
+  settingURL: string;
+} & DefaultProps;
+
+type Props = OnlyBackButtonProps | BackButtonWithSettingProps;
 
 const NavBox = styled.div`
   display: flex;
@@ -13,27 +30,31 @@ const NavBox = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
-type Props =
-  | {
-      backURL: string;
-      setting: false;
-    }
-  | {
-      backURL: string;
-      settingURL: string;
-      setting: true;
-    };
+const BackButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+`;
 
 const TopNavBar = (prop: Props) => {
   const { setting, backURL } = prop;
 
+  const handleBackButtonClick = () => {
+    if (prop.backConfirmCallback) {
+      prop.backConfirmCallback();
+      return;
+    }
+    Router.push(backURL);
+  };
+
   return (
     <NavBox>
-      <Link href={backURL}>
-        <a>
-          <ArrowLeft width="24px" />
-        </a>
-      </Link>
+      <BackButton type="button" onClick={handleBackButtonClick}>
+        <ArrowLeft width="24px" />
+      </BackButton>
       {setting && (
         <Link href={prop.settingURL}>
           <a>
