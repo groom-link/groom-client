@@ -26,6 +26,19 @@ type TwoButtonProps = {
 
 type Props = OneButtonProps | TwoButtonProps;
 
+const FullPageModal = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(52, 58, 63, 0.6);
+  z-index: 100;
+`;
+
 const Container = styled.div`
   width: 340px;
   display: flex;
@@ -75,31 +88,33 @@ const Dialog = (props: Props) => {
     onPurpleButtonClick
   } = props;
   return (
-    <Container>
-      <Title>{title}</Title>
-      {isIllustrationExists && <MockIllustration />}
-      <Discription>{discription}</Discription>
-      <ButtonBox>
-        {buttonType === 'two' && (
-          <GrayButton
+    <FullPageModal>
+      <Container>
+        <Title>{title}</Title>
+        {isIllustrationExists && <MockIllustration />}
+        <Discription>{discription}</Discription>
+        <ButtonBox>
+          {buttonType === 'two' && (
+            <GrayButton
+              size="medium"
+              disabled={props.isGrayButtonDisabled}
+              color="gray"
+              onClick={props.onGrayButtonClick}
+            >
+              {props.grayButtonText}
+            </GrayButton>
+          )}
+          <Button
             size="medium"
-            disabled={props.isGrayButtonDisabled}
-            color="gray"
-            onClick={props.onGrayButtonClick}
+            disabled={isPurpleButtonDisabled}
+            color="purple"
+            onClick={onPurpleButtonClick}
           >
-            {props.grayButtonText}
-          </GrayButton>
-        )}
-        <Button
-          size="medium"
-          disabled={isPurpleButtonDisabled}
-          color="purple"
-          onClick={onPurpleButtonClick}
-        >
-          {purpleButtonText}
-        </Button>
-      </ButtonBox>
-    </Container>
+            {purpleButtonText}
+          </Button>
+        </ButtonBox>
+      </Container>
+    </FullPageModal>
   );
 };
 
