@@ -15,6 +15,7 @@ type Props = {
 
 const BasicButton = styled.button<Pick<Props, 'size' | 'width'>>`
   ${semiBold16}
+  display: block;
   width: ${({ width }) => width};
   padding: 0;
   border-radius: 12px;

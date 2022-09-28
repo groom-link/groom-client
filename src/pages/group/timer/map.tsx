@@ -1,16 +1,21 @@
 import { useEffect, useMemo, useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
-import { GPSButton, TimerPopup, TopNavBar } from '../../components/molecules';
-import { useCoords, usekakaoMaps } from '../../hooks';
-import colors from '../../styles/colors';
+import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
+import {
+  GPSButton,
+  TimerPopup,
+  TopNavBar
+} from '../../../components/molecules';
+import { useCoords, usekakaoMaps } from '../../../hooks';
+import colors from '../../../styles/colors';
 import {
   checkArrival,
   moveCenterOfMap,
   renderDestinationMarker,
   renderProfileMarker
-} from '../../utils/kakaoMapsTools';
+} from '../../../utils/kakaoMapsTools';
 
 const ARRIVAL_ARIA_CIRCLE_RADIUS = 30 as const;
 
@@ -73,7 +78,14 @@ const TimerMap = () => {
     });
   }, [coords, destinationCoords]);
 
-  const handleClearTimerButtonClick = () => console.log('clicked');
+  const handleClearTimerButtonClick = () => {
+    const timer = 0; // TODO: 실제 시간 연동하기.
+    if (timer === 0) {
+      Router.push('./fail');
+      return;
+    }
+    Router.push('./success');
+  };
 
   const handleGPSButtonClick = () => {
     moveCenterOfMap({ map, coords });
