@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
@@ -89,7 +90,7 @@ const ProfileImageContainer = styled.div`
 `;
 
 const ProfileImage = styled(Avatar)`
-  margin: 0 8px 8px 0;
+  margin-right: 8px;
 `;
 
 const MoreProfile = styled.span`
@@ -110,24 +111,38 @@ const MeetingCard = ({
   date,
   participants
 }: MeetingCardProps) => {
-  const getParticipants = (participants: string[]) => {
-    if (participants.length > 6) {
-      return participants.slice(0, 5);
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [numberOfOverflow, setNumberOfOverflow] = useState(0);
+  const [participantsToShow, setParticipantsToShow] = useState<string[]>([]);
+
+  useEffect(() => {
+    const numberOfParticipants = participants.length;
+    const profileImageWidth = 44 + 8; // 44px: width of profile image, 8px: margin-right
+    const cardWidth = cardRef.current?.clientWidth ?? 0;
+    const cardPadding = 24; // 24px: padding of card
+    const numbeofCanbeShown = Math.floor(
+      (cardWidth - cardPadding) / profileImageWidth
+    );
+    if (numberOfParticipants > numbeofCanbeShown) {
+      const numberOfOverflow = numberOfParticipants - numbeofCanbeShown;
+      setParticipantsToShow(participants.slice(0, numbeofCanbeShown - 1));
+      setNumberOfOverflow(numberOfOverflow);
+      return;
     }
-    return participants;
-  };
+    setParticipantsToShow(participants);
+  }, [participants, numberOfOverflow, cardRef]);
 
   return (
     <Card>
       <MeetingTitle>{title}</MeetingTitle>
       <MeetingLocation>{location}</MeetingLocation>
       <MeetingDate>{date}</MeetingDate>
-      <ProfileImageContainer>
-        {getParticipants(participants).map((participant) => (
+      <ProfileImageContainer ref={cardRef}>
+        {participantsToShow.map((participant) => (
           <ProfileImage key={participant} src={participant} />
         ))}
-        {participants.length > 6 && (
-          <MoreProfile>+{participants.length - 5}</MoreProfile>
+        {numberOfOverflow !== 0 && (
+          <MoreProfile>+{numberOfOverflow}</MoreProfile>
         )}
       </ProfileImageContainer>
     </Card>
