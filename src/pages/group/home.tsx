@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
 import { Avatar, Tab } from '../../components/atoms';
 import { TopNavBar } from '../../components/molecules';
+import { useAdjustNumberOfProfiles } from '../../hooks';
 import colors from '../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../styles/typography';
 
@@ -112,25 +113,10 @@ const MeetingCard = ({
   participants
 }: MeetingCardProps) => {
   const cardRef = useRef<HTMLDivElement>(null);
-  const [numberOfOverflow, setNumberOfOverflow] = useState(0);
-  const [participantsToShow, setParticipantsToShow] = useState<string[]>([]);
-
-  useEffect(() => {
-    const numberOfParticipants = participants.length;
-    const profileImageWidth = 44 + 8; // 44px: width of profile image, 8px: margin-right
-    const cardWidth = cardRef.current?.clientWidth ?? 0;
-    const cardPadding = 24; // 24px: padding of card
-    const numbeofCanbeShown = Math.floor(
-      (cardWidth - cardPadding) / profileImageWidth
-    );
-    if (numberOfParticipants > numbeofCanbeShown) {
-      const numberOfOverflow = numberOfParticipants - numbeofCanbeShown;
-      setParticipantsToShow(participants.slice(0, numbeofCanbeShown - 1));
-      setNumberOfOverflow(numberOfOverflow);
-      return;
-    }
-    setParticipantsToShow(participants);
-  }, [participants, numberOfOverflow, cardRef]);
+  const { numberOfOverflow, participantsToShow } = useAdjustNumberOfProfiles({
+    participants,
+    cardWidth: cardRef.current?.clientWidth ?? 0
+  });
 
   return (
     <Card>
