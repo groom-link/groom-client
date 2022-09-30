@@ -1,5 +1,7 @@
 import { ChangeEventHandler } from 'react';
 
+import { Tab } from '../../atoms';
+
 type Props = {
   className?: string;
   leftTabLabel: string;
@@ -17,7 +19,9 @@ const SegmentTab = ({
 }: Props) => {
   return (
     <div className={className}>
-      <label htmlFor="tab1">{leftTabLabel}</label>
+      <Tab isSelected={value === 'left'} htmlFor="tab1">
+        {leftTabLabel}
+      </Tab>
       <input
         type="radio"
         name="segment-tab"
@@ -26,7 +30,9 @@ const SegmentTab = ({
         value="left"
         onChange={onChange}
       />
-      <label htmlFor="tab2">{rightTabLabel}</label>
+      <Tab isSelected={value === 'right'} htmlFor="tab2">
+        {rightTabLabel}
+      </Tab>
       <input
         type="radio"
         name="segment-tab"
