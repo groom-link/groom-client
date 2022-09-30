@@ -13,6 +13,7 @@ type Props = {
 
 const Label = styled.label<Pick<Props, 'isSelected'>>`
   ${semiBold16}
+  text-align: center;
   color: ${({ isSelected }) =>
     isSelected ? colors.grayScale.gray05 : colors.grayScale.gray03};
 `;

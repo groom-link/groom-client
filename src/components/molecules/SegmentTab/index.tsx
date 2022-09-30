@@ -1,5 +1,7 @@
 import { ChangeEventHandler } from 'react';
+import styled from '@emotion/styled';
 
+import colors from '../../../styles/colors';
 import { Tab } from '../../atoms';
 
 type Props = {
@@ -10,6 +12,33 @@ type Props = {
   onChange: ChangeEventHandler<HTMLInputElement>;
 };
 
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px;
+  border-radius: 8px;
+  background-color: ${colors.grayScale.gray01};
+`;
+
+const TabContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc((100% - 8px) / 2);
+  padding: 6px 0;
+  border-radius: 8px;
+  background-color: ${colors.grayScale.white};
+`;
+
+const TabStyled = styled(Tab)`
+  flex: 1;
+`;
+
+const Input = styled.input`
+  display: none;
+`;
+
 const SegmentTab = ({
   className,
   leftTabLabel,
@@ -18,11 +47,13 @@ const SegmentTab = ({
   onChange
 }: Props) => {
   return (
-    <div className={className}>
-      <Tab isSelected={value === 'left'} htmlFor="tab1">
-        {leftTabLabel}
-      </Tab>
-      <input
+    <Container className={className}>
+      <TabContainer>
+        <TabStyled isSelected={value === 'left'} htmlFor="tab1">
+          {leftTabLabel}
+        </TabStyled>
+      </TabContainer>
+      <Input
         type="radio"
         name="segment-tab"
         id="tab1"
@@ -30,10 +61,12 @@ const SegmentTab = ({
         value="left"
         onChange={onChange}
       />
-      <Tab isSelected={value === 'right'} htmlFor="tab2">
-        {rightTabLabel}
-      </Tab>
-      <input
+      <TabContainer>
+        <TabStyled isSelected={value === 'right'} htmlFor="tab2">
+          {rightTabLabel}
+        </TabStyled>
+      </TabContainer>
+      <Input
         type="radio"
         name="segment-tab"
         id="tab2"
@@ -41,7 +74,7 @@ const SegmentTab = ({
         value="right"
         onChange={onChange}
       />
-    </div>
+    </Container>
   );
 };
 
