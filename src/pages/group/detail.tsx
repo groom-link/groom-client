@@ -97,9 +97,9 @@ const Detail = () => (
     <WhiteBox>
       <SubTitle>팀원(5)</SubTitle>
       <ProfileBox>
-        <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
-        <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
-        <ProfileImage src={DEMO_PROFILE_IMAGE_URL} />
+        <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
+        <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
+        <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
       </ProfileBox>
     </WhiteBox>
     <WhiteBox>

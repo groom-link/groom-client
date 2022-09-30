@@ -8,8 +8,14 @@ export default {
   component: Avatar
 } as ComponentMeta<typeof Avatar>;
 
-export const DefaultImage: ComponentStory<typeof Avatar> = () => <Avatar />;
+export const DefaultImage: ComponentStory<typeof Avatar> = () => (
+  <Avatar proptype="image" />
+);
 
-export const UserImage: ComponentStory<typeof Avatar> = ({
-  src = 'images/profileImage.jpg'
-}) => <Avatar {...{ src }} />;
+export const UserImage: ComponentStory<typeof Avatar> = () => (
+  <Avatar proptype="image" src="images/profileImage.jpg" />
+);
+
+export const MoreProfile: ComponentStory<typeof Avatar> = () => (
+  <Avatar proptype="more-profile" count={3} />
+);
