@@ -15,13 +15,11 @@ const MEETINGS = [
     location: '선릉역 SWM 센터 7층 회의실',
     date: '2022.09.01 (목)',
     participants: [
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL
+      { id: 1, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 2, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 3, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 4, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 5, URL: DEMO_PROFILE_IMAGE_URL }
     ]
   },
   {
@@ -30,10 +28,16 @@ const MEETINGS = [
     location: '선릉역 SWM 센터 7층 회의실',
     date: '2022.09.01 (목)',
     participants: [
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL
+      { id: 6, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 7, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 8, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 9, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 10, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 11, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 12, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 13, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 14, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 15, URL: DEMO_PROFILE_IMAGE_URL }
     ]
   },
   {
@@ -42,28 +46,23 @@ const MEETINGS = [
     location: '선릉역 SWM 센터 7층 회의실',
     date: '2022.09.01 (목)',
     participants: [
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL,
-      DEMO_PROFILE_IMAGE_URL
+      { id: 16, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 17, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 18, URL: DEMO_PROFILE_IMAGE_URL }
     ]
   }
 ];
+
+export type Participant = {
+  id: number;
+  URL: string;
+};
 
 type MeetingCardProps = {
   title: string;
   location: string;
   date: string;
-  participants: string[];
+  participants: Participant[];
 };
 
 const MeetingTitle = styled.h3`
@@ -94,18 +93,6 @@ const ProfileImage = styled(Avatar)`
   margin-right: 8px;
 `;
 
-const MoreProfile = styled.span`
-  ${semiBold16}
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  color: ${colors.mainColor.navy};
-  background-color: ${colors.grayScale.gray01};
-`;
-
 const MeetingCard = ({
   title,
   location,
@@ -124,11 +111,11 @@ const MeetingCard = ({
       <MeetingLocation>{location}</MeetingLocation>
       <MeetingDate>{date}</MeetingDate>
       <ProfileImageContainer ref={cardRef}>
-        {participantsToShow.map((participant) => (
-          <ProfileImage key={participant} src={participant} />
+        {participantsToShow.map(({ id, URL }) => (
+          <ProfileImage proptype="image" key={id} src={URL} />
         ))}
         {numberOfOverflow !== 0 && (
-          <MoreProfile>+{numberOfOverflow}</MoreProfile>
+          <ProfileImage proptype="more-profile" count={numberOfOverflow} />
         )}
       </ProfileImageContainer>
     </Card>
