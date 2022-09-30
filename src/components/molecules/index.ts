@@ -1,6 +1,7 @@
 export { default as Dialog } from './Dialog';
 export { default as GPSButton } from './GPSButton';
 export { default as RadioButton } from './RadioButton';
+export { default as SegmentTab } from './SegmentTab';
 export { default as Stepper } from './Stepper';
 export { default as Tab } from './Tab';
 export { default as TagInput } from './TagInput';
