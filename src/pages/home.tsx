@@ -177,6 +177,8 @@ const Home = () => {
 
   useEffect(() => {
     setIsGroup(Router.asPath.includes('group'));
+    console.log(process.env.NEXT_PUBLIC_TEST_ENV);
+    console.log(process.env.NEXT_PUBLIC_TEST_ENV2);
   }, []);
 
   const handleSearchChange: ChangeEventHandler<HTMLInputElement> = ({
