@@ -166,12 +166,18 @@ const Card = styled.div`
 const Home = () => {
   return (
     <Background>
-      <TopNavBar backURL="/home" setting={true} settingURL="" />
+      <TopNavBar backURL="/home" setting={true} settingURL="./setting" />
       <GroupName>그룹 이름</GroupName>
       <NavigationBox>
-        <Tab isSelected={true}>홈</Tab>
-        <Tab isSelected={false}>회의 시간</Tab>
-        <Tab isSelected={false}>초대하기</Tab>
+        <Tab isSelected={true} htmlFor="">
+          홈
+        </Tab>
+        <Tab isSelected={false} htmlFor="">
+          회의 시간
+        </Tab>
+        <Tab isSelected={false} htmlFor="">
+          초대하기
+        </Tab>
       </NavigationBox>
       <CardBox>
         <SubTitle>가까운 회의 일정</SubTitle>

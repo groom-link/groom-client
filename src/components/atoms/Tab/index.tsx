@@ -7,21 +7,19 @@ import { semiBold16 } from '../../../styles/typography';
 type Props = {
   className?: string;
   isSelected: boolean;
+  htmlFor: string;
   children: ReactNode;
 };
 
-const TabButton = styled.button<Pick<Props, 'isSelected'>>`
+const Label = styled.label<Pick<Props, 'isSelected'>>`
   ${semiBold16}
+  text-align: center;
   color: ${({ isSelected }) =>
     isSelected ? colors.grayScale.gray05 : colors.grayScale.gray03};
 `;
 
-const Tab = ({ className, isSelected, children }: Props) => {
-  return (
-    <TabButton type="button" {...{ className, isSelected }}>
-      {children}
-    </TabButton>
-  );
+const Tab = ({ className, isSelected, htmlFor, children }: Props) => {
+  return <Label {...{ className, isSelected, htmlFor }}>{children}</Label>;
 };
 
 export default Tab;

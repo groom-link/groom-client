@@ -11,4 +11,8 @@ export default {
 export const Primary: ComponentStory<typeof Tab> = ({
   isSelected,
   children = '탭'
-}) => <Tab isSelected={isSelected}>{children}</Tab>;
+}) => (
+  <Tab isSelected={isSelected} htmlFor="">
+    {children}
+  </Tab>
+);
