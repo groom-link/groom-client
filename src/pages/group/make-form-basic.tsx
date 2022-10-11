@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEventHandler, RefObject, useRef, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -62,7 +62,7 @@ const ImageUploadInput = ({ onChange }: ImageUploadInputProps) => {
 };
 
 type ThumbnailImageContainer = {
-  imageRef: RefObject<HTMLImageElement>;
+  src: string;
   onClick: () => void;
 };
 
@@ -83,13 +83,10 @@ const DeleteImageButton = styled.button`
   right: 13px;
 `;
 
-const ThumbnailImageContainer = ({
-  imageRef,
-  onClick
-}: ThumbnailImageContainer) => {
+const ThumbnailImageContainer = ({ src, onClick }: ThumbnailImageContainer) => {
   return (
     <ImageContainer>
-      <ThumbnailImage alt="모임 프로필" ref={imageRef} />
+      <ThumbnailImage alt="모임 프로필" src={src} />
       <DeleteImageButton onClick={onClick}>
         <FilledCancel />
       </DeleteImageButton>
@@ -124,10 +121,8 @@ const MakeFormBasic = () => {
   const [description, setDescription] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [tagList, setTagList] = useState<string[]>([]);
-  const [isImageAttached, setIsImageAttached] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
   const [isModalDisplay, setIsModalDisplay] = useState(false);
-
-  const imageRef = useRef<HTMLImageElement>(null);
 
   const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -169,24 +164,17 @@ const MakeFormBasic = () => {
     const file = files[0];
     const fileReader = new FileReader();
     fileReader.addEventListener('load', ({ target }) => {
-      if (!target || !imageRef.current) return;
+      if (!target) return;
       const { result } = target;
       if (typeof result !== 'string') return;
-      imageRef.current.src = result;
+      setProfileImage(result);
     });
     fileReader.readAsDataURL(file);
-    setIsImageAttached(true);
   };
 
-  const handleClickDeleteImage = () => {
-    if (!imageRef.current) return;
-    imageRef.current.src = '';
-    setIsImageAttached(false);
-  };
+  const handleClickDeleteImage = () => setProfileImage('');
 
-  const backConfirmCallback = () => {
-    setIsModalDisplay(true);
-  };
+  const backConfirmCallback = () => setIsModalDisplay(true);
 
   return (
     <>
@@ -213,9 +201,9 @@ const MakeFormBasic = () => {
         <WhiteBox hasMargin={false}>
           <Title>새로운 모임을 만들어보세요.</Title>
         </WhiteBox>
-        {isImageAttached ? (
+        {profileImage ? (
           <ThumbnailImageContainer
-            imageRef={imageRef}
+            src={profileImage}
             onClick={handleClickDeleteImage}
           />
         ) : (
