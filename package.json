@@ -19,7 +19,8 @@
     "next": "12.2.3",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-responsive-carousel": "^3.2.23"
+    "react-responsive-carousel": "^3.2.23",
+    "zustand": "^4.1.2"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
