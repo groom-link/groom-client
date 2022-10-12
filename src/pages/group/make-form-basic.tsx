@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEventHandler, RefObject, useRef, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { FilledCancel, Upload } from '../../components/atoms/icons';
 import {
   Dialog,
+  ImageUploadInput,
   Stepper,
   TagInput,
   TextArea,
@@ -15,87 +15,7 @@ import {
 import ButtonFooter from '../../components/molecules/ButtonFooter';
 import colors from '../../styles/colors';
 import { semiBold20 } from '../../styles/typography';
-
-type ImageUploadInputProps = {
-  onChange: ChangeEventHandler<HTMLInputElement>;
-};
-
-const UploadIcon = styled(Upload)`
-  height: 44px;
-`;
-
-const UploadDiscription = styled.span`
-  margin-top: 4px;
-  color: ${colors.grayScale.gray03};
-`;
-
-const ProfileImageInputLabel = styled.label`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 250px;
-  background-color: ${colors.grayScale.gray01};
-  cursor: pointer;
-`;
-
-const ProfileImageInput = styled.input`
-  display: none;
-`;
-
-const ImageUploadInput = ({ onChange }: ImageUploadInputProps) => {
-  return (
-    <>
-      <ProfileImageInputLabel htmlFor="image-input">
-        <UploadIcon width="44px" color={colors.grayScale.gray03} />
-        <UploadDiscription>모임 대표 사진을 업로드해보세요.</UploadDiscription>
-      </ProfileImageInputLabel>
-      <ProfileImageInput
-        type="file"
-        id="image-input"
-        value=""
-        accept="image/*"
-        onChange={onChange}
-      />
-    </>
-  );
-};
-
-type ThumbnailImageContainer = {
-  imageRef: RefObject<HTMLImageElement>;
-  onClick: () => void;
-};
-
-const ImageContainer = styled.div`
-  position: relative;
-  height: 250px;
-`;
-
-const ThumbnailImage = styled.img`
-  width: 100%;
-  height: 250px;
-  object-fit: cover;
-`;
-
-const DeleteImageButton = styled.button`
-  position: absolute;
-  top: 15px;
-  right: 13px;
-`;
-
-const ThumbnailImageContainer = ({
-  imageRef,
-  onClick
-}: ThumbnailImageContainer) => {
-  return (
-    <ImageContainer>
-      <ThumbnailImage alt="모임 프로필" ref={imageRef} />
-      <DeleteImageButton onClick={onClick}>
-        <FilledCancel />
-      </DeleteImageButton>
-    </ImageContainer>
-  );
-};
+import readFileAsURL from '../../utils/readFileAsURL';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -124,10 +44,18 @@ const MakeFormBasic = () => {
   const [description, setDescription] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [tagList, setTagList] = useState<string[]>([]);
-  const [isImageAttached, setIsImageAttached] = useState(false);
   const [isModalDisplay, setIsModalDisplay] = useState(false);
+  const [profileImage, setProfileImage] = useState('');
 
-  const imageRef = useRef<HTMLImageElement>(null);
+  const handleChangeImageFile: ChangeEventHandler<HTMLInputElement> = ({
+    target: { files }
+  }) => {
+    if (!files) return;
+    const file = files[0];
+    readFileAsURL(file, (url) => setProfileImage(url));
+  };
+
+  const handleClickDeleteImage = () => setProfileImage('');
 
   const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -162,31 +90,7 @@ const MakeFormBasic = () => {
     });
   };
 
-  const handleChangeImageFile: ChangeEventHandler<HTMLInputElement> = ({
-    target: { files }
-  }) => {
-    if (!files) return;
-    const file = files[0];
-    const fileReader = new FileReader();
-    fileReader.addEventListener('load', ({ target }) => {
-      if (!target || !imageRef.current) return;
-      const { result } = target;
-      if (typeof result !== 'string') return;
-      imageRef.current.src = result;
-    });
-    fileReader.readAsDataURL(file);
-    setIsImageAttached(true);
-  };
-
-  const handleClickDeleteImage = () => {
-    if (!imageRef.current) return;
-    imageRef.current.src = '';
-    setIsImageAttached(false);
-  };
-
-  const backConfirmCallback = () => {
-    setIsModalDisplay(true);
-  };
+  const backConfirmCallback = () => setIsModalDisplay(true);
 
   return (
     <>
@@ -213,14 +117,11 @@ const MakeFormBasic = () => {
         <WhiteBox hasMargin={false}>
           <Title>새로운 모임을 만들어보세요.</Title>
         </WhiteBox>
-        {isImageAttached ? (
-          <ThumbnailImageContainer
-            imageRef={imageRef}
-            onClick={handleClickDeleteImage}
-          />
-        ) : (
-          <ImageUploadInput onChange={handleChangeImageFile} />
-        )}
+        <ImageUploadInput
+          profileImage={profileImage}
+          onChangeImageFile={handleChangeImageFile}
+          onClickDeleteImage={handleClickDeleteImage}
+        />
         <WhiteBox hasMargin={false}>
           <GroupNameInput
             label="모임 이름"
