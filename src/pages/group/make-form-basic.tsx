@@ -13,6 +13,7 @@ import {
   TopNavBar
 } from '../../components/molecules';
 import ButtonFooter from '../../components/molecules/ButtonFooter';
+import useNewGroupInformationStore from '../../store/newGroupInformation';
 import colors from '../../styles/colors';
 import { semiBold20 } from '../../styles/typography';
 import readFileAsURL from '../../utils/readFileAsURL';
@@ -46,6 +47,17 @@ const MakeFormBasic = () => {
   const [tagList, setTagList] = useState<string[]>([]);
   const [isModalDisplay, setIsModalDisplay] = useState(false);
   const [profileImage, setProfileImage] = useState('');
+  const setProfileImageURLStore = useNewGroupInformationStore(
+    (state) => state.setProfileImageURL
+  );
+  const setNameStore = useNewGroupInformationStore((state) => state.setName);
+  const setDescriptionStore = useNewGroupInformationStore(
+    (state) => state.setDescription
+  );
+  const setTagsStore = useNewGroupInformationStore((state) => state.setTags);
+  const setNumberOfMembersStore = useNewGroupInformationStore(
+    (state) => state.setNumberOfMembers
+  );
 
   const handleChangeImageFile: ChangeEventHandler<HTMLInputElement> = ({
     target: { files }
@@ -77,6 +89,12 @@ const MakeFormBasic = () => {
 
   const handleButtonClick = () => {
     if (!isValueExist()) return;
+
+    setProfileImageURLStore(profileImage);
+    setNameStore(groupName);
+    setDescriptionStore(description);
+    setTagsStore(tagList);
+    setNumberOfMembersStore(numberOfPeople);
     Router.push('./make-form-additional');
   };
 

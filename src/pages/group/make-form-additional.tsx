@@ -7,6 +7,7 @@ import { Thumbnail } from '../../components/atoms';
 import { Warning } from '../../components/atoms/icons';
 import { RadioButton, Stepper, TopNavBar } from '../../components/molecules';
 import ButtonFooter from '../../components/molecules/ButtonFooter';
+import useNewGroupInformationStore from '../../store/newGroupInformation';
 import colors from '../../styles/colors';
 import {
   bold16,
@@ -109,9 +110,20 @@ const WarningWithMargin = styled(Warning)`
 `;
 
 const MakeFormAdditional = () => {
-  const [selectedGifticon, setSelectedGifticon] = useState<Gifticon>();
+  const [selectedGifticon, setSelectedGifticon] = useState<Gifticon>(
+    GIFTICON_MOCK[0]
+  );
   const [penaltyCount, setPenaltyCount] = useState(0);
   const [isPublic, SetIsPublic] = useState<1 | 2>(1);
+  const profileImageURL = useNewGroupInformationStore(
+    (state) => state.profileImageURL
+  );
+  const name = useNewGroupInformationStore((state) => state.name);
+  const description = useNewGroupInformationStore((state) => state.description);
+  const tags = useNewGroupInformationStore((state) => state.tags);
+  const numberOfMembers = useNewGroupInformationStore(
+    (state) => state.numberOfMembers
+  );
 
   const handleGifticonSelect = (gifticon: Gifticon) =>
     setSelectedGifticon(gifticon);
@@ -127,6 +139,20 @@ const MakeFormAdditional = () => {
   const handleIsPublicChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
   }) => SetIsPublic(parseInt(value) as 1 | 2);
+
+  const handleNextButtonClick = () => {
+    console.log({
+      profileImageURL,
+      name,
+      description,
+      tags,
+      numberOfMembers,
+      selectedGifticonID: selectedGifticon.id,
+      penaltyCount
+    });
+
+    Router.push('./make-success');
+  };
 
   return (
     <Background>
@@ -211,7 +237,7 @@ const MakeFormAdditional = () => {
       </WhiteBox>
       <ButtonFooter
         disabled={!(selectedGifticon && penaltyCount)}
-        onClick={() => Router.push('./make-success')}
+        onClick={handleNextButtonClick}
       >
         모임비 결제하기
       </ButtonFooter>
