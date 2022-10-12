@@ -13,7 +13,7 @@ const nextConfig = {
     return [
       {
         source: '/api/:slug*',
-        destination: `${process.env.BASE_REQUEST_URL}/:slug*`
+        destination: `https://${process.env.BASE_REQUEST_URL}/:slug*`
       }
     ];
   }
