@@ -14,8 +14,6 @@ type GroupInformationState = {
   setDescription: (description: string) => void;
   setTags: (tags: string[]) => void;
   setNumberOfMembers: (numberOfMembers: number) => void;
-  setGifticonID: (gifticonID: string) => void;
-  setMaximumNumberOfPenalty: (maximumNumberOfPenalty: number) => void;
 };
 
 const useNewGroupInformationStore = create<GroupInformationState>((set) => ({
@@ -30,10 +28,7 @@ const useNewGroupInformationStore = create<GroupInformationState>((set) => ({
   setName: (name: string) => set({ name }),
   setDescription: (description: string) => set({ description }),
   setTags: (tags: string[]) => set({ tags }),
-  setNumberOfMembers: (numberOfMembers: number) => set({ numberOfMembers }),
-  setGifticonID: (gifticonID: string) => set({ gifticonID }),
-  setMaximumNumberOfPenalty: (maximumNumberOfPenalty: number) =>
-    set({ maximumNumberOfPenalty })
+  setNumberOfMembers: (numberOfMembers: number) => set({ numberOfMembers })
 }));
 
 mountStoreDevtool('NewGroupInformation', useNewGroupInformationStore);

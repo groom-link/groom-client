@@ -115,11 +115,14 @@ const MakeFormAdditional = () => {
   );
   const [penaltyCount, setPenaltyCount] = useState(0);
   const [isPublic, SetIsPublic] = useState<1 | 2>(1);
-  const setGifticonIDStore = useNewGroupInformationStore(
-    (state) => state.setGifticonID
+  const profileImageURL = useNewGroupInformationStore(
+    (state) => state.profileImageURL
   );
-  const setMaximumNumberOfPenaltyStore = useNewGroupInformationStore(
-    (state) => state.setMaximumNumberOfPenalty
+  const name = useNewGroupInformationStore((state) => state.name);
+  const description = useNewGroupInformationStore((state) => state.description);
+  const tags = useNewGroupInformationStore((state) => state.tags);
+  const numberOfMembers = useNewGroupInformationStore(
+    (state) => state.numberOfMembers
   );
 
   const handleGifticonSelect = (gifticon: Gifticon) =>
@@ -138,8 +141,16 @@ const MakeFormAdditional = () => {
   }) => SetIsPublic(parseInt(value) as 1 | 2);
 
   const handleNextButtonClick = () => {
-    setGifticonIDStore(selectedGifticon.id);
-    setMaximumNumberOfPenaltyStore(penaltyCount);
+    console.log({
+      profileImageURL,
+      name,
+      description,
+      tags,
+      numberOfMembers,
+      selectedGifticonID: selectedGifticon.id,
+      penaltyCount
+    });
+
     Router.push('./make-success');
   };
 
