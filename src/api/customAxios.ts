@@ -38,7 +38,7 @@ customAxios.interceptors.response.use(
         } = data;
         setCookie(ACCESS_TOKEN_KEY, newAccessToken);
         setCookie(REFRESH_TOKEN_KEY, newRefreshToken);
-        originalRequest.headers.authentication = `Bearer ${newAccessToken}`;
+        originalRequest.headers['x-access-token'] = newAccessToken;
         return axios(originalRequest);
       }
     }

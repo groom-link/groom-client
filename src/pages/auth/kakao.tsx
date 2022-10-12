@@ -1,44 +1,20 @@
-import { useEffect } from 'react';
-import { setCookie } from 'cookies-next';
+import { useLayoutEffect } from 'react';
+import Router from 'next/router';
 
-import customAxios from '../../api/authenticationAxios';
-import {
-  ACCESS_TOKEN_KEY,
-  REFRESH_TOKEN_KEY
-} from '../../constants/authentication';
-
-const getToken = async (code: string) => {
-  const response = await customAxios.get(
-    //FIXME: response type 정의
-    '/api/auth/kakao/login',
-    {
-      params: { code },
-      withCredentials: true
-    }
-  );
-  const { accessToken, refreshToken } = response.data.data;
-  return { accessToken, refreshToken };
-};
+import loginWithKakao from '../../api/loginWithKakao';
 
 const Kakao = () => {
-  useEffect(() => {
-    const kakaoLogin = async () => {
-      const fullURL = window.location.href;
-      const kakaoConfirmationCode = fullURL.split('?code=')[1];
-      try {
-        const { accessToken, refreshToken } = await getToken(
-          kakaoConfirmationCode
-        );
-        console.log(accessToken, refreshToken);
-
-        if (!accessToken || !refreshToken) throw Error('로그인 오류!');
-        setCookie(ACCESS_TOKEN_KEY, accessToken); //FIXME: local storage, 쿠키 사용 가능한 webview
-        setCookie(REFRESH_TOKEN_KEY, refreshToken);
-      } catch (error) {
-        console.log(error);
+  useLayoutEffect(() => {
+    const login = async () => {
+      const status = await loginWithKakao();
+      if (status === 'fail') {
+        alert('로그인에 실패했습니다. 다시 시도해주세요.');
+        Router.push('/');
+        return;
       }
+      Router.push('/home');
     };
-    kakaoLogin();
+    login();
   }, []);
 
   return <div>로그인중</div>;
