@@ -8,7 +8,7 @@ import {
   TimerPopup,
   TopNavBar
 } from '../../../components/molecules';
-import { useCoords, usekakaoMaps } from '../../../hooks';
+import { useCoords, useKakaoMaps } from '../../../hooks';
 import colors from '../../../styles/colors';
 import {
   checkArrival,
@@ -51,7 +51,7 @@ const TimerMap = () => {
   );
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
   const [isTimerButtonDisabled, setIsTimerButtonDisabled] = useState(true);
-  const { mapRef, map } = usekakaoMaps({
+  const { mapRef, map } = useKakaoMaps({
     coords,
     onMapDragEvent: () => setIsGPSButtonActive(false)
   });
