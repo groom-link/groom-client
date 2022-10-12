@@ -1,10 +1,10 @@
-import { useLayoutEffect } from 'react';
+import { useEffect } from 'react';
 import Router from 'next/router';
 
 import loginWithKakao from '../../api/loginWithKakao';
 
 const Kakao = () => {
-  useLayoutEffect(() => {
+  useEffect(() => {
     const login = async () => {
       const status = await loginWithKakao();
       if (status === 'fail') {
