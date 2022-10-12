@@ -1,3 +1,4 @@
+import { mountStoreDevtool } from 'simple-zustand-devtools';
 import create from 'zustand';
 
 type GroupInformationState = {
@@ -34,5 +35,7 @@ const useNewGroupInformationStore = create<GroupInformationState>((set) => ({
   setMaximumNumberOfPenalty: (maximumNumberOfPenalty: number) =>
     set({ maximumNumberOfPenalty })
 }));
+
+mountStoreDevtool('NewGroupInformation', useNewGroupInformationStore);
 
 export default useNewGroupInformationStore;
