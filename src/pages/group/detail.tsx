@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -6,6 +5,7 @@ import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
 import { Avatar, Tag } from '../../components/atoms';
 import { TopNavBar } from '../../components/molecules';
 import ButtonFooter from '../../components/molecules/ButtonFooter';
+import Image from '../../components/utils/Image';
 import colors from '../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
 

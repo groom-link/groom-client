@@ -1,4 +1,3 @@
-import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -12,6 +11,7 @@ import {
   semiBold16,
   semiBold20
 } from '../../../styles/typography';
+import Image from '../../utils/Image';
 
 type ThumbmailSize = 'small' | 'medium' | 'large';
 
