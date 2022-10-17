@@ -7,7 +7,8 @@ const nextConfig = {
       'img.freepik.com',
       'media.istockphoto.com',
       'd1cua0vf0mkpiy.cloudfront.net'
-    ]
+    ],
+    loader: 'custom'
   },
   async rewrites() {
     return [

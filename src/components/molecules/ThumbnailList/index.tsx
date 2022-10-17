@@ -1,10 +1,10 @@
-import Image from 'next/image';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { textEllipsis } from '../../../styles/mixins';
 import { medium10, medium12, medium18 } from '../../../styles/typography';
 import { Tag } from '../../atoms';
+import Image from '../../utils/Image';
 
 type Meeting = {
   title: string;
