@@ -7,13 +7,14 @@ import {
 } from '../constants/authentication';
 
 const customAxios = axios.create({
-  timeout: 10000
+  timeout: 10000,
+  baseURL: process.env.NEXT_PUBLIC_BASE_REQUEST_URL
 });
 
 customAxios.interceptors.request.use((config) => {
   const accessToken = getCookie(ACCESS_TOKEN_KEY);
   if (!config.headers) return config;
-  if (config.url !== '/api/auth/kakao/login')
+  if (config.url !== 'auth/kakao/login')
     config.headers['x-access-token'] = accessToken ? accessToken : '';
   return config;
 });

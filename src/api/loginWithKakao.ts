@@ -19,7 +19,7 @@ const getServerToken = async (
   accessToken: string;
   refreshToken: string;
 }> => {
-  const response = await customAxios.get('/api/auth/kakao/login', {
+  const response = await customAxios.get('auth/kakao/login', {
     params: { code }
   });
   const { accessToken, refreshToken } = response.data.data;
