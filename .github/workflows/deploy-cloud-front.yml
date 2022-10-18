@@ -28,7 +28,7 @@ jobs:
           NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY=$NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
           NEXT_PUBLIC_KAKAO_REDIRECT_URL=$NEXT_PUBLIC_KAKAO_REDIRECT_URL
           BASE_REQUEST_URL=$BASE_REQUEST_URL
-          REWRITE_URL='http://rewrites.com'
+          REWRITE_URL=http://dummyurl.com
           yarn build
 
       - name: Deploy CloudFront
