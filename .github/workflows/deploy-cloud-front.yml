@@ -13,6 +13,9 @@ jobs:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
+      NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY: ${{ secrets.KAKAO_JAVASCRIPT_KEY }}
+      NEXT_PUBLIC_KAKAO_REDIRECT_URL: ${{ secrets.KAKAO_REDIRECT_URL_DEVELOPMENT }}
+      BASE_REQUEST_URL: ${{ secrets.BASE_REQUEST_URL_DEVELOPMENT }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -22,9 +25,9 @@ jobs:
 
       - name: Build and export next app
         run:
-          NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY=${{ secrets.KAKAO_JAVASCRIPT_KEY }} \
-          NEXT_PUBLIC_KAKAO_REDIRECT_URL=${{ secrets.KAKAO_REDIRECT_URL_DEVELOPMENT }} \
-          BASE_REQUEST_URL=${{ secrets.BASE_REQUEST_URL_DEVELOPMENT }} \
+          NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY=$NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY \
+          NEXT_PUBLIC_KAKAO_REDIRECT_URL=$NEXT_PUBLIC_KAKAO_REDIRECT_URL \
+          BASE_REQUEST_URL=$BASE_REQUEST_URL \
           yarn build
 
       - name: Deploy CloudFront
