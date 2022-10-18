@@ -16,6 +16,7 @@ jobs:
       NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY: ${{ secrets.KAKAO_JAVASCRIPT_KEY }}
       NEXT_PUBLIC_KAKAO_REDIRECT_URL: ${{ secrets.KAKAO_REDIRECT_URL_DEVELOPMENT }}
       BASE_REQUEST_URL: ${{ secrets.BASE_REQUEST_URL_DEVELOPMENT }}
+      REWRITE_URL: http://dummyurl.com
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -28,7 +29,7 @@ jobs:
           NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY=$NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
           NEXT_PUBLIC_KAKAO_REDIRECT_URL=$NEXT_PUBLIC_KAKAO_REDIRECT_URL
           BASE_REQUEST_URL=$BASE_REQUEST_URL
-          REWRITE_URL=http://dummyurl.com
+          REWRITE_URL=$REWRITE_URL
           yarn build
 
       - name: Deploy CloudFront
