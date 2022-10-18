@@ -21,7 +21,11 @@ jobs:
         run: yarn
 
       - name: Build and export next app
-        run: yarn run build
+        run:
+          NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY=${{ secrets.KAKAO_JAVASCRIPT_KEY }} \
+          NEXT_PUBLIC_KAKAO_REDIRECT_URL=${{ secrets.KAKAO_REDIRECT_URL_DEVELOPMENT }} \
+          BASE_REQUEST_URL=${{ secrets.BASE_REQUEST_URL_DEVELOPMENT }} \
+          yarn build
 
       - name: Deploy CloudFront
         uses: lbertenasco/s3-deploy@v1
