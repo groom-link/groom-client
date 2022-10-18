@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  chromatic-deployment:
+  cloudfront_deployment:
     runs-on: ubuntu-latest
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
