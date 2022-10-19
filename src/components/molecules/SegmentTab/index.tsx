@@ -21,14 +21,15 @@ const Container = styled.div`
   background-color: ${colors.grayScale.gray01};
 `;
 
-const TabContainer = styled.div`
+const TabContainer = styled.div<{ isSelected: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
   width: calc((100% - 8px) / 2);
   padding: 6px 0;
   border-radius: 8px;
-  background-color: ${colors.grayScale.white};
+  background-color: ${({ isSelected }) =>
+    isSelected ? colors.grayScale.white : 'transparent'};
 `;
 
 const TabStyled = styled(Tab)`
@@ -48,7 +49,7 @@ const SegmentTab = ({
 }: Props) => {
   return (
     <Container className={className}>
-      <TabContainer>
+      <TabContainer isSelected={value === 'left'}>
         <TabStyled isSelected={value === 'left'} htmlFor="tab1">
           {leftTabLabel}
         </TabStyled>
@@ -61,7 +62,7 @@ const SegmentTab = ({
         value="left"
         onChange={onChange}
       />
-      <TabContainer>
+      <TabContainer isSelected={value === 'right'}>
         <TabStyled isSelected={value === 'right'} htmlFor="tab2">
           {rightTabLabel}
         </TabStyled>
