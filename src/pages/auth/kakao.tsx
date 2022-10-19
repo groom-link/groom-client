@@ -1,7 +1,16 @@
 import { useEffect } from 'react';
 import Router from 'next/router';
+import styled from '@emotion/styled';
 
 import loginWithKakao from '../../api/loginWithKakao';
+import { Spinner } from '../../components/atoms';
+
+const Container = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
 
 const Kakao = () => {
   useEffect(() => {
@@ -17,7 +26,11 @@ const Kakao = () => {
     login();
   }, []);
 
-  return <div>로그인중</div>;
+  return (
+    <Container>
+      <Spinner />
+    </Container>
+  );
 };
 
 export default Kakao;
