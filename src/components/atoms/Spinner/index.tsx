@@ -1,5 +1,7 @@
 import styled from '@emotion/styled';
 
+import colors from '../../../styles/colors';
+
 type Props = {
   className?: string;
 };
@@ -16,7 +18,7 @@ const ThreeDots = styled.div`
     width: 13px;
     height: 13px;
     border-radius: 50%;
-    background: #fff;
+    background: ${colors.mainColor.purple};
     animation-timing-function: cubic-bezier(0, 1, 1, 0);
   }
   & div:nth-child(1) {
