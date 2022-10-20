@@ -1,9 +1,14 @@
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import colors from '../../../styles/colors';
 import { regular16 } from '../../../styles/typography';
 import Avatar from '../Avatar';
+
+type Props = {
+  className?: string;
+  src: string;
+  name: string;
+};
 
 const Container = styled.div`
   display: flex;
@@ -19,11 +24,11 @@ const Name = styled.span`
   color: ${colors.grayScale.gray05};
 `;
 
-const MemberList = () => {
+const MemberList = ({ className, src, name }: Props) => {
   return (
-    <Container>
-      <Avatar proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
-      <Name>구성원 이름</Name>
+    <Container className={className}>
+      <Avatar proptype="image" src={src} />
+      <Name>{name}</Name>
     </Container>
   );
 };
