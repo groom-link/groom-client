@@ -259,7 +259,7 @@ const Home = () => {
                 tags,
                 nearMeeting
               }) => (
-                <Link href="/group/home" key={id}>
+                <Link href="/group" key={id}>
                   <LinkContainer>
                     <GroupCard
                       {...{
