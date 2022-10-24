@@ -88,12 +88,12 @@ const WhiteBox = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
-const GroupMember = () => {
+const Member = () => {
   const handleTabChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
   }) => {
     if (value === 'right') return;
-    Router.push('./group-information');
+    Router.push('./information');
   };
 
   return (
@@ -129,4 +129,4 @@ const GroupMember = () => {
   );
 };
 
-export default GroupMember;
+export default Member;

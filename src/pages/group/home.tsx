@@ -169,7 +169,7 @@ const Home = () => {
       <TopNavBar
         backURL="/home"
         setting={true}
-        settingURL="./setting/group-information"
+        settingURL="./setting/information"
       />
       <GroupName>그룹 이름</GroupName>
       <NavigationBox>

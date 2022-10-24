@@ -1,10 +1,10 @@
 import styled from '@emotion/styled';
 
-import { Button, Logo } from '../../components/atoms';
-import { Kakao } from '../../components/atoms/icons';
-import { TopCancelBar } from '../../components/molecules';
-import colors from '../../styles/colors';
-import { bold16, regular16, semiBold24 } from '../../styles/typography';
+import { Button, Logo } from '../../../components/atoms';
+import { Kakao } from '../../../components/atoms/icons';
+import { TopCancelBar } from '../../../components/molecules';
+import colors from '../../../styles/colors';
+import { bold16, regular16, semiBold24 } from '../../../styles/typography';
 
 const MainBox = styled.div`
   display: flex;
@@ -46,7 +46,7 @@ const KakaoShareButton = styled.button`
   background-color: #fee500;
 `;
 
-const MakeSuccess = () => {
+const Success = () => {
   return (
     <>
       <TopCancelBar cancelURL="/home?group=true" />
@@ -73,4 +73,4 @@ const MakeSuccess = () => {
   );
 };
 
-export default MakeSuccess;
+export default Success;

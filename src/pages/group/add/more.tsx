@@ -3,19 +3,19 @@ import Router from 'next/router';
 import styled from '@emotion/styled';
 import { Carousel } from 'react-responsive-carousel';
 
-import { Thumbnail } from '../../components/atoms';
-import { Warning } from '../../components/atoms/icons';
-import { RadioButton, Stepper, TopNavBar } from '../../components/molecules';
-import ButtonFooter from '../../components/molecules/ButtonFooter';
-import useNewGroupInformationStore from '../../store/newGroupInformation';
-import colors from '../../styles/colors';
+import { Thumbnail } from '../../../components/atoms';
+import { Warning } from '../../../components/atoms/icons';
+import { RadioButton, Stepper, TopNavBar } from '../../../components/molecules';
+import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import useNewGroupInformationStore from '../../../store/newGroupInformation';
+import colors from '../../../styles/colors';
 import {
   bold16,
   medium10,
   medium12,
   regular16,
   semiBold20
-} from '../../styles/typography';
+} from '../../../styles/typography';
 
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
@@ -109,7 +109,7 @@ const WarningWithMargin = styled(Warning)`
   margin-right: 4px;
 `;
 
-const MakeFormAdditional = () => {
+const More = () => {
   const [selectedGifticon, setSelectedGifticon] = useState<Gifticon>(
     GIFTICON_MOCK[0]
   );
@@ -151,12 +151,12 @@ const MakeFormAdditional = () => {
       penaltyCount
     });
 
-    Router.push('./make-success');
+    Router.push('./success');
   };
 
   return (
     <Background>
-      <TopNavBar setting={false} backURL="./make-form-basic" />
+      <TopNavBar setting={false} backURL="./basic" />
       <WhiteBox>
         <Title>기프티콘을 통해 모임비를 정해보세요.</Title>
       </WhiteBox>
@@ -245,7 +245,7 @@ const MakeFormAdditional = () => {
   );
 };
 
-export default MakeFormAdditional;
+export default More;
 
 type TextType = 'error' | 'default' | 'result';
 
