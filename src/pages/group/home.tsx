@@ -2,11 +2,13 @@ import { useRef } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
-import { Avatar, Tab } from '../../components/atoms';
-import { TopNavBar } from '../../components/molecules';
+import { Avatar } from '../../components/atoms';
+import { GroupPageHeader } from '../../components/organisms';
 import { useAdjustNumberOfProfiles } from '../../hooks';
 import colors from '../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../styles/typography';
+
+const GROUP_NAME_MOCK = 'SW마에스트로 그룹';
 
 const MEETINGS = [
   {
@@ -127,25 +129,6 @@ const Background = styled.div`
   background-color: ${colors.grayScale.gray01};
 `;
 
-const GroupName = styled.h1`
-  ${semiBold20}
-  display: block;
-  height: 50px;
-  padding-left: 20px;
-  background-color: ${colors.grayScale.white};
-  color: ${colors.grayScale.gray05};
-  line-height: 50px;
-`;
-
-const NavigationBox = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  height: 56px;
-  border-bottom: 1px solid ${colors.grayScale.gray02};
-  background-color: ${colors.grayScale.white};
-`;
-
 const CardBox = styled.div`
   padding: 16px 20px;
 `;
@@ -166,23 +149,7 @@ const Card = styled.div`
 const Home = () => {
   return (
     <Background>
-      <TopNavBar
-        backURL="/home"
-        setting={true}
-        settingURL="./setting/information"
-      />
-      <GroupName>그룹 이름</GroupName>
-      <NavigationBox>
-        <Tab isSelected={true} htmlFor="">
-          홈
-        </Tab>
-        <Tab isSelected={false} htmlFor="">
-          회의 시간
-        </Tab>
-        <Tab isSelected={false} htmlFor="">
-          초대하기
-        </Tab>
-      </NavigationBox>
+      <GroupPageHeader groupName={GROUP_NAME_MOCK} />
       <CardBox>
         <SubTitle>가까운 회의 일정</SubTitle>
         {MEETINGS.map(({ id, title, location, date, participants }) => (
