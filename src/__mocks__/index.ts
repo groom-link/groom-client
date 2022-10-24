@@ -3,3 +3,50 @@ export const DEMO_PROFILE_IMAGE_URL =
 
 export const DEMO_GROUP_IMAGE_URL =
   'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
+
+export const GROUP_NAME_MOCK = 'SW마에스트로 그룹';
+
+export const MEETINGS_MOCK = [
+  {
+    id: 1,
+    title: '회의 제목',
+    location: '선릉역 SWM 센터 7층 회의실',
+    date: '2022.09.01 (목)',
+    participants: [
+      { id: 1, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 2, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 3, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 4, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 5, URL: DEMO_PROFILE_IMAGE_URL }
+    ]
+  },
+  {
+    id: 2,
+    title: '회의 제목',
+    location: '선릉역 SWM 센터 7층 회의실',
+    date: '2022.09.01 (목)',
+    participants: [
+      { id: 6, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 7, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 8, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 9, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 10, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 11, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 12, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 13, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 14, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 15, URL: DEMO_PROFILE_IMAGE_URL }
+    ]
+  },
+  {
+    id: 3,
+    title: '회의 제목',
+    location: '선릉역 SWM 센터 7층 회의실',
+    date: '2022.09.01 (목)',
+    participants: [
+      { id: 16, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 17, URL: DEMO_PROFILE_IMAGE_URL },
+      { id: 18, URL: DEMO_PROFILE_IMAGE_URL }
+    ]
+  }
+];

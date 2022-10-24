@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -8,7 +9,20 @@ import { TopNavBar } from '../../molecules';
 type Props = {
   className?: string;
   groupName: string;
+  selectedTabIndex: 0 | 1 | 2;
+  children: ReactNode;
 };
+
+const TAB_INDEX = {
+  FIRST: 0,
+  SECOND: 1,
+  THRID: 2
+};
+
+const Background = styled.div`
+  min-height: 100vh;
+  background-color: ${colors.grayScale.gray01};
+`;
 
 const GroupName = styled.h1`
   ${semiBold20}
@@ -29,28 +43,50 @@ const NavigationBox = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
-const GroupPageHeader = ({ className, groupName }: Props) => {
+const ContentBox = styled.div`
+  padding: 16px 20px;
+`;
+
+const GroupPage = ({
+  className,
+  groupName,
+  selectedTabIndex,
+  children
+}: Props) => {
   return (
-    <div className={className}>
+    <Background className={className}>
       <TopNavBar
         backURL="/home"
         setting={true}
-        settingURL="./setting/information"
+        settingURL="/group/setting/information"
       />
       <GroupName>{groupName}</GroupName>
       <NavigationBox>
-        <Tab isSelected={true} htmlFor="" href="">
+        <Tab
+          isSelected={selectedTabIndex === TAB_INDEX.FIRST}
+          htmlFor=""
+          href="/group"
+        >
           홈
         </Tab>
-        <Tab isSelected={false} htmlFor="" href="">
+        <Tab
+          isSelected={selectedTabIndex === TAB_INDEX.SECOND}
+          htmlFor=""
+          href="/group/meeting"
+        >
           회의 시간
         </Tab>
-        <Tab isSelected={false} htmlFor="" href="">
+        <Tab
+          isSelected={selectedTabIndex === TAB_INDEX.THRID}
+          htmlFor=""
+          href="/group/invite"
+        >
           초대하기
         </Tab>
       </NavigationBox>
-    </div>
+      <ContentBox>{children}</ContentBox>
+    </Background>
   );
 };
 
-export default GroupPageHeader;
+export default GroupPage;

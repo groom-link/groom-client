@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { Participant } from '../pages/group/home';
+import { Participant } from '../pages/group';
 
 const PROFILE_IMAGE_WIDTH = 44 + 8; // 44px: width of profile image, 8px: margin-right
 const CARD_PADDING = 24; // 24px: padding of card
