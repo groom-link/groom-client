@@ -7,7 +7,7 @@ import {
 } from '../constants/authentication';
 
 const customAxios = axios.create({
-  timeout: 10000,
+  timeout: 5000,
   baseURL: process.env.NEXT_PUBLIC_BASE_REQUEST_URL
 });
 
