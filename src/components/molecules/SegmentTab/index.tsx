@@ -50,7 +50,7 @@ const SegmentTab = ({
   return (
     <Container className={className}>
       <TabContainer isSelected={value === 'left'}>
-        <TabStyled isSelected={value === 'left'} htmlFor="tab1">
+        <TabStyled isSelected={value === 'left'} htmlFor="tab1" href="">
           {leftTabLabel}
         </TabStyled>
       </TabContainer>
@@ -63,7 +63,7 @@ const SegmentTab = ({
         onChange={onChange}
       />
       <TabContainer isSelected={value === 'right'}>
-        <TabStyled isSelected={value === 'right'} htmlFor="tab2">
+        <TabStyled isSelected={value === 'right'} htmlFor="tab2" href="">
           {rightTabLabel}
         </TabStyled>
       </TabContainer>

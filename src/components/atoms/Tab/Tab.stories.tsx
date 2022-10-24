@@ -12,7 +12,7 @@ export const Primary: ComponentStory<typeof Tab> = ({
   isSelected,
   children = '탭'
 }) => (
-  <Tab isSelected={isSelected} htmlFor="">
+  <Tab isSelected={isSelected} htmlFor="" href="">
     {children}
   </Tab>
 );
