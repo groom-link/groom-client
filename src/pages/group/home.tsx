@@ -166,7 +166,11 @@ const Card = styled.div`
 const Home = () => {
   return (
     <Background>
-      <TopNavBar backURL="/home" setting={true} settingURL="./setting" />
+      <TopNavBar
+        backURL="/home"
+        setting={true}
+        settingURL="./setting/group-information"
+      />
       <GroupName>그룹 이름</GroupName>
       <NavigationBox>
         <Tab isSelected={true} htmlFor="">
