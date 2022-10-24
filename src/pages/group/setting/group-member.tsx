@@ -9,6 +9,46 @@ import { SegmentTab, TopNavBar } from '../../../components/molecules';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16 } from '../../../styles/typography';
 
+const GROUP_MEMBERS_MOCK = [
+  {
+    id: 1,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  },
+  {
+    id: 2,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  },
+  {
+    id: 3,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  },
+  {
+    id: 4,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  },
+  {
+    id: 5,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  },
+  {
+    id: 6,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  },
+  {
+    id: 7,
+    src: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름'
+  }
+];
+
+const INVITE_CODE_MOCK = '122 321';
+
 const Background = styled.div`
   box-sizing: border-box;
   min-height: 100vh;
@@ -69,7 +109,7 @@ const GroupMember = () => {
       </TabContainer>
       <InviteCodeContainer>
         <CodeLabel>초대 코드</CodeLabel>
-        <InviteCode>233 221</InviteCode>
+        <InviteCode>{INVITE_CODE_MOCK}</InviteCode>
         <InviteCodePasteButton
           color="navy"
           disabled={false}
@@ -81,12 +121,9 @@ const GroupMember = () => {
         </InviteCodePasteButton>
       </InviteCodeContainer>
       <WhiteBox>
-        <MemberList src={DEMO_PROFILE_IMAGE_URL} name="구성원 이름" />
-        <MemberList src={DEMO_PROFILE_IMAGE_URL} name="구성원 이름" />
-        <MemberList src={DEMO_PROFILE_IMAGE_URL} name="구성원 이름" />
-        <MemberList src={DEMO_PROFILE_IMAGE_URL} name="구성원 이름" />
-        <MemberList src={DEMO_PROFILE_IMAGE_URL} name="구성원 이름" />
-        <MemberList src={DEMO_PROFILE_IMAGE_URL} name="구성원 이름" />
+        {GROUP_MEMBERS_MOCK.map(({ id, src, name }) => (
+          <MemberList key={id} {...{ src, name }} />
+        ))}
       </WhiteBox>
     </Background>
   );
