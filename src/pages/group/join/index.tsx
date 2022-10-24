@@ -1,13 +1,13 @@
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../__mocks__';
-import { Avatar, Tag } from '../../components/atoms';
-import { TopNavBar } from '../../components/molecules';
-import ButtonFooter from '../../components/molecules/ButtonFooter';
-import Image from '../../components/utils/Image';
-import colors from '../../styles/colors';
-import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
+import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
+import { Avatar, Tag } from '../../../components/atoms';
+import { TopNavBar } from '../../../components/molecules';
+import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import Image from '../../../components/utils/Image';
+import colors from '../../../styles/colors';
+import { regular16, semiBold16, semiBold20 } from '../../../styles/typography';
 
 const DEMO_GROUP_IMAGE_URL =
   'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
@@ -106,7 +106,7 @@ const Detail = () => (
       <SubTitle>모임비</SubTitle>
       <Money>50,000원</Money>
     </WhiteBox>
-    <ButtonFooter disabled={false} onClick={() => Router.push('./join')}>
+    <ButtonFooter disabled={false} onClick={() => Router.push('./join/form')}>
       가입 초대받기
     </ButtonFooter>
   </Background>

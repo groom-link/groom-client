@@ -1,8 +1,8 @@
 import Router from 'next/router';
 
-import { GoBackHome } from '../../components/templates';
+import { GoBackHome } from '../../../components/templates';
 
-const JoinSuccess = () => {
+const Success = () => {
   const handleClick = () => Router.push('/home');
 
   return (
@@ -16,4 +16,4 @@ const JoinSuccess = () => {
   );
 };
 
-export default JoinSuccess;
+export default Success;

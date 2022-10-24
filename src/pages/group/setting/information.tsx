@@ -39,12 +39,12 @@ const TextAreaStyled = styled(TextArea)`
   margin-top: 20px;
 `;
 
-const GroupInformation = () => {
+const Information = () => {
   const handleTabChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
   }) => {
     if (value === 'left') return;
-    Router.push('./group-member');
+    Router.push('./member');
   };
 
   return (
@@ -107,4 +107,4 @@ const GroupInformation = () => {
     </Background>
   );
 };
-export default GroupInformation;
+export default Information;

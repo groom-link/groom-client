@@ -2,10 +2,10 @@ import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { TextArea, TopNavBar } from '../../components/molecules';
-import ButtonFooter from '../../components/molecules/ButtonFooter';
-import colors from '../../styles/colors';
-import { regular16, semiBold16, semiBold20 } from '../../styles/typography';
+import { TextArea, TopNavBar } from '../../../components/molecules';
+import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import colors from '../../../styles/colors';
+import { regular16, semiBold16, semiBold20 } from '../../../styles/typography';
 
 const Background = styled.div`
   height: 100vh;
@@ -40,7 +40,7 @@ const Money = styled.strong`
   color: ${colors.mainColor.purple};
 `;
 
-const Join = () => {
+const Form = () => {
   const [text, setText] = useState('');
 
   const handleChange: ChangeEventHandler<HTMLTextAreaElement> = ({
@@ -69,7 +69,7 @@ const Join = () => {
       </WhiteBox>
       <ButtonFooter
         disabled={text === ''}
-        onClick={() => Router.push('./join-success')}
+        onClick={() => Router.push('./success')}
       >
         모임비 결제하기
       </ButtonFooter>
@@ -77,4 +77,4 @@ const Join = () => {
   );
 };
 
-export default Join;
+export default Form;

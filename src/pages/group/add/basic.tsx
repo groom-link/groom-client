@@ -11,12 +11,12 @@ import {
   TextArea,
   TextInput,
   TopNavBar
-} from '../../components/molecules';
-import ButtonFooter from '../../components/molecules/ButtonFooter';
-import useNewGroupInformationStore from '../../store/newGroupInformation';
-import colors from '../../styles/colors';
-import { semiBold20 } from '../../styles/typography';
-import readFileAsURL from '../../utils/readFileAsURL';
+} from '../../../components/molecules';
+import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import useNewGroupInformationStore from '../../../store/newGroupInformation';
+import colors from '../../../styles/colors';
+import { semiBold20 } from '../../../styles/typography';
+import readFileAsURL from '../../../utils/readFileAsURL';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -40,7 +40,7 @@ const GroupNameInput = styled(TextInput)`
   margin-bottom: 20px;
 `;
 
-const MakeFormBasic = () => {
+const Basic = () => {
   const [groupName, setGroupName] = useState('');
   const [description, setDescription] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(0);
@@ -95,7 +95,7 @@ const MakeFormBasic = () => {
     setDescriptionStore(description);
     setTagsStore(tagList);
     setNumberOfMembersStore(numberOfPeople);
-    Router.push('./make-form-additional');
+    Router.push('./more');
   };
 
   const addTag = (text: string) => setTagList((pre) => [...pre, text]);
@@ -181,4 +181,4 @@ const MakeFormBasic = () => {
   );
 };
 
-export default MakeFormBasic;
+export default Basic;

@@ -290,7 +290,7 @@ const Home = () => {
           size="medium"
           disabled={false}
           color="purple"
-          onClick={() => Router.push('/group/make-form-basic')}
+          onClick={() => Router.push('/group/add/basic')}
         >
           모임 만들기
         </MakeGroupButton>
