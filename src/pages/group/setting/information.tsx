@@ -1,5 +1,3 @@
-import { ChangeEventHandler } from 'react';
-import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button } from '../../../components/atoms';
@@ -40,22 +38,16 @@ const TextAreaStyled = styled(TextArea)`
 `;
 
 const Information = () => {
-  const handleTabChange: ChangeEventHandler<HTMLInputElement> = ({
-    target: { value }
-  }) => {
-    if (value === 'left') return;
-    Router.push('./member');
-  };
-
   return (
     <Background>
-      <TopNavBar setting={false} backURL="/group/home" />
+      <TopNavBar setting={false} backURL="/group" />
       <TabContainer>
         <SegmentTab
           leftTabLabel="모임 정보"
           rightTabLabel="구성원 관리"
-          value="left"
-          onChange={handleTabChange}
+          leftTabHref=""
+          rightTabHref="./member"
+          selectedTabIndex={0}
         />
       </TabContainer>
       <ImageUploadInput
