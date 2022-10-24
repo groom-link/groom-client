@@ -18,6 +18,7 @@ const TabLink = styled.a<Pick<Props, 'isSelected'>>`
   color: ${({ isSelected }) =>
     isSelected ? colors.grayScale.gray05 : colors.grayScale.gray03};
   text-decoration: none;
+  text-align: center;
 `;
 
 const Tab = ({ className, isSelected, htmlFor, children, href }: Props) => {
