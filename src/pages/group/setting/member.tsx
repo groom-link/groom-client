@@ -1,5 +1,3 @@
-import { ChangeEventHandler } from 'react';
-import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
@@ -89,22 +87,16 @@ const WhiteBox = styled.div`
 `;
 
 const Member = () => {
-  const handleTabChange: ChangeEventHandler<HTMLInputElement> = ({
-    target: { value }
-  }) => {
-    if (value === 'right') return;
-    Router.push('./information');
-  };
-
   return (
     <Background>
-      <TopNavBar backURL="/group/home" setting={false} />
+      <TopNavBar backURL="/group" setting={false} />
       <TabContainer>
         <SegmentTab
           leftTabLabel="모임 정보"
           rightTabLabel="구성원 관리"
-          value="right"
-          onChange={handleTabChange}
+          leftTabHref="./information"
+          rightTabHref=""
+          selectedTabIndex={1}
         />
       </TabContainer>
       <InviteCodeContainer>
