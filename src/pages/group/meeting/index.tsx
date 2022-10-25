@@ -1,9 +1,13 @@
+import Router from 'next/router';
+
 import { GROUP_NAME_MOCK, MEETINGS_MOCK } from '../../../__mocks__';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
 
 const Meeting = () => {
+  const handleClickFooterButton = () => Router.push('./meeting/suggestion');
+
   return (
     <>
       <GroupPage groupName={GROUP_NAME_MOCK} selectedTabIndex={1}>
@@ -14,12 +18,7 @@ const Meeting = () => {
             editLink="./meeting"
           />
         ))}
-        <ButtonFooter
-          disabled={false}
-          onClick={function (): void {
-            throw new Error('Function not implemented.');
-          }}
-        >
+        <ButtonFooter disabled={false} onClick={handleClickFooterButton}>
           회의 만들기
         </ButtonFooter>
       </GroupPage>
