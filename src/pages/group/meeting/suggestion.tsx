@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { Button, SuggestionTimeList } from '../../../components/atoms';
+import { Button, Logo, SuggestionTimeList } from '../../../components/atoms';
 import { TopNavBar } from '../../../components/molecules';
 import colors from '../../../styles/colors';
 import { semiBold16, semiBold20 } from '../../../styles/typography';
@@ -49,6 +49,12 @@ const Title = styled.h1`
   color: ${colors.grayScale.gray05};
 `;
 
+const SuggestionTimeListStyled = styled(SuggestionTimeList)`
+  &:last-of-type {
+    margin-bottom: 24px;
+  }
+`;
+
 const EditLink = styled.a`
   display: block;
   padding: 10px 12px;
@@ -56,21 +62,42 @@ const EditLink = styled.a`
   color: ${colors.grayScale.gray04};
 `;
 
+const EmptyLogo = styled(Logo)`
+  margin: 140px auto 20px;
+`;
+
+const EmptyDescription = styled.span`
+  ${semiBold20}
+  display: block;
+  margin-bottom: 36px;
+  color: ${colors.grayScale.gray04};
+  text-align: center;
+`;
+
 const AddTimeButton = styled(Button)`
-  margin: 24px auto 0;
+  margin: 0 auto;
 `;
 
 const Suggestion = () => {
   return (
     <>
-      <TopNavBar setting={false} backURL="../" />
-      <TitleContainer>
-        <Title>회의가 가능한 날들이에요.</Title>
-        <EditLink>수정</EditLink>
-      </TitleContainer>
-      {SUGGESTION_TIME_MOCK.map(({ date, time }) => (
-        <SuggestionTimeList key={date + time} {...{ date, time }} />
-      ))}
+      <TopNavBar setting={false} backURL="./" />
+      {SUGGESTION_TIME_MOCK.length ? (
+        <>
+          <TitleContainer>
+            <Title>회의가 가능한 날들이에요.</Title>
+            <EditLink>수정</EditLink>
+          </TitleContainer>
+          {SUGGESTION_TIME_MOCK.map(({ date, time }) => (
+            <SuggestionTimeListStyled key={date + time} {...{ date, time }} />
+          ))}
+        </>
+      ) : (
+        <>
+          <EmptyLogo />
+          <EmptyDescription>추천할 수 있는 시간대가 없어요.</EmptyDescription>
+        </>
+      )}
       <AddTimeButton
         size="large"
         width="250px"
