@@ -5,7 +5,7 @@ import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import MemberList from './index';
 
 export default {
-  title: 'atoms/MemberList',
+  title: 'molecules/MemberList',
   component: MemberList
 } as ComponentMeta<typeof MemberList>;
 

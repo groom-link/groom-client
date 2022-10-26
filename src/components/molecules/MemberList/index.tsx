@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { regular16 } from '../../../styles/typography';
-import Avatar from '../Avatar';
+import Avatar from '../../atoms/Avatar';
 
 type Props = {
   className?: string;
