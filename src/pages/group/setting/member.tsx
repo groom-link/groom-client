@@ -2,8 +2,11 @@ import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { TextButton } from '../../../components/atoms';
-import MemberList from '../../../components/atoms/MemberList';
-import { SegmentTab, TopNavBar } from '../../../components/molecules';
+import {
+  MemberList,
+  SegmentTab,
+  TopNavBar
+} from '../../../components/molecules';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16 } from '../../../styles/typography';
 
