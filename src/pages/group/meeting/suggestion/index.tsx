@@ -1,9 +1,10 @@
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
-import { Button, Logo, SuggestionTimeList } from '../../../components/atoms';
-import { TopNavBar } from '../../../components/molecules';
-import colors from '../../../styles/colors';
-import { semiBold16, semiBold20 } from '../../../styles/typography';
+import { Button, Logo, SuggestionTimeList } from '../../../../components/atoms';
+import { TopNavBar } from '../../../../components/molecules';
+import colors from '../../../../styles/colors';
+import { semiBold16, semiBold20 } from '../../../../styles/typography';
 
 const SUGGESTION_TIME_MOCK = [
   {
@@ -56,10 +57,11 @@ const SuggestionTimeListStyled = styled(SuggestionTimeList)`
 `;
 
 const EditLink = styled.a`
+  ${semiBold16}
   display: block;
   padding: 10px 12px;
-  ${semiBold16}
   color: ${colors.grayScale.gray04};
+  text-decoration: none;
 `;
 
 const EmptyLogo = styled(Logo)`
@@ -86,7 +88,9 @@ const Suggestion = () => {
         <>
           <TitleContainer>
             <Title>회의가 가능한 날들이에요.</Title>
-            <EditLink>수정</EditLink>
+            <Link passHref href="./suggestion/edit">
+              <EditLink>수정</EditLink>
+            </Link>
           </TitleContainer>
           {SUGGESTION_TIME_MOCK.map(({ date, time }) => (
             <SuggestionTimeListStyled key={date + time} {...{ date, time }} />
