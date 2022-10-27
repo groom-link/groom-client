@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button, Logo, SuggestionTimeList } from '../../../../components/atoms';
@@ -81,6 +82,8 @@ const AddTimeButton = styled(Button)`
 `;
 
 const Suggestion = () => {
+  const handleClickAddMenually = () => Router.push('./add');
+
   return (
     <>
       <TopNavBar setting={false} backURL="./" />
@@ -111,9 +114,7 @@ const Suggestion = () => {
         width="250px"
         disabled={false}
         color="purple"
-        onClick={function (): void {
-          throw new Error('Function not implemented.');
-        }}
+        onClick={handleClickAddMenually}
       >
         시간 직접 추가하기
       </AddTimeButton>
