@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { regular16 } from '../../../styles/typography';
+import getRandomString from '../../../utils/getRandomString';
 import Avatar from '../../atoms/Avatar';
 import { CheckCircle } from '../../atoms/icons';
 
@@ -47,7 +48,7 @@ const CheckCircleStyled = styled(CheckCircle)`
 `;
 
 const MemberList = ({ className, src, name, ...props }: Props) => {
-  const inputId = `${name}-check-input`;
+  const inputId = `${name}-check-input-${getRandomString()}`;
 
   return (
     <>

@@ -190,7 +190,7 @@ const Home = () => {
       setIsDisplayModal(true);
       return;
     }
-    Router.push('/group/detail');
+    Router.push('/group/join');
   };
 
   const handleCloseModal = () => {
