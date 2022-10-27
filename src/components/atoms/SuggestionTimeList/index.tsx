@@ -8,7 +8,7 @@ type Props = {
   className?: string;
   date: string;
   time: string;
-  href: string;
+  href?: string;
 };
 
 const Container = styled.a`
@@ -31,7 +31,7 @@ const Time = styled.span`
 
 const SuggestionTimeList = ({ className, date, time, href }: Props) => {
   return (
-    <Link passHref href={href}>
+    <Link passHref href={href || ''}>
       <Container className={className}>
         <Date>{date}</Date>
         <Time>{time}</Time>
