@@ -117,7 +117,7 @@ const Member = () => {
       </InviteCodeContainer>
       <WhiteBox>
         {GROUP_MEMBERS_MOCK.map(({ id, src, name }) => (
-          <MemberList key={id} {...{ src, name }} />
+          <MemberList key={id} check={false} {...{ src, name }} />
         ))}
       </WhiteBox>
     </Background>
