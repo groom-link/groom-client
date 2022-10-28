@@ -11,7 +11,14 @@ type Props = {
   href?: string;
 };
 
-const Container = styled.a`
+const LinkContainer = styled.a`
+  display: block;
+  padding: 16px 20px;
+  background-color: ${colors.grayScale.white};
+  text-decoration: none;
+`;
+
+const Container = styled.div`
   display: block;
   padding: 16px 20px;
   background-color: ${colors.grayScale.white};
@@ -30,13 +37,18 @@ const Time = styled.span`
 `;
 
 const SuggestionTimeList = ({ className, date, time, href }: Props) => {
-  return (
-    <Link passHref href={href || ''}>
-      <Container className={className}>
+  return href ? (
+    <Link passHref href={href}>
+      <LinkContainer className={className}>
         <Date>{date}</Date>
         <Time>{time}</Time>
-      </Container>
+      </LinkContainer>
     </Link>
+  ) : (
+    <Container className={className}>
+      <Date>{date}</Date>
+      <Time>{time}</Time>
+    </Container>
   );
 };
 
