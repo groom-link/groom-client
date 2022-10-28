@@ -1,5 +1,7 @@
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
+import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
 import { Button } from '../../../components/atoms';
 import {
   ImageUploadInput,
@@ -11,6 +13,14 @@ import {
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import colors from '../../../styles/colors';
+import readFileAsURL from '../../../utils/readFileAsURL';
+
+const PRE_GROUP_INFORMATION_MOCK = {
+  profileImage: DEMO_GROUP_IMAGE_URL,
+  meetingTitle: '원래 모임 이름',
+  meetingDescription: '원래 모임 내용',
+  tagList: ['원래 태그1', '원래 태그2', '원래 태그3']
+};
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -38,6 +48,62 @@ const TextAreaStyled = styled(TextArea)`
 `;
 
 const Information = () => {
+  const [profileImage, setProfileImage] = useState('');
+  const [meetingTitle, setMeetingTitle] = useState('');
+  const [meetingDescription, setMeetingDescription] = useState('');
+  const [tagList, setTagList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const { profileImage, meetingTitle, meetingDescription, tagList } =
+      PRE_GROUP_INFORMATION_MOCK;
+    setProfileImage(profileImage);
+    setMeetingTitle(meetingTitle);
+    setMeetingDescription(meetingDescription);
+    setTagList(tagList);
+  }, []);
+
+  const handleDeleteImage = () => setProfileImage('');
+
+  const handleChangeImageUpload: ChangeEventHandler<HTMLInputElement> = ({
+    target: { files }
+  }) => {
+    if (!files) return;
+    readFileAsURL(files[0], setProfileImage);
+  };
+
+  const handleMeetingTitleChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => setMeetingTitle(value);
+
+  const handleMeetingDescriptionChange: ChangeEventHandler<
+    HTMLTextAreaElement
+  > = ({ target: { value } }) => setMeetingDescription(value);
+
+  const handleAddTag = (text: string) => {
+    const preExists = tagList.includes(text);
+    if (preExists) return;
+    setTagList([...tagList, text]);
+  };
+
+  const deleteTag = (index: number) => {
+    setTagList((pre) => {
+      const deforeTarget = pre.slice(0, index);
+      const afterTarget = pre.slice(index + 1);
+      return [...deforeTarget, ...afterTarget];
+    });
+  };
+
+  const handleClickCloseMeeting = () => console.log('모임 끝내기 클릭');
+
+  const handleMeetingInformationSubmit = () => {
+    console.log({
+      profileImage,
+      meetingTitle,
+      meetingDescription,
+      tagList
+    });
+  };
+
   return (
     <Background>
       <TopNavBar setting={false} backURL="/group" />
@@ -51,20 +117,20 @@ const Information = () => {
         />
       </TabContainer>
       <ImageUploadInput
-        profileImage={''}
-        onClickDeleteImage={() => console.log()}
-        onChangeImageFile={() => console.log()}
+        profileImage={profileImage}
+        onClickDeleteImage={handleDeleteImage}
+        onChangeImageFile={handleChangeImageUpload}
       />
       <WhiteBox>
         <TextInput
-          value={''}
-          onChange={() => console.log()}
+          value={meetingTitle}
+          onChange={handleMeetingTitleChange}
           label="모임 이름"
           placeholder="모임 이름을 입력해주세요."
         />
         <TextAreaStyled
-          value={''}
-          onChange={() => console.log()}
+          value={meetingDescription}
+          onChange={handleMeetingDescriptionChange}
           label="모임 내용"
           placeholder="예시) 저희는 oo을 하는 모임입니다."
         />
@@ -72,10 +138,10 @@ const Information = () => {
       <WhiteBox>
         <TagInput
           label="태그"
-          tagList={[]}
-          isTagExists={false}
-          addTag={() => console.log()}
-          deleteTag={() => console.log()}
+          tagList={tagList}
+          placeholder="태그를 입력해주세요."
+          addTag={handleAddTag}
+          deleteTag={deleteTag}
         />
       </WhiteBox>
       <WhiteBox>
@@ -83,17 +149,12 @@ const Information = () => {
           size="medium"
           disabled={false}
           color="gray"
-          onClick={() => console.log()}
+          onClick={handleClickCloseMeeting}
         >
           모임 끝내기
         </Button>
       </WhiteBox>
-      <ButtonFooter
-        disabled={false}
-        onClick={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      >
+      <ButtonFooter disabled={false} onClick={handleMeetingInformationSubmit}>
         모임 정보 수정하기
       </ButtonFooter>
     </Background>

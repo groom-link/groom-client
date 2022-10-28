@@ -16,7 +16,6 @@ type Props = {
   placeholder?: string;
   label?: string;
   tagList: string[];
-  isTagExists: boolean;
   addTag: (text: string) => void;
   deleteTag: (index: number) => void;
 };
@@ -55,8 +54,7 @@ const TagInput = ({
   label,
   tagList,
   addTag,
-  deleteTag,
-  isTagExists
+  deleteTag
 }: Props) => {
   const [text, setText] = useState('#');
   const [isTyping, setIsTyping] = useState(false);
@@ -107,10 +105,10 @@ const TagInput = ({
       {label && <Label marginBottom="4px">{label}</Label>}
       <Input
         onClick={handleInputClick}
-        isTagMode={isTyping || isTagExists}
+        isTagMode={isTyping || !!tagList.length}
         ref={dummyInputRef}
       >
-        {isTyping || isTagExists || placeholder}
+        {isTyping || !!tagList.length || placeholder}
         {tagList.map((text, index) => (
           <TagStyled
             key={`text-${index}`}
