@@ -96,11 +96,7 @@ const Suggestion = () => {
             </Link>
           </TitleContainer>
           {SUGGESTION_TIME_MOCK.map(({ date, time }) => (
-            <SuggestionTimeListStyled
-              key={date + time}
-              href="./add"
-              {...{ date, time }}
-            />
+            <SuggestionTimeListStyled key={date + time} {...{ date, time }} />
           ))}
         </>
       ) : (
