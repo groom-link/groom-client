@@ -64,8 +64,9 @@ const MockIllustration = styled.div`
 
 const Discription = styled.span`
   ${regular16}
-  margin: 8px 0 16px;
+  margin: 8px 59px 16px;
   color: ${colors.grayScale.gray04};
+  text-align: center;
 `;
 
 const ButtonBox = styled.div`
