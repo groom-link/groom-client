@@ -8,6 +8,7 @@ export default {
 } as ComponentMeta<typeof Dialog>;
 
 export const Primary: ComponentStory<typeof Dialog> = ({
+  isOpen = true,
   buttonType = 'one',
   title = '다이얼로그 제목',
   description = '다이얼로그 설명',
@@ -20,6 +21,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
     return (
       <Dialog
         {...{
+          isOpen,
           buttonType,
           title,
           description: description,
@@ -33,6 +35,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
   return (
     <Dialog
       {...{
+        isOpen,
         buttonType,
         title,
         description: description,

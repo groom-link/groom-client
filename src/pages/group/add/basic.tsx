@@ -45,7 +45,7 @@ const Basic = () => {
   const [description, setDescription] = useState('');
   const [numberOfPeople, setNumberOfPeople] = useState(0);
   const [tagList, setTagList] = useState<string[]>([]);
-  const [isModalDisplay, setIsModalDisplay] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileImage, setProfileImage] = useState('');
   const setProfileImageURLStore = useNewGroupInformationStore(
     (state) => state.setProfileImageURL
@@ -108,24 +108,23 @@ const Basic = () => {
     });
   };
 
-  const backConfirmCallback = () => setIsModalDisplay(true);
+  const backConfirmCallback = () => setIsModalOpen(true);
 
   return (
     <>
-      {isModalDisplay && (
-        <Dialog
-          buttonType="two"
-          title="모임 만들기를 취소하시겠어요?"
-          description="취소한 모임은 저장되지 않습니다."
-          purpleButtonText="아니요"
-          grayButtonText="네, 취소할게요"
-          onGrayButtonClick={() => Router.push('/home')}
-          onPurpleButtonClick={() => setIsModalDisplay(false)}
-          isGrayButtonDisabled={false}
-          isPurpleButtonDisabled={false}
-          isIllustrationExists={true}
-        />
-      )}
+      <Dialog
+        isOpen={isModalOpen}
+        buttonType="two"
+        title="모임 만들기를 취소하시겠어요?"
+        description="취소한 모임은 저장되지 않습니다."
+        purpleButtonText="아니요"
+        grayButtonText="네, 취소할게요"
+        onGrayButtonClick={() => Router.push('/home')}
+        onPurpleButtonClick={() => setIsModalOpen(false)}
+        isGrayButtonDisabled={false}
+        isPurpleButtonDisabled={false}
+        isIllustrationExists={true}
+      />
       <Background>
         <TopNavBar
           setting={false}

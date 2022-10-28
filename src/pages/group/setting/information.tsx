@@ -1,9 +1,11 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
 import { Button } from '../../../components/atoms';
 import {
+  Dialog,
   ImageUploadInput,
   SegmentTab,
   TagInput,
@@ -52,6 +54,7 @@ const Information = () => {
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDescription, setMeetingDescription] = useState('');
   const [tagList, setTagList] = useState<string[]>([]);
+  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
 
   useEffect(() => {
     const { profileImage, meetingTitle, meetingDescription, tagList } =
@@ -93,7 +96,7 @@ const Information = () => {
     });
   };
 
-  const handleClickCloseMeeting = () => console.log('모임 끝내기 클릭');
+  const handleClickCloseMeeting = () => setIsConfirmModalOpen(true);
 
   const handleMeetingInformationSubmit = () => {
     console.log({
@@ -104,60 +107,79 @@ const Information = () => {
     });
   };
 
+  const handleModalClose = () => setIsConfirmModalOpen(false);
+
+  const closeMeeting = () => Router.push('/home');
+
   return (
-    <Background>
-      <TopNavBar setting={false} backURL="/group" />
-      <TabContainer>
-        <SegmentTab
-          leftTabLabel="모임 정보"
-          rightTabLabel="구성원 관리"
-          leftTabHref=""
-          rightTabHref="./member"
-          selectedTabIndex={0}
+    <>
+      <Background>
+        <TopNavBar setting={false} backURL="/group" />
+        <TabContainer>
+          <SegmentTab
+            leftTabLabel="모임 정보"
+            rightTabLabel="구성원 관리"
+            leftTabHref=""
+            rightTabHref="./member"
+            selectedTabIndex={0}
+          />
+        </TabContainer>
+        <ImageUploadInput
+          profileImage={profileImage}
+          onClickDeleteImage={handleDeleteImage}
+          onChangeImageFile={handleChangeImageUpload}
         />
-      </TabContainer>
-      <ImageUploadInput
-        profileImage={profileImage}
-        onClickDeleteImage={handleDeleteImage}
-        onChangeImageFile={handleChangeImageUpload}
+        <WhiteBox>
+          <TextInput
+            value={meetingTitle}
+            onChange={handleMeetingTitleChange}
+            label="모임 이름"
+            placeholder="모임 이름을 입력해주세요."
+          />
+          <TextAreaStyled
+            value={meetingDescription}
+            onChange={handleMeetingDescriptionChange}
+            label="모임 내용"
+            placeholder="예시) 저희는 oo을 하는 모임입니다."
+          />
+        </WhiteBox>
+        <WhiteBox>
+          <TagInput
+            label="태그"
+            tagList={tagList}
+            placeholder="태그를 입력해주세요."
+            addTag={handleAddTag}
+            deleteTag={deleteTag}
+          />
+        </WhiteBox>
+        <WhiteBox>
+          <Button
+            size="medium"
+            disabled={false}
+            color="gray"
+            onClick={handleClickCloseMeeting}
+          >
+            모임 끝내기
+          </Button>
+        </WhiteBox>
+        <ButtonFooter disabled={false} onClick={handleMeetingInformationSubmit}>
+          모임 정보 수정하기
+        </ButtonFooter>
+      </Background>
+      <Dialog
+        isOpen={isConfirmModalOpen}
+        title="정말 모임을 끝내시겠어요?"
+        isIllustrationExists={true}
+        description="모든 팀원들은 모임에서 나가게 되며, 남은 모임비는 자동으로 반환됩니다."
+        buttonType="two"
+        grayButtonText="네, 끝낼게요"
+        purpleButtonText="아니요"
+        onGrayButtonClick={closeMeeting}
+        onPurpleButtonClick={handleModalClose}
+        isGrayButtonDisabled={false}
+        isPurpleButtonDisabled={false}
       />
-      <WhiteBox>
-        <TextInput
-          value={meetingTitle}
-          onChange={handleMeetingTitleChange}
-          label="모임 이름"
-          placeholder="모임 이름을 입력해주세요."
-        />
-        <TextAreaStyled
-          value={meetingDescription}
-          onChange={handleMeetingDescriptionChange}
-          label="모임 내용"
-          placeholder="예시) 저희는 oo을 하는 모임입니다."
-        />
-      </WhiteBox>
-      <WhiteBox>
-        <TagInput
-          label="태그"
-          tagList={tagList}
-          placeholder="태그를 입력해주세요."
-          addTag={handleAddTag}
-          deleteTag={deleteTag}
-        />
-      </WhiteBox>
-      <WhiteBox>
-        <Button
-          size="medium"
-          disabled={false}
-          color="gray"
-          onClick={handleClickCloseMeeting}
-        >
-          모임 끝내기
-        </Button>
-      </WhiteBox>
-      <ButtonFooter disabled={false} onClick={handleMeetingInformationSubmit}>
-        모임 정보 수정하기
-      </ButtonFooter>
-    </Background>
+    </>
   );
 };
 export default Information;

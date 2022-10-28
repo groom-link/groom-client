@@ -5,6 +5,7 @@ import { regular16, semiBold20 } from '../../../styles/typography';
 import { Button } from '../../atoms';
 
 type DefaultProps = {
+  isOpen: boolean;
   isIllustrationExists: boolean;
   title: string;
   purpleButtonText: string;
@@ -26,8 +27,8 @@ type TwoButtonProps = {
 
 type Props = OneButtonProps | TwoButtonProps;
 
-const FullPageModal = styled.div`
-  display: flex;
+const FullPageModal = styled.div<Pick<Props, 'isOpen'>>`
+  display: ${({ isOpen }) => (isOpen ? 'flex' : 'none')};
   justify-content: center;
   align-items: center;
   position: fixed;
@@ -77,24 +78,24 @@ const GrayButton = styled(Button)`
   margin-right: 8px;
 `;
 
-const Dialog = (props: Props) => {
-  const {
-    buttonType,
-    title,
-    description,
-    isIllustrationExists,
-    isPurpleButtonDisabled,
-    purpleButtonText,
-    onPurpleButtonClick
-  } = props;
+const Dialog = ({
+  isOpen,
+  title,
+  description,
+  isIllustrationExists,
+  isPurpleButtonDisabled,
+  purpleButtonText,
+  onPurpleButtonClick,
+  ...props
+}: Props) => {
   return (
-    <FullPageModal>
+    <FullPageModal isOpen={isOpen}>
       <Container>
         <Title>{title}</Title>
         {isIllustrationExists && <MockIllustration />}
         <Discription>{description}</Discription>
         <ButtonBox>
-          {buttonType === 'two' && (
+          {props.buttonType === 'two' && (
             <GrayButton
               size="medium"
               disabled={props.isGrayButtonDisabled}

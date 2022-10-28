@@ -173,7 +173,7 @@ const Home = () => {
   const [hasNotification, setHasNotification] = useState(true); // TODO: 알림 존재 여부 API 연동하기.
   const [isGroup, setIsGroup] = useState(false);
   const [isDisplayTimer, setIsDisplayTimer] = useState(false); // TODO: 서버에서 푸쉬 메시지 받아서 타이머 켜기.
-  const [isDisplayModal, setIsDisplayModal] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     setIsGroup(Router.asPath.includes('group'));
@@ -187,29 +187,28 @@ const Home = () => {
 
   const handleJoinClick = () => {
     if (searchText !== '1234') {
-      setIsDisplayModal(true);
+      setIsModalOpen(true);
       return;
     }
     Router.push('/group/join');
   };
 
   const handleCloseModal = () => {
-    setIsDisplayModal(false);
+    setIsModalOpen(false);
   };
 
   return (
     <>
-      {isDisplayModal && (
-        <Dialog
-          buttonType="one"
-          isIllustrationExists={false}
-          title="존재하지 않는 초대 코드입니다."
-          description="초대 코드를 다시 확인해주세요."
-          purpleButtonText="확인"
-          isPurpleButtonDisabled={false}
-          onPurpleButtonClick={handleCloseModal}
-        />
-      )}
+      <Dialog
+        isOpen={isModalOpen}
+        buttonType="one"
+        isIllustrationExists={false}
+        title="존재하지 않는 초대 코드입니다."
+        description="초대 코드를 다시 확인해주세요."
+        purpleButtonText="확인"
+        isPurpleButtonDisabled={false}
+        onPurpleButtonClick={handleCloseModal}
+      />
       <Background>
         <Header>
           <TopBox>
