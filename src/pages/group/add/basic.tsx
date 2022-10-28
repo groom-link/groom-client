@@ -158,7 +158,6 @@ const Basic = () => {
           <TagInput
             label="태그"
             placeholder="태그를 입력하세요."
-            isTagExists={!!tagList.length}
             {...{ addTag, deleteTag, tagList }}
           />
         </WhiteBox>
