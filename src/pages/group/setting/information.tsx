@@ -1,6 +1,7 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
+import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
 import { Button } from '../../../components/atoms';
 import {
   ImageUploadInput,
@@ -13,6 +14,13 @@ import {
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import colors from '../../../styles/colors';
 import readFileAsURL from '../../../utils/readFileAsURL';
+
+const PRE_GROUP_INFORMATION_MOCK = {
+  profileImage: DEMO_GROUP_IMAGE_URL,
+  meetingTitle: '원래 모임 이름',
+  meetingDescription: '원래 모임 내용',
+  tagList: ['원래 태그1', '원래 태그2', '원래 태그3']
+};
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -44,6 +52,15 @@ const Information = () => {
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDescription, setMeetingDescription] = useState('');
   const [tagList, setTagList] = useState<string[]>([]);
+
+  useEffect(() => {
+    const { profileImage, meetingTitle, meetingDescription, tagList } =
+      PRE_GROUP_INFORMATION_MOCK;
+    setProfileImage(profileImage);
+    setMeetingTitle(meetingTitle);
+    setMeetingDescription(meetingDescription);
+    setTagList(tagList);
+  }, []);
 
   const handleDeleteImage = () => setProfileImage('');
 
