@@ -18,27 +18,27 @@ const MEMBERS_MOCK = [
   {
     id: 1,
     src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
+    name: '구성원 이름1'
   },
   {
     id: 2,
     src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
+    name: '구성원 이름2'
   },
   {
     id: 3,
     src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
+    name: '구성원 이름3'
   },
   {
     id: 4,
     src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
+    name: '구성원 이름4'
   },
   {
     id: 5,
     src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
+    name: '구성원 이름5'
   }
 ];
 
