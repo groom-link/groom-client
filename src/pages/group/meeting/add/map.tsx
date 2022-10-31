@@ -103,6 +103,12 @@ const Map = () => {
     setIsGPSButtonActive(true);
   };
 
+  const handleClickSetLocationButton = () => {
+    setAddressStore(address);
+    setCoordsStore(center);
+    Router.push('./');
+  };
+
   return (
     <>
       <TopNavBar setting={false} backURL="./" />
@@ -118,7 +124,7 @@ const Map = () => {
             <Button
               color="purple"
               size="medium"
-              onClick={() => console.log()}
+              onClick={handleClickSetLocationButton}
               disabled={false}
             >
               이 위치로 회의장소 설정
