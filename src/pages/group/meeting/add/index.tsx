@@ -1,18 +1,23 @@
 import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
-import { TextButton, Toggle } from '../../../components/atoms';
+import { DEMO_PROFILE_IMAGE_URL } from '../../../../__mocks__';
+import { TextButton, Toggle } from '../../../../components/atoms';
 import {
   MemberList,
   TextInput,
   TopNavBar
-} from '../../../components/molecules';
-import ButtonFooter from '../../../components/molecules/ButtonFooter';
-import TimePicker from '../../../components/molecules/TimePicker';
-import { UseDatetimePicker } from '../../../hooks';
-import colors from '../../../styles/colors';
-import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
+} from '../../../../components/molecules';
+import ButtonFooter from '../../../../components/molecules/ButtonFooter';
+import TimePicker from '../../../../components/molecules/TimePicker';
+import { UseDatetimePicker } from '../../../../hooks';
+import colors from '../../../../styles/colors';
+import {
+  medium12,
+  semiBold16,
+  semiBold20
+} from '../../../../styles/typography';
 
 const MEMBERS_MOCK = [
   {
@@ -120,7 +125,7 @@ const Add = () => {
 
   const handleClickToggle = () => setIsOnlineMeeting((pre) => !pre);
 
-  const handleSearchInMapClick = () => console.log('지도에서 찾기 클릭');
+  const handleSearchInMapClick = () => Router.push('./add/map');
 
   const handleSubmitNewMeeting = () =>
     console.log({

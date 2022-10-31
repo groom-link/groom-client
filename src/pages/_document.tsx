@@ -20,7 +20,7 @@ export default function Document() {
           strategy="beforeInteractive"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${
             process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string
-          }&autoload=false`}
+          }&autoload=false&libraries=services`}
         />
       </Head>
       <body>
