@@ -113,9 +113,11 @@ const Map = () => {
     Router.push('./');
   };
 
+  const handleBackButtonClick = () => Router.push('./');
+
   return (
     <>
-      <TopNavBar setting={false} backURL="./" />
+      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
       <MapContainer id="map" ref={mapRef}>
         <Maker />
         <TimerMenuContainer>

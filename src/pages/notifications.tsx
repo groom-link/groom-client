@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Calendar } from '../components/atoms/icons';
@@ -92,9 +93,11 @@ const Notifications = () => {
   const handleReadAllButton = () => setNotifications([]);
   // TODO: 알림 불러오기, 삭제하기 -> 실제 API 연동하기.
 
+  const handleBackButtonClick = () => Router.push('/home');
+
   return (
     <>
-      <TopNavBar backURL="/home" setting={false} />
+      <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
       <ButtonContainer>
         <ReadAllButton type="button" onClick={handleReadAllButton}>
           모두 읽기

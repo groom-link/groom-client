@@ -1,13 +1,11 @@
 import Link from 'next/link';
-import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { ArrowLeft, Setting } from '../../atoms/icons';
 
 type DefaultProps = {
-  backURL: string;
-  backConfirmCallback?: () => boolean;
+  onBackButtonClick: () => void;
 };
 
 type OnlyBackButtonProps = {
@@ -40,21 +38,11 @@ const BackButton = styled.button`
 `;
 
 const TopNavBar = (prop: Props) => {
-  const { setting, backURL } = prop;
-
-  const handleBackButtonClick = () => {
-    if (!prop.backConfirmCallback) {
-      Router.push(backURL);
-      return;
-    }
-    const ok = prop.backConfirmCallback();
-    if (!ok) return;
-    Router.push(backURL);
-  };
+  const { setting, onBackButtonClick } = prop;
 
   return (
     <NavBox>
-      <BackButton type="button" onClick={handleBackButtonClick}>
+      <BackButton type="button" onClick={onBackButtonClick}>
         <ArrowLeft width="24px" />
       </BackButton>
       {setting && (

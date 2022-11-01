@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -53,12 +54,14 @@ const GroupPage = ({
   selectedTabIndex,
   children
 }: Props) => {
+  const handleBackButtonClick = () => Router.push('/home');
+
   return (
     <Background className={className}>
       <TopNavBar
-        backURL="/home"
         setting={true}
         settingURL="/group/setting/information"
+        onBackButtonClick={handleBackButtonClick}
       />
       <GroupName>{groupName}</GroupName>
       <NavigationBox>

@@ -92,9 +92,11 @@ const TimerMap = () => {
     setIsGPSButtonActive(true);
   };
 
+  const handleBackButtonClick = () => Router.push('/home');
+
   return (
     <>
-      <TopNavBar backURL="/home" setting={false} />
+      <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
       <Map id="map" ref={mapRef}>
         <TimerMenuContainer>
           <GPSButtonStyled

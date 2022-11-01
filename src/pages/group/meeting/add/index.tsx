@@ -163,16 +163,12 @@ const Add = () => {
     setStartDatetimeStore('');
     setEndDatetimeStore('');
     setParticipants([]);
-    return true;
+    Router.push('./suggestion');
   };
 
   return (
     <Background>
-      <TopNavBar
-        setting={false}
-        backURL="./suggestion"
-        backConfirmCallback={handleBackButtonClick}
-      />
+      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
       <TitleContainer>
         <Title>회의 일정을 등록해보세요.</Title>
         <TextInput

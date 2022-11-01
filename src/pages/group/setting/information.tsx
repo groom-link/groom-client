@@ -111,10 +111,12 @@ const Information = () => {
 
   const closeMeeting = () => Router.push('/home');
 
+  const handleBackButtonClick = () => Router.push('/group');
+
   return (
     <>
       <Background>
-        <TopNavBar setting={false} backURL="/group" />
+        <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
         <TabContainer>
           <SegmentTab
             leftTabLabel="모임 정보"

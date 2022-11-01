@@ -1,3 +1,5 @@
+import { ChangeEventHandler } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button, SuggestionTimeList } from '../../../../components/atoms';
@@ -62,26 +64,32 @@ const Description = styled.span`
 `;
 
 const Edit = () => {
-  const {
-    startDatetime,
-    endDatetime,
-    handleChangeEndDatetime,
-    handleChangeStartDatetime
-  } = UseDatetimePicker();
+  const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
+    UseDatetimePicker();
 
   const handleExcludedTimeSumbit = () =>
     console.log(startDatetime, endDatetime);
 
+  const handleStartDatetimeChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => setStartDatetime(value);
+
+  const handleEndDatetimeChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => setEndDatetime(value);
+
+  const handleBackButtonClick = () => Router.push('./');
+
   return (
     <Background>
-      <TopNavBar backURL="./" setting={false} />
+      <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
       <WhiteBox>
         <Title>회의가 불가능한 시간들이애요.</Title>
       </WhiteBox>
       <TimePicker
         allDayOption={false}
-        onChangeEndDatetime={handleChangeEndDatetime}
-        onChangeStartDatetime={handleChangeStartDatetime}
+        onChangeStartDatetime={handleStartDatetimeChange}
+        onChangeEndDatetime={handleEndDatetimeChange}
         {...{ startDatetime, endDatetime }}
       />
       <WhiteBox>

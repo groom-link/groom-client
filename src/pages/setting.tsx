@@ -34,7 +34,10 @@ const WithdrawalLink = styled.a`
 const setting = () => {
   return (
     <Background>
-      <TopNavBar backURL="" setting={false} />
+      <TopNavBar
+        onBackButtonClick={() => console.log('뒤로가기')}
+        setting={false}
+      />
       <WhiteBox>
         <List href="">설정</List>
         <List href="">설정</List>
