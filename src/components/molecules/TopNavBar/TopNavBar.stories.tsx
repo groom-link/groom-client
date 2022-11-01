@@ -15,15 +15,15 @@ export default {
 } as ComponentMeta<typeof TopNavBar>;
 
 export const Primary: ComponentStory<typeof TopNavBar> = ({ setting }) => {
+  const handleBackButtonClick = () => console.log('back button clicked');
+
   return setting ? (
     <TopNavBar
-      {...{
-        setting,
-        backURL: '',
-        settingURL: ''
-      }}
+      setting={setting}
+      settingURL=""
+      onBackButtonClick={handleBackButtonClick}
     />
   ) : (
-    <TopNavBar {...{ setting, backURL: '' }} />
+    <TopNavBar setting={setting} onBackButtonClick={handleBackButtonClick} />
   );
 };

@@ -154,9 +154,11 @@ const More = () => {
     Router.push('./success');
   };
 
+  const handleBackButtonClick = () => Router.push('./basic');
+
   return (
     <Background>
-      <TopNavBar setting={false} backURL="./basic" />
+      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
       <WhiteBox>
         <Title>기프티콘을 통해 모임비를 정해보세요.</Title>
       </WhiteBox>

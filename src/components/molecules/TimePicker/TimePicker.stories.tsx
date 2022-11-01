@@ -15,11 +15,19 @@ export const Primary: ComponentStory<typeof TimerPicker> = ({
   const {
     startDatetime,
     endDatetime,
-    handleChangeEndDatetime,
-    handleChangeStartDatetime,
+    setStartDatetime,
+    setEndDatetime,
     isToggleOn,
     handleClickToggle
   } = UseDatetimePicker();
+
+  const handleChangeStartDatetime: React.ChangeEventHandler<
+    HTMLInputElement
+  > = ({ target: { value } }) => setStartDatetime(value);
+
+  const handleChangeEndDatetime: React.ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => setEndDatetime(value);
 
   return (
     <TimerPicker

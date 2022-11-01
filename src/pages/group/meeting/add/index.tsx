@@ -12,6 +12,7 @@ import {
 import ButtonFooter from '../../../../components/molecules/ButtonFooter';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
+import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
   medium12,
@@ -99,29 +100,51 @@ const SearchInMapButton = styled(TextButton)`
 `;
 
 const Add = () => {
-  const {
-    startDatetime,
-    endDatetime,
-    handleChangeEndDatetime,
-    handleChangeStartDatetime
-  } = UseDatetimePicker();
+  const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
+    UseDatetimePicker();
   const [isOnlineMeeting, setIsOnlineMeeting] = useState(false);
-  const [meetingTitle, setMeetingTitle] = useState('');
-  const [selectedMembers, setSelectedMembers] = useState<number[]>([]);
+  const title = useNewMeetingFormStore((state) => state.title);
+  const startDateStored = useNewMeetingFormStore((state) => state.startDate);
+  const endDateStored = useNewMeetingFormStore((state) => state.endDate);
+  const participants = useNewMeetingFormStore((state) => state.participants);
+  const setTitle = useNewMeetingFormStore((state) => state.setTitle);
+  const setStartDatetimeStore = useNewMeetingFormStore(
+    (state) => state.setStartDate
+  );
+  const setEndDatetimeStore = useNewMeetingFormStore(
+    (state) => state.setEndDate
+  );
+  const setParticipants = useNewMeetingFormStore(
+    (state) => state.setParticipants
+  );
 
-  const getIsSelected = (id: number) => selectedMembers.includes(id);
+  const getIsSelected = (id: number) => participants.includes(id);
 
   const selectMember = (id: number) => {
     if (getIsSelected(id)) {
-      setSelectedMembers((pre) => pre.filter((item) => item !== id));
+      setParticipants(participants.filter((item) => item !== id));
       return;
     }
-    setSelectedMembers((pre) => [...pre, id]);
+    setParticipants([...participants, id]);
   };
 
   const handleMeetingTitleChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
-  }) => setMeetingTitle(value);
+  }) => setTitle(value);
+
+  const handleStartDateTimeChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => {
+    setStartDatetime(value);
+    setStartDatetimeStore(value);
+  };
+
+  const handleEndDateTimeChange: ChangeEventHandler<HTMLInputElement> = ({
+    target: { value }
+  }) => {
+    setEndDatetime(value);
+    setEndDatetimeStore(value);
+  };
 
   const handleClickToggle = () => setIsOnlineMeeting((pre) => !pre);
 
@@ -129,28 +152,37 @@ const Add = () => {
 
   const handleSubmitNewMeeting = () =>
     console.log({
-      meetingTitle,
+      title,
       startDatetime,
       endDatetime,
-      selectedMembers
+      participants
     });
+
+  const handleBackButtonClick = () => {
+    setTitle('');
+    setStartDatetimeStore('');
+    setEndDatetimeStore('');
+    setParticipants([]);
+    Router.push('./suggestion');
+  };
 
   return (
     <Background>
-      <TopNavBar setting={false} backURL="./suggestion" />
+      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
       <TitleContainer>
         <Title>회의 일정을 등록해보세요.</Title>
         <TextInput
-          value={meetingTitle}
+          value={title}
           placeholder="회의 일정 제목을 입력하세요."
           onChange={handleMeetingTitleChange}
         />
       </TitleContainer>
       <TimePicker
         allDayOption={false}
-        onChangeEndDatetime={handleChangeEndDatetime}
-        onChangeStartDatetime={handleChangeStartDatetime}
-        {...{ startDatetime, endDatetime }}
+        onChangeStartDatetime={handleStartDateTimeChange}
+        onChangeEndDatetime={handleEndDateTimeChange}
+        startDatetime={startDateStored || startDatetime}
+        endDatetime={endDateStored || endDatetime}
       />
       <MemberListLabel>모임 구성원</MemberListLabel>
       {MEMBERS_MOCK.map(({ id, src, name }) => (

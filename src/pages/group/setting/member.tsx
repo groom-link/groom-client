@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
@@ -90,9 +91,11 @@ const WhiteBox = styled.div`
 `;
 
 const Member = () => {
+  const handleBackButtonClick = () => Router.push('/group');
+
   return (
     <Background>
-      <TopNavBar backURL="/group" setting={false} />
+      <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
       <TabContainer>
         <SegmentTab
           leftTabLabel="모임 정보"

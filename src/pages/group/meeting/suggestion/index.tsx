@@ -84,9 +84,11 @@ const AddTimeButton = styled(Button)`
 const Suggestion = () => {
   const handleClickAddMenually = () => Router.push('./add');
 
+  const handleBackButtonClick = () => Router.push('./');
+
   return (
     <>
-      <TopNavBar setting={false} backURL="./" />
+      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
       {SUGGESTION_TIME_MOCK.length ? (
         <>
           <TitleContainer>

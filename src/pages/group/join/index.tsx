@@ -67,49 +67,53 @@ const Money = styled.strong`
   color: ${colors.mainColor.purple};
 `;
 
-const Detail = () => (
-  <Background>
-    <TopNavBar backURL="/home" setting={false} />
-    <Image
-      src={DEMO_GROUP_IMAGE_URL}
-      alt="모임 프로필 이미지"
-      layout="responsive"
-      height="250px"
-      width="414"
-    />
-    <WhiteBox>
-      <GroupName>모임 이름</GroupName>
-      <Description>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut
-        accusantium autem fugit, odio in, excepturi voluptatum quia quaerat
-        exercitationem, quidem esse corporis sequi. Officiis asperiores illo,
-        necessitatibus ex tempore molestiae voluptas ullam maxime beatae quaerat
-        hic earum. Nemo voluptas a, molestiae rerum et unde esse. Suscipit illum
-        sit tenetur provident.
-      </Description>
-      <TagBox>
-        <GroupTag type="default">태그</GroupTag>
-        <GroupTag type="default">태그</GroupTag>
-        <GroupTag type="default">태그</GroupTag>
-        <GroupTag type="default">태그</GroupTag>
-      </TagBox>
-    </WhiteBox>
-    <WhiteBox>
-      <SubTitle>팀원(5)</SubTitle>
-      <ProfileBox>
-        <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
-        <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
-        <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
-      </ProfileBox>
-    </WhiteBox>
-    <WhiteBox>
-      <SubTitle>모임비</SubTitle>
-      <Money>50,000원</Money>
-    </WhiteBox>
-    <ButtonFooter disabled={false} onClick={() => Router.push('./join/form')}>
-      가입 초대받기
-    </ButtonFooter>
-  </Background>
-);
+const Detail = () => {
+  const handleBackButtonClick = () => Router.push('/home');
+
+  return (
+    <Background>
+      <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
+      <Image
+        src={DEMO_GROUP_IMAGE_URL}
+        alt="모임 프로필 이미지"
+        layout="responsive"
+        height="250px"
+        width="414"
+      />
+      <WhiteBox>
+        <GroupName>모임 이름</GroupName>
+        <Description>
+          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut
+          accusantium autem fugit, odio in, excepturi voluptatum quia quaerat
+          exercitationem, quidem esse corporis sequi. Officiis asperiores illo,
+          necessitatibus ex tempore molestiae voluptas ullam maxime beatae
+          quaerat hic earum. Nemo voluptas a, molestiae rerum et unde esse.
+          Suscipit illum sit tenetur provident.
+        </Description>
+        <TagBox>
+          <GroupTag type="default">태그</GroupTag>
+          <GroupTag type="default">태그</GroupTag>
+          <GroupTag type="default">태그</GroupTag>
+          <GroupTag type="default">태그</GroupTag>
+        </TagBox>
+      </WhiteBox>
+      <WhiteBox>
+        <SubTitle>팀원(5)</SubTitle>
+        <ProfileBox>
+          <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
+          <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
+          <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
+        </ProfileBox>
+      </WhiteBox>
+      <WhiteBox>
+        <SubTitle>모임비</SubTitle>
+        <Money>50,000원</Money>
+      </WhiteBox>
+      <ButtonFooter disabled={false} onClick={() => Router.push('./join/form')}>
+        가입 초대받기
+      </ButtonFooter>
+    </Background>
+  );
+};
 
 export default Detail;

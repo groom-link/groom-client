@@ -47,9 +47,11 @@ const Form = () => {
     target: { value }
   }) => setText(value);
 
+  const handleBackButtonClick = () => Router.push('./detail');
+
   return (
     <Background>
-      <TopNavBar setting={false} backURL="./detail" />
+      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
       <WhiteBox>
         <Title>자유롭게 본인을 소개해주세요!</Title>
         <Description>

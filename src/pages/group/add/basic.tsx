@@ -126,11 +126,7 @@ const Basic = () => {
         isIllustrationExists={true}
       />
       <Background>
-        <TopNavBar
-          setting={false}
-          backURL="/home"
-          backConfirmCallback={backConfirmCallback}
-        />
+        <TopNavBar setting={false} onBackButtonClick={backConfirmCallback} />
         <WhiteBox hasMargin={false}>
           <Title>새로운 모임을 만들어보세요.</Title>
         </WhiteBox>
