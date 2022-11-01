@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Button } from '../../../../components/atoms';
 import { GPSButton, TopNavBar } from '../../../../components/molecules';
 import { useCoords, useKakaoMaps } from '../../../../hooks';
+import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import { shadow01 } from '../../../../styles/mixins';
 import { bold16 } from '../../../../styles/typography';
@@ -79,6 +81,8 @@ const Map = () => {
     onMapDragEvent: () => setIsGPSButtonActive(false)
   });
   const [address, setAddress] = useState('지도를 움직여 위치를 선택해주세요.');
+  const setAddressStore = useNewMeetingFormStore((state) => state.setAddress);
+  const setCoordsStore = useNewMeetingFormStore((state) => state.setCoords);
 
   useEffect(() => {
     window.kakao.maps.load(() => {
