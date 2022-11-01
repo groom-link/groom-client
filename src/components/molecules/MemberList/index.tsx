@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
@@ -48,11 +49,16 @@ const CheckCircleStyled = styled(CheckCircle)`
 `;
 
 const MemberList = ({ className, src, name, ...props }: Props) => {
-  const inputId = `${name}-check-input-${getRandomString()}`;
+  const [inputID, setInputID] = useState('');
+
+  useEffect(() => {
+    const inputIDWithRandomString = `${name}-check-input-${getRandomString()}`;
+    setInputID(inputIDWithRandomString);
+  }, [name]);
 
   return (
     <>
-      <Container className={className} htmlFor={inputId}>
+      <Container className={className} htmlFor={inputID}>
         <Avatar proptype="image" src={src} />
         <Name>{name}</Name>
         {props.check && (
@@ -68,7 +74,7 @@ const MemberList = ({ className, src, name, ...props }: Props) => {
       </Container>
       {props.check && (
         <DummyInput
-          id={inputId}
+          id={inputID}
           type="checkbox"
           checked={props.isChecked}
           onChange={props.onChange}
