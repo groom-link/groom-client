@@ -7,7 +7,7 @@ import { ArrowLeft, Setting } from '../../atoms/icons';
 
 type DefaultProps = {
   backURL: string;
-  backConfirmCallback?: () => void;
+  backConfirmCallback?: () => boolean;
 };
 
 type OnlyBackButtonProps = {
@@ -43,10 +43,12 @@ const TopNavBar = (prop: Props) => {
   const { setting, backURL } = prop;
 
   const handleBackButtonClick = () => {
-    if (prop.backConfirmCallback) {
-      prop.backConfirmCallback();
+    if (!prop.backConfirmCallback) {
+      Router.push(backURL);
       return;
     }
+    const ok = prop.backConfirmCallback();
+    if (!ok) return;
     Router.push(backURL);
   };
 
