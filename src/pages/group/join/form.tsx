@@ -84,7 +84,7 @@ const Form = () => {
       </Background>
       <Dialog
         isOpen={isModalOpen}
-        isIllustrationExists={true}
+        illustrationURL="/illustrations/Back.png"
         title="모임 신청을 취소하시겠어요?"
         buttonType="two"
         purpleButtonText="아니요"
