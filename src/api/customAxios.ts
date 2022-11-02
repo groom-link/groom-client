@@ -11,13 +11,15 @@ const customAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_REQUEST_URL
 });
 
-customAxios.interceptors.request.use((config) => {
-  const accessToken = getCookie(ACCESS_TOKEN_KEY);
-  if (!config.headers) return config;
-  if (config.url !== 'auth/kakao/login')
-    config.headers['x-access-token'] = accessToken ? accessToken : '';
-  return config;
-});
+export const requestIntercepter = customAxios.interceptors.request.use(
+  (config) => {
+    const accessToken = getCookie(ACCESS_TOKEN_KEY);
+    if (!config.headers) return config;
+    if (config.url !== 'auth/kakao/login')
+      config.headers['x-access-token'] = accessToken ? accessToken : '';
+    return config;
+  }
+);
 
 customAxios.interceptors.response.use(
   (response) => response,

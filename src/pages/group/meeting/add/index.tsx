@@ -1,4 +1,4 @@
-import { ChangeEvent, ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -12,6 +12,7 @@ import {
 import ButtonFooter from '../../../../components/molecules/ButtonFooter';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
+import usePostNewRoomSchedule from '../../../../hooks/api/room/schedule';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
@@ -108,6 +109,8 @@ const Add = () => {
   const endDateStored = useNewMeetingFormStore((state) => state.endDate);
   const participants = useNewMeetingFormStore((state) => state.participants);
   const setTitle = useNewMeetingFormStore((state) => state.setTitle);
+  const address = useNewMeetingFormStore((state) => state.address);
+  const coords = useNewMeetingFormStore((state) => state.coords);
   const setStartDatetimeStore = useNewMeetingFormStore(
     (state) => state.setStartDate
   );
@@ -117,6 +120,7 @@ const Add = () => {
   const setParticipants = useNewMeetingFormStore(
     (state) => state.setParticipants
   );
+  const { isError, isLoading, mutate, isSuccess } = usePostNewRoomSchedule();
 
   const getIsSelected = (id: number) => participants.includes(id);
 
@@ -150,13 +154,21 @@ const Add = () => {
 
   const handleSearchInMapClick = () => Router.push('./add/map');
 
-  const handleSubmitNewMeeting = () =>
-    console.log({
+  const handleSubmitNewMeeting = () => {
+    // room 도메인 API가 수정될 때까지 더미 데이터를 임시로 사용합니다.
+    mutate({
       title,
-      startDatetime,
-      endDatetime,
-      participants
+      startTime: startDatetime,
+      endTime: endDatetime,
+      participantsIds: [3, 6, 48],
+      meetingLocation: {
+        address,
+        latitude: coords[0].toString(10),
+        longitude: coords[1].toString(10)
+      },
+      roomId: 66
     });
+  };
 
   const handleBackButtonClick = () => {
     setTitle('');
@@ -202,10 +214,8 @@ const Add = () => {
         <AddressInputContainer>
           <TextInput
             placeholder="주소를 입력하세요."
-            value={''}
-            onChange={function (event: ChangeEvent<HTMLInputElement>): void {
-              throw new Error('Function not implemented.');
-            }}
+            value={address}
+            onChange={() => {}}
           />
           <SearchInMapButton
             color="navy"
