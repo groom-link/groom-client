@@ -11,14 +11,15 @@ const customAxios = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_REQUEST_URL
 });
 
-// API 서버의 토큰 검증 오류로 인해 잠시 주석 처리.
-// customAxios.interceptors.request.use((config) => {
-//   const accessToken = getCookie(ACCESS_TOKEN_KEY);
-//   if (!config.headers) return config;
-//   if (config.url !== 'auth/kakao/login')
-//     config.headers['x-access-token'] = accessToken ? accessToken : '';
-//   return config;
-// });
+export const requestIntercepter = customAxios.interceptors.request.use(
+  (config) => {
+    const accessToken = getCookie(ACCESS_TOKEN_KEY);
+    if (!config.headers) return config;
+    if (config.url !== 'auth/kakao/login')
+      config.headers['x-access-token'] = accessToken ? accessToken : '';
+    return config;
+  }
+);
 
 customAxios.interceptors.response.use(
   (response) => response,
