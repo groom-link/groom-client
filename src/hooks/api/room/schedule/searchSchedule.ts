@@ -3,13 +3,13 @@ import { useQuery } from '@tanstack/react-query';
 import customAxios, { requestIntercepter } from '../../../../api/customAxios';
 
 type SearchRoomScheduleRequest = {
-  page: number;
-  size: number;
-  sort: string[];
-  userId: number;
-  roomId: number;
-  startTime: string;
-  endTime: string;
+  page?: number;
+  size?: number;
+  sort?: string[];
+  userId?: number;
+  roomId?: number;
+  startTime?: string;
+  endTime?: string;
 };
 
 type SearchRoomScheduleResponse = {
