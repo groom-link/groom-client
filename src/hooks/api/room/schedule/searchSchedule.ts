@@ -28,12 +28,14 @@ type SearchRoomScheduleResponse = {
   last: boolean;
 };
 
+type GetSearchRoomSchedules = (
+  query: SearchRoomScheduleRequest
+) => Promise<SearchRoomScheduleResponse>;
+
 // access token 검증 오류가 해결될 때까지 토큰을 싣지 않고 요청.
 customAxios.interceptors.request.eject(requestIntercepter);
 
-const getSearchRoomSchedules = async (
-  query: SearchRoomScheduleRequest
-): Promise<SearchRoomScheduleResponse> => {
+const getSearchRoomSchedules: GetSearchRoomSchedules = async (query) => {
   const { data } = await customAxios.get('/room/schedule/search', {
     params: query
   });
