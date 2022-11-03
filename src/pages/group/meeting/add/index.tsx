@@ -12,7 +12,7 @@ import {
 import ButtonFooter from '../../../../components/molecules/ButtonFooter';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
-import usePostNewRoomSchedule from '../../../../hooks/api/room/schedule';
+import usePostNewRoomSchedule from '../../../../hooks/api/room/schedule/postSchedule';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
