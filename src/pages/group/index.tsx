@@ -2,7 +2,7 @@ import styled from '@emotion/styled';
 
 import { MeetingCard } from '../../components/molecules';
 import { GroupPage } from '../../components/templates';
-import useGetTeamSchedules from '../../hooks/api/team-schedule/getSchedules';
+import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
 import colors from '../../styles/colors';
 import { semiBold16 } from '../../styles/typography';
 

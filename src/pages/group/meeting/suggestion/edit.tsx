@@ -6,6 +6,7 @@ import { Button, SuggestionTimeList } from '../../../../components/atoms';
 import { TopNavBar } from '../../../../components/molecules';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
+import usePostUnableSchedule from '../../../../hooks/api/unableSchedule/postUnableSchedule';
 import colors from '../../../../styles/colors';
 import { medium12, semiBold20 } from '../../../../styles/typography';
 
@@ -64,11 +65,21 @@ const Description = styled.span`
 `;
 
 const Edit = () => {
+  const {
+    mutate: postUnableSchedule,
+    isError: isPostUnableSchduleError,
+    isLoading: isPostUnableSchduleLoading
+  } = usePostUnableSchedule();
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
 
   const handleExcludedTimeSumbit = () =>
-    console.log(startDatetime, endDatetime);
+    postUnableSchedule({
+      startTime: startDatetime,
+      endTime: endDatetime,
+      roomId: 66
+    });
+  // TODO: roomId는 API에서 받아오도록 수정.
 
   const handleStartDatetimeChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
