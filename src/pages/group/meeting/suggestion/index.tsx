@@ -98,8 +98,6 @@ const Suggestion = () => {
   if (isRecommendTimeError) return <div>추천 시간 불러오기 에러!</div>;
   if (recommendTimes === undefined) return <div>추천 시간 데이터 에러!</div>;
 
-  console.log(recommendTimes);
-
   return (
     <>
       <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
