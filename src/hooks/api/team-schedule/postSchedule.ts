@@ -15,14 +15,14 @@ type PostTeamSchedulesReqeust = {
   participantsIds: number[];
 };
 
-type PostTeamSchedulesResponse = {
-  success: boolean;
-  data: Omit<PostTeamSchedulesReqeust, 'participantsIds' | 'roomId'>;
-};
+type PostTeamSchedulesData = Omit<
+  PostTeamSchedulesReqeust,
+  'participantsIds' | 'roomId'
+>;
 
 type PostNewRoomSchedule = (
   body: PostTeamSchedulesReqeust
-) => Promise<PostTeamSchedulesResponse>;
+) => Promise<GroomApiResponse<PostTeamSchedulesData>>;
 
 // access token 검증 오류가 해결될 때까지 토큰을 싣지 않고 요청.
 customAxios.interceptors.request.eject(requestIntercepter);

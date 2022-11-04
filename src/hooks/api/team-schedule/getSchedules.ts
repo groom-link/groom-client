@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 
-import customAxios, { requestIntercepter } from '../../../api/customAxios';
+import customAxios from '../../../api/customAxios';
 
 type GetTeamSchedulesRequest = {
   page?: number;
@@ -12,32 +12,25 @@ type GetTeamSchedulesRequest = {
   endTime?: string;
 };
 
-type GetTeamSchedulesResponse = {
-  success: boolean;
-  data: {
-    teamScheduleList: {
-      id: number;
-      title: string;
-      startTime: string;
-      meetingLocation: {
-        address: string;
-        longitude: string;
-        latitude: string;
-      };
-      profiles: string[];
-    }[];
-    page: number;
-    last: boolean;
-  };
-  error: string | null;
+type GetTeamSchedulesData = {
+  teamScheduleList: {
+    id: number;
+    title: string;
+    startTime: string;
+    meetingLocation: {
+      address: string;
+      longitude: string;
+      latitude: string;
+    };
+    profiles: string[];
+  }[];
+  page: number;
+  last: boolean;
 };
 
 type GetSearchRoomSchedules = (
   query: GetTeamSchedulesRequest
-) => Promise<GetTeamSchedulesResponse>;
-
-// access token 검증 오류가 해결될 때까지 토큰을 싣지 않고 요청.
-customAxios.interceptors.request.eject(requestIntercepter);
+) => Promise<GroomApiResponse<GetTeamSchedulesData>>;
 
 const getTeamSchedules: GetSearchRoomSchedules = async (query) => {
   const { data } = await customAxios.get('/team-schedule', {
