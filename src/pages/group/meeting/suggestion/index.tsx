@@ -4,7 +4,7 @@ import styled from '@emotion/styled';
 
 import { Button, Logo, SuggestionTimeList } from '../../../../components/atoms';
 import { TopNavBar } from '../../../../components/molecules';
-import useGetRecommendTime from '../../../../hooks/api/room/schedule/getRecommend';
+import useGetRecommendTime from '../../../../hooks/api/room/getRecommend';
 import colors from '../../../../styles/colors';
 import { semiBold16, semiBold20 } from '../../../../styles/typography';
 
@@ -87,7 +87,7 @@ const Suggestion = () => {
     data: recommendTimes,
     isError: isRecommendTimeError,
     isLoading: isRecommendTimeLoading
-  } = useGetRecommendTime({ roomId: 66, date: '2022-11-04' });
+  } = useGetRecommendTime({ roomId: 66, query: { date: '2022-11-04' } });
   // TODO: roomId는 API에서 받아온 값으로, date는 현재 날짜로 변경해야 함
 
   const handleClickAddMenually = () => Router.push('./add');
