@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 
-import customAxios, { requestIntercepter } from '../../../../api/customAxios';
+import customAxios, { requestIntercepter } from '../../../api/customAxios';
 
-type SearchRoomScheduleRequest = {
+type GetTeamSchedulesRequest = {
   page?: number;
   size?: number;
   sort?: string[];
@@ -12,7 +12,7 @@ type SearchRoomScheduleRequest = {
   endTime?: string;
 };
 
-type SearchRoomScheduleResponse = {
+type GetTeamSchedulesResponse = {
   success: boolean;
   teamScheduleList: {
     title: string;
@@ -29,20 +29,20 @@ type SearchRoomScheduleResponse = {
 };
 
 type GetSearchRoomSchedules = (
-  query: SearchRoomScheduleRequest
-) => Promise<SearchRoomScheduleResponse>;
+  query: GetTeamSchedulesRequest
+) => Promise<GetTeamSchedulesResponse>;
 
 // access token 검증 오류가 해결될 때까지 토큰을 싣지 않고 요청.
 customAxios.interceptors.request.eject(requestIntercepter);
 
-const getSearchRoomSchedules: GetSearchRoomSchedules = async (query) => {
-  const { data } = await customAxios.get('/room/schedule/search', {
+const getTeamSchedules: GetSearchRoomSchedules = async (query) => {
+  const { data } = await customAxios.get('/team-schedule', {
     params: query
   });
   return data;
 };
 
-const useSearchRoomSchedules = (query: SearchRoomScheduleRequest) =>
-  useQuery(['searchRoomSchedules'], () => getSearchRoomSchedules(query));
+const useGetTeamSchedules = (query: GetTeamSchedulesRequest) =>
+  useQuery(['getTeamSchedules'], () => getTeamSchedules(query));
 
-export default useSearchRoomSchedules;
+export default useGetTeamSchedules;

@@ -4,7 +4,7 @@ import { GROUP_NAME_MOCK, MEETINGS_MOCK } from '../../../__mocks__';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
-import useSearchRoomSchedules from '../../../hooks/api/room/schedule/searchSchedule';
+import useGetTeamSchedules from '../../../hooks/api/team-schedule/getSchedules';
 
 const Meeting = () => {
   const handleClickFooterButton = () => Router.push('./meeting/suggestion');
@@ -12,12 +12,14 @@ const Meeting = () => {
     data: schedules,
     isLoading: isSchedulesLoading,
     isError: isSchedulesError
-  } = useSearchRoomSchedules({ roomId: 66 });
+  } = useGetTeamSchedules({ roomId: 66 });
   // TODO: roomId 나중에 API로부터 받아오도록 수정합니다.
 
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
   if (schedules === undefined) return <div>스케쥴 데이터 오류!</div>;
+
+  console.log(schedules);
 
   return (
     <>

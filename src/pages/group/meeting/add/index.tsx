@@ -12,7 +12,7 @@ import {
 import ButtonFooter from '../../../../components/molecules/ButtonFooter';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
-import usePostNewRoomSchedule from '../../../../hooks/api/room/schedule/postSchedule';
+import usePostTeamSchedules from '../../../../hooks/api/team-schedule/postSchedule';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
@@ -120,7 +120,7 @@ const Add = () => {
   const setParticipants = useNewMeetingFormStore(
     (state) => state.setParticipants
   );
-  const { isError, isLoading, mutate, isSuccess } = usePostNewRoomSchedule();
+  const { isError, isLoading, mutate, isSuccess } = usePostTeamSchedules();
 
   const getIsSelected = (id: number) => participants.includes(id);
 
