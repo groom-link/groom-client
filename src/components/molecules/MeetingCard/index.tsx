@@ -3,16 +3,15 @@ import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import { useAdjustNumberOfProfiles } from '../../../hooks';
-import { Participant } from '../../../pages/group';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
 import { Avatar } from '../../atoms';
 
 type Props = {
   title: string;
-  location: string;
-  date: string;
-  participants: Participant[];
+  address: string;
+  startTime: string;
+  profiles: string[];
   editLink?: string;
 };
 
@@ -67,14 +66,14 @@ const ProfileImage = styled(Avatar)`
 
 const MeetingCard = ({
   title,
-  location,
-  date,
-  participants,
+  address,
+  startTime,
+  profiles,
   editLink
 }: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { numberOfOverflow, participantsToShow } = useAdjustNumberOfProfiles({
-    participants,
+    profiles,
     cardWidth: cardRef.current?.clientWidth ?? 0
   });
 
@@ -88,11 +87,11 @@ const MeetingCard = ({
           </Link>
         )}
       </TitleContainer>
-      <MeetingLocation>{location}</MeetingLocation>
-      <MeetingDate>{date}</MeetingDate>
+      <MeetingLocation>{address}</MeetingLocation>
+      <MeetingDate>{startTime}</MeetingDate>
       <ProfileImageContainer ref={cardRef}>
-        {participantsToShow.map(({ id, URL }) => (
-          <ProfileImage proptype="image" key={id} src={URL} />
+        {participantsToShow.map((URL) => (
+          <ProfileImage proptype="image" key={URL} src={URL} />
         ))}
         {numberOfOverflow !== 0 && (
           <ProfileImage proptype="more-profile" count={numberOfOverflow} />

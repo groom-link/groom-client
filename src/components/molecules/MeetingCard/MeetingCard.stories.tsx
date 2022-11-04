@@ -12,8 +12,18 @@ export default {
 
 export const Primary: ComponentStory<typeof MeetingCard> = ({
   title = '회의 제목',
-  location = '회의하는 곳의 주소',
-  date = '2022년 10월 21일',
-  participants = PARTICIPANT_MOCK,
+  address: location = '회의하는 곳의 주소',
+  startTime: date = '2022년 10월 21일',
+  profiles: participants = PARTICIPANT_MOCK,
   editLink = ''
-}) => <MeetingCard {...{ title, location, date, participants, editLink }} />;
+}) => (
+  <MeetingCard
+    {...{
+      title,
+      address: location,
+      startTime: date,
+      profiles: participants,
+      editLink
+    }}
+  />
+);

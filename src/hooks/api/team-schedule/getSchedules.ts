@@ -14,18 +14,22 @@ type GetTeamSchedulesRequest = {
 
 type GetTeamSchedulesResponse = {
   success: boolean;
-  teamScheduleList: {
-    title: string;
-    startTime: string;
-    meetingLocation: {
-      address: string;
-      longitude: string;
-      latitude: string;
-    };
-    profiles: string[];
-  }[];
-  page: number;
-  last: boolean;
+  data: {
+    teamScheduleList: {
+      id: number;
+      title: string;
+      startTime: string;
+      meetingLocation: {
+        address: string;
+        longitude: string;
+        latitude: string;
+      };
+      profiles: string[];
+    }[];
+    page: number;
+    last: boolean;
+  };
+  error: string | null;
 };
 
 type GetSearchRoomSchedules = (
@@ -43,6 +47,8 @@ const getTeamSchedules: GetSearchRoomSchedules = async (query) => {
 };
 
 const useGetTeamSchedules = (query: GetTeamSchedulesRequest) =>
-  useQuery(['getTeamSchedules'], () => getTeamSchedules(query));
+  useQuery(['getTeamSchedules'], () => getTeamSchedules(query), {
+    select: (data) => data.data
+  });
 
 export default useGetTeamSchedules;
