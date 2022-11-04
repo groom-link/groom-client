@@ -4,7 +4,7 @@ import { GROUP_NAME_MOCK } from '../../../__mocks__';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
-import useGetTeamSchedules from '../../../hooks/api/team-schedule/getSchedules';
+import useGetTeamSchedules from '../../../hooks/api/teamSchedule/getSchedules';
 
 const Meeting = () => {
   const handleClickFooterButton = () => Router.push('./meeting/suggestion');
