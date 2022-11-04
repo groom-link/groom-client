@@ -109,7 +109,6 @@ const Suggestion = () => {
               <EditLink>수정</EditLink>
             </Link>
           </TitleContainer>
-          {/* TODO: API에서 받아온 추천시간으로 대체하기. */}
           {recommendTimes.map(({ startTime, endTime }) => (
             <SuggestionTimeListStyled
               key={startTime + endTime}
