@@ -1,35 +1,31 @@
 import { useEffect, useState } from 'react';
 
-import { Participant } from '../pages/group';
-
 const PROFILE_IMAGE_WIDTH = 44 + 8; // 44px: width of profile image, 8px: margin-right
 const CARD_PADDING = 24; // 24px: padding of card
 
 type Props = {
-  participants: Participant[];
+  profiles: string[];
   cardWidth: number;
 };
 
-const useAdjustNumberOfProfiles = ({ participants, cardWidth }: Props) => {
+const useAdjustNumberOfProfiles = ({ profiles, cardWidth }: Props) => {
   const [numberOfOverflow, setNumberOfOverflow] = useState(0);
-  const [participantsToShow, setParticipantsToShow] = useState<Participant[]>(
-    []
-  );
+  const [participantsToShow, setParticipantsToShow] = useState<string[]>([]);
 
   useEffect(() => {
-    const numberOfParticipants = participants.length;
+    const numberOfParticipants = profiles.length;
     const numbeofCanbeShown = Math.floor(
       (cardWidth - CARD_PADDING) / PROFILE_IMAGE_WIDTH
     );
     if (numberOfParticipants > numbeofCanbeShown) {
       const numberOfOverflow = numberOfParticipants - numbeofCanbeShown;
-      setParticipantsToShow(participants.slice(0, numbeofCanbeShown - 1));
+      setParticipantsToShow(profiles.slice(0, numbeofCanbeShown - 1));
       setNumberOfOverflow(numberOfOverflow);
       return;
     }
-    setParticipantsToShow(participants);
+    setParticipantsToShow(profiles);
     setNumberOfOverflow(0);
-  }, [participants, cardWidth]);
+  }, [profiles, cardWidth]);
 
   return { numberOfOverflow, participantsToShow };
 };

@@ -1,6 +1,6 @@
 import Router from 'next/router';
 
-import { GROUP_NAME_MOCK, MEETINGS_MOCK } from '../../../__mocks__';
+import { GROUP_NAME_MOCK } from '../../../__mocks__';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
@@ -19,19 +19,31 @@ const Meeting = () => {
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
   if (schedules === undefined) return <div>스케쥴 데이터 오류!</div>;
 
-  console.log(schedules);
+  const { teamScheduleList } = schedules;
 
   return (
     <>
       <GroupPage groupName={GROUP_NAME_MOCK} selectedTabIndex={1}>
-        {/* TODO: 스케쥴 조회 API 수정되면 목데이터 교체하기 */}
-        {MEETINGS_MOCK.map(({ id, title, location, date, participants }) => (
-          <MeetingCard
-            key={id}
-            {...{ title, location, date, participants }}
-            editLink="./meeting"
-          />
-        ))}
+        {teamScheduleList.map(
+          ({
+            id,
+            title,
+            meetingLocation: { address },
+            startTime,
+            profiles
+          }) => (
+            <MeetingCard
+              key={id}
+              {...{
+                title,
+                address,
+                startTime,
+                profiles
+              }}
+              editLink="./meeting"
+            />
+          )
+        )}
         <ButtonFooter disabled={false} onClick={handleClickFooterButton}>
           회의 만들기
         </ButtonFooter>
