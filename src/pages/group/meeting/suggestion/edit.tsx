@@ -11,28 +11,28 @@ import { medium12, semiBold20 } from '../../../../styles/typography';
 
 const EXCEPTION_TIME_MOCK = [
   {
-    date: '2022.09.01 (목)',
-    time: '오전 10:00 ~ 오후 11:00'
+    startTime: '2022-11-04T10:00:00',
+    endTime: '2022-11-05T10:23:59'
   },
   {
-    date: '2022.09.02 (목)',
-    time: '오전 10:00 ~ 오후 11:00'
+    startTime: '2022-11-04T10:00:00',
+    endTime: '2022-11-05T10:23:59'
   },
   {
-    date: '2022.09.03 (목)',
-    time: '오전 10:00 ~ 오후 11:00'
+    startTime: '2022-11-04T10:00:00',
+    endTime: '2022-11-05T10:23:59'
   },
   {
-    date: '2022.09.04 (목)',
-    time: '오전 10:00 ~ 오후 11:00'
+    startTime: '2022-11-04T10:00:00',
+    endTime: '2022-11-05T10:23:59'
   },
   {
-    date: '2022.09.05 (목)',
-    time: '오전 10:00 ~ 오후 11:00'
+    startTime: '2022-11-04T10:00:00',
+    endTime: '2022-11-05T10:23:59'
   },
   {
-    date: '2022.09.06 (목)',
-    time: '오전 10:00 ~ 오후 11:00'
+    startTime: '2022-11-04T10:00:00',
+    endTime: '2022-11-05T10:23:59'
   }
 ];
 
@@ -106,8 +106,11 @@ const Edit = () => {
           추가시 아래에 회의 불가능한 시간으로 표시됩니다.
         </Description>
       </WhiteBox>
-      {EXCEPTION_TIME_MOCK.map(({ date, time }) => (
-        <SuggestionTimeList key={date + time} {...{ date, time }} />
+      {EXCEPTION_TIME_MOCK.map(({ startTime, endTime }) => (
+        <SuggestionTimeList
+          key={startTime + endTime}
+          {...{ startTime, endTime }}
+        />
       ))}
     </Background>
   );

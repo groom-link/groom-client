@@ -9,6 +9,6 @@ export default {
 } as ComponentMeta<typeof SuggestionTimeList>;
 
 export const Primary: ComponentStory<typeof SuggestionTimeList> = ({
-  date = '2022.09.01 (목)',
-  time = '오전 10:00 ~ 오후 11:00'
-}) => <SuggestionTimeList {...{ date, time }} />;
+  startTime = '2022-11-04T10:00:00:00',
+  endTime = '2022-11-05T10:23:59:00'
+}) => <SuggestionTimeList {...{ startTime, endTime }} />;
