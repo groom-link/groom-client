@@ -11,31 +11,31 @@ import { semiBold16, semiBold20 } from '../../../../styles/typography';
 const SUGGESTION_TIME_MOCK = [
   {
     date: '2022.09.01 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   },
   {
     date: '2022.09.02 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   },
   {
     date: '2022.09.03 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   },
   {
     date: '2022.09.04 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   },
   {
     date: '2022.09.05 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   },
   {
     date: '2022.09.06 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   },
   {
     date: '2022.09.07 (목)',
-    time: '오전 10:00 ~ 오후 12:00'
+    time: '오전 10:00'
   }
 ];
 
@@ -98,6 +98,8 @@ const Suggestion = () => {
   if (isRecommendTimeError) return <div>추천 시간 불러오기 에러!</div>;
   if (recommendTimes === undefined) return <div>추천 시간 데이터 에러!</div>;
 
+  console.log(recommendTimes);
+
   return (
     <>
       <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
@@ -110,8 +112,11 @@ const Suggestion = () => {
             </Link>
           </TitleContainer>
           {/* TODO: API에서 받아온 추천시간으로 대체하기. */}
-          {SUGGESTION_TIME_MOCK.map(({ date, time }) => (
-            <SuggestionTimeListStyled key={date + time} {...{ date, time }} />
+          {recommendTimes.map(({ startTime, endTime }) => (
+            <SuggestionTimeListStyled
+              key={startTime + endTime}
+              {...{ startTime, endTime }}
+            />
           ))}
         </>
       ) : (
