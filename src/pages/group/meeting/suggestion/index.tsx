@@ -112,6 +112,8 @@ const Suggestion = () => {
           {recommendTimes.map(({ startTime, endTime }) => (
             <SuggestionTimeListStyled
               key={startTime + endTime}
+              type="link"
+              href=""
               {...{ startTime, endTime }}
             />
           ))}
