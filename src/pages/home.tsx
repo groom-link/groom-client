@@ -4,7 +4,7 @@ import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { DEMO_GROUP_IMAGE_URL } from '../__mocks__';
-import { Button, Logo, TextButton } from '../components/atoms';
+import { Button, TextButton } from '../components/atoms';
 import { NotificationOff, NotificationOn } from '../components/atoms/icons';
 import {
   Dialog,
@@ -13,6 +13,7 @@ import {
   ThumbnailList,
   TimerPopup
 } from '../components/molecules';
+import Image from '../components/utils/Image';
 import colors from '../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
@@ -118,7 +119,7 @@ const LinkContainer = styled.a`
   text-decoration: none;
 `;
 
-const TemporaryLogo = styled(Logo)`
+const LogoContainer = styled.div`
   margin-top: 100px;
 `;
 
@@ -202,7 +203,6 @@ const Home = () => {
       <Dialog
         isOpen={isModalOpen}
         buttonType="one"
-        isIllustrationExists={false}
         title="존재하지 않는 초대 코드입니다."
         description="초대 코드를 다시 확인해주세요."
         purpleButtonText="확인"
@@ -277,7 +277,14 @@ const Home = () => {
           </GroupContainer>
         ) : (
           <>
-            <TemporaryLogo />
+            <LogoContainer>
+              <Image
+                src="/illustrations/Ghost.png"
+                width="150"
+                height="150"
+                alt="유령 그림"
+              />
+            </LogoContainer>
             <EmptyDescription>
               새 모임을 만들거나
               <br />

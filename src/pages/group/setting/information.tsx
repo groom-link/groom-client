@@ -171,7 +171,6 @@ const Information = () => {
       <Dialog
         isOpen={isConfirmModalOpen}
         title="정말 모임을 끝내시겠어요?"
-        isIllustrationExists={true}
         description="모든 팀원들은 모임에서 나가게 되며, 남은 모임비는 자동으로 반환됩니다."
         buttonType="two"
         grayButtonText="네, 끝낼게요"
@@ -180,6 +179,7 @@ const Information = () => {
         onPurpleButtonClick={handleModalClose}
         isGrayButtonDisabled={false}
         isPurpleButtonDisabled={false}
+        illustrationURL="/illustrations/Warning.png"
       />
     </>
   );

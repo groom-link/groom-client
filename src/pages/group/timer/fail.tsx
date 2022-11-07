@@ -15,6 +15,7 @@ const Fail = () => {
       grayButtonLabel="패널티 받기"
       grayButtonOnClick={() => {}}
       onPurpleButtonClick={() => {}}
+      logoImageSrc="/illustrations/Warning.png"
     />
   );
 };

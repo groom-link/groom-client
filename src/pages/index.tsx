@@ -4,18 +4,11 @@ import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { AppleLoginButton, KakaoLoginButton } from '../components/atoms';
-import colors from '../styles/colors';
+import Image from '../components/utils/Image';
 
-const Logo = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 150px;
-  height: 150px;
-  margin: 120px auto 120px;
-  border: 1px solid ${colors.grayScale.gray04};
-  color: ${colors.grayScale.gray04};
-  font-size: 40px;
+const LogoContainer = styled.div`
+  margin: 30vh auto 20vh;
+  text-align: center;
 `;
 
 const AppleLoginButtonStyled = styled(AppleLoginButton)`
@@ -41,7 +34,15 @@ const Login = () => {
       <Head>
         <title>GRoom | Login</title>
       </Head>
-      <Logo>GRoom</Logo>
+      <LogoContainer>
+        <Image
+          src="/illustrations/Logo.png"
+          alt="GRoom 로고"
+          width="200"
+          height="75.5"
+        />
+      </LogoContainer>
+
       <KakaoLoginButton onClick={handleKakaoLogin} width="100%" />
       <AppleLoginButtonStyled onClick={handleAppleLogin} width="100%" />
     </>

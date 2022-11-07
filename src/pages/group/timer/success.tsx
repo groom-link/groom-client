@@ -17,6 +17,7 @@ const Success = () => {
       }
       purpleButtonLabel="홈화면으로 돌아가기"
       onPurpleButtonClick={handleClick}
+      logoImageSrc="/illustrations/Timer.png"
     />
   );
 };

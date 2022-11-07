@@ -3,10 +3,11 @@ import styled from '@emotion/styled';
 import colors from '../../../styles/colors';
 import { regular16, semiBold20 } from '../../../styles/typography';
 import { Button } from '../../atoms';
+import Image from '../../utils/Image';
 
 type DefaultProps = {
   isOpen: boolean;
-  isIllustrationExists: boolean;
+  illustrationURL?: string;
   title: string;
   purpleButtonText: string;
   isPurpleButtonDisabled: boolean;
@@ -55,11 +56,10 @@ const Title = styled.h1`
   color: ${colors.grayScale.gray06};
 `;
 
-const MockIllustration = styled.div`
+const MockIllustration = styled(Image)`
   width: 140px;
   height: 140px;
   margin: 8px 0 16px;
-  background-color: ${colors.grayScale.gray02};
 `;
 
 const Discription = styled.span`
@@ -83,7 +83,7 @@ const Dialog = ({
   isOpen,
   title,
   description,
-  isIllustrationExists,
+  illustrationURL,
   isPurpleButtonDisabled,
   purpleButtonText,
   onPurpleButtonClick,
@@ -93,7 +93,9 @@ const Dialog = ({
     <FullPageModal isOpen={isOpen}>
       <Container>
         <Title>{title}</Title>
-        {isIllustrationExists && <MockIllustration />}
+        {illustrationURL && (
+          <MockIllustration src={illustrationURL} width="140" height="140" />
+        )}
         <Discription>{description}</Discription>
         <ButtonBox>
           {props.buttonType === 'two' && (
