@@ -1,4 +1,4 @@
-import { ChangeEventHandler } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -12,26 +12,32 @@ import { medium12, semiBold20 } from '../../../../styles/typography';
 
 const EXCEPTION_TIME_MOCK = [
   {
+    id: 1,
     startTime: '2022-11-04T10:00:00',
     endTime: '2022-11-05T10:23:59'
   },
   {
+    id: 2,
     startTime: '2022-11-04T10:00:00',
     endTime: '2022-11-05T10:23:59'
   },
   {
+    id: 3,
     startTime: '2022-11-04T10:00:00',
     endTime: '2022-11-05T10:23:59'
   },
   {
+    id: 4,
     startTime: '2022-11-04T10:00:00',
     endTime: '2022-11-05T10:23:59'
   },
   {
+    id: 5,
     startTime: '2022-11-04T10:00:00',
     endTime: '2022-11-05T10:23:59'
   },
   {
+    id: 6,
     startTime: '2022-11-04T10:00:00',
     endTime: '2022-11-05T10:23:59'
   }
@@ -72,6 +78,7 @@ const Edit = () => {
   } = usePostUnableSchedule();
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
+  const [deleteModeId, setDeleteModeId] = useState<number>(-1);
 
   const handleExcludedTimeSumbit = () =>
     postUnableSchedule({
@@ -117,9 +124,13 @@ const Edit = () => {
           추가시 아래에 회의 불가능한 시간으로 표시됩니다.
         </Description>
       </WhiteBox>
-      {EXCEPTION_TIME_MOCK.map(({ startTime, endTime }) => (
+      {EXCEPTION_TIME_MOCK.map(({ id, startTime, endTime }) => (
         <SuggestionTimeList
           key={startTime + endTime}
+          type="delete"
+          isDeleteButtonExposed={true}
+          onClick={() => {}}
+          onDeleteButtonClick={() => {}}
           {...{ startTime, endTime }}
         />
       ))}
