@@ -13,6 +13,7 @@ export const Primary: ComponentStory<typeof GoBackHome> = ({
   description = '설명입니다. 설명입니다.',
   purpleButtonLabel = '확인',
   onPurpleButtonClick,
+  logoImageSrc,
   ...props
 }) => {
   if (props.proptype === 'one-button')
@@ -23,7 +24,8 @@ export const Primary: ComponentStory<typeof GoBackHome> = ({
           title,
           description,
           purpleButtonLabel,
-          onPurpleButtonClick
+          onPurpleButtonClick,
+          logoImageSrc
         }}
       />
     );
@@ -39,7 +41,8 @@ export const Primary: ComponentStory<typeof GoBackHome> = ({
         description,
         purpleButtonLabel,
         onPurpleButtonClick,
-        grayButtonOnClick
+        grayButtonOnClick,
+        logoImageSrc
       }}
     />
   );

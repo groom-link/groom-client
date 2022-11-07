@@ -12,7 +12,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
   buttonType = 'one',
   title = '다이얼로그 제목',
   description = '다이얼로그 설명',
-  isIllustrationExists = false,
+  illustrationURL,
   isPurpleButtonDisabled = false,
   purpleButtonText = '버튼 이름',
   onPurpleButtonClick = () => console.log('purple clicked')
@@ -25,7 +25,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
           buttonType,
           title,
           description: description,
-          isIllustrationExists,
+          illustrationURL,
           isPurpleButtonDisabled,
           purpleButtonText,
           onPurpleButtonClick
@@ -39,7 +39,7 @@ export const Primary: ComponentStory<typeof Dialog> = ({
         buttonType,
         title,
         description: description,
-        isIllustrationExists,
+        illustrationURL,
         isPurpleButtonDisabled,
         purpleButtonText,
         onPurpleButtonClick,
