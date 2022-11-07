@@ -1,8 +1,9 @@
 import styled from '@emotion/styled';
 
-import { Button, Logo } from '../../../components/atoms';
+import { Button } from '../../../components/atoms';
 import { Kakao } from '../../../components/atoms/icons';
 import { TopCancelBar } from '../../../components/molecules';
+import Image from '../../../components/utils/Image';
 import colors from '../../../styles/colors';
 import { bold16, regular16, semiBold24 } from '../../../styles/typography';
 
@@ -12,8 +13,9 @@ const MainBox = styled.div`
   align-items: center;
 `;
 
-const TemporaryLogo = styled(Logo)`
-  margin-top: 80px;
+const LogoContainer = styled.div`
+  margin-top: 8vh;
+  text-align: center;
 `;
 
 const BoldText = styled.h1`
@@ -51,7 +53,14 @@ const Success = () => {
     <>
       <TopCancelBar cancelURL="/home?group=true" />
       <MainBox>
-        <TemporaryLogo />
+        <LogoContainer>
+          <Image
+            src="/illustrations/Megaphone.png"
+            width="200"
+            height="200"
+            alt="확성기 로고"
+          />
+        </LogoContainer>
         <BoldText>새로운 모임이 만들어졌습니다!</BoldText>
         <Description>이제 모임원들을 초대해보세요.</Description>
         <BoldText>247 342</BoldText>

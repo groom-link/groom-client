@@ -123,7 +123,7 @@ const Basic = () => {
         onPurpleButtonClick={() => setIsModalOpen(false)}
         isGrayButtonDisabled={false}
         isPurpleButtonDisabled={false}
-        isIllustrationExists={true}
+        illustrationURL="/illustrations/Back.png"
       />
       <Background>
         <TopNavBar setting={false} onBackButtonClick={backConfirmCallback} />

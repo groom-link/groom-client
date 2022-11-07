@@ -4,13 +4,15 @@ import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { regular16, semiBold24 } from '../../../styles/typography';
-import { Button, Logo } from '../../atoms';
+import { Button } from '../../atoms';
 import { TopCancelBar } from '../../molecules';
+import Image from '../../utils/Image';
 
 type DefaultProps = {
   title: string;
   description: ReactNode | string;
   purpleButtonLabel: string;
+  logoImageSrc: string;
   onPurpleButtonClick: () => void;
 };
 
@@ -48,23 +50,25 @@ const GrayButton = styled(Button)`
   margin: 0 auto;
 `;
 
-const TemporaryLogo = styled(Logo)`
-  margin: 120px auto 120px;
+const LogoContainer = styled.div`
+  margin: 13vh 0 20px;
+  text-align: center;
 `;
 
-const GoBackHome = (props: Props) => {
-  const {
-    proptype,
-    title,
-    description,
-    purpleButtonLabel,
-    onPurpleButtonClick
-  } = props;
-
+const GoBackHome = ({
+  title,
+  description,
+  purpleButtonLabel,
+  logoImageSrc,
+  onPurpleButtonClick,
+  ...props
+}: Props) => {
   return (
     <>
       <TopCancelBar cancelURL="/home" />
-      <TemporaryLogo />
+      <LogoContainer>
+        <Image src={logoImageSrc} width="200" height="200" alt="결과 로고" />
+      </LogoContainer>
       <Title>{title}</Title>
       <Description>{description}</Description>
       <PurpleButton
@@ -76,7 +80,7 @@ const GoBackHome = (props: Props) => {
       >
         {purpleButtonLabel}
       </PurpleButton>
-      {proptype === 'two-button' && (
+      {props.proptype === 'two-button' && (
         <GrayButton
           width="250px"
           color="gray"
