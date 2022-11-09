@@ -14,7 +14,9 @@ const customAxios = axios.create({
 export const requestIntercepter = customAxios.interceptors.request.use(
   (config) => {
     const accessToken = getCookie(ACCESS_TOKEN_KEY);
-    if (config.url === '/auth/kakao/login') return config;
+    console.log(config.url);
+
+    if (config.url === 'auth/kakao/login') return config;
     if (!config.headers) config.headers = {};
     config.headers['x-access-token'] = accessToken ? accessToken : '';
     return config;
