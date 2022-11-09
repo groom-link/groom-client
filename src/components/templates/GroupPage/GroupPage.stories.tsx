@@ -9,10 +9,11 @@ export default {
 } as ComponentMeta<typeof GroupPage>;
 
 export const Primary: ComponentStory<typeof GroupPage> = ({
+  roomId,
   groupName = '그룹 이름',
   selectedTabIndex = 0
 }) => (
-  <GroupPage {...{ groupName, selectedTabIndex }}>
+  <GroupPage {...{ roomId, groupName, selectedTabIndex }}>
     <div>콘텐츠</div>
   </GroupPage>
 );
