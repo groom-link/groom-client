@@ -7,7 +7,6 @@ import {
   Dialog,
   ImageUploadInput,
   Stepper,
-  TagInput,
   TextArea,
   TextInput,
   TopNavBar
@@ -149,13 +148,13 @@ const Basic = () => {
             onChange={handleDescriptionChange}
           />
         </WhiteBox>
-        <WhiteBox hasMargin={true}>
+        {/* <WhiteBox hasMargin={true}>
           <TagInput
             label="태그"
             placeholder="태그를 입력하세요."
             {...{ addTag, deleteTag, tagList }}
           />
-        </WhiteBox>
+        </WhiteBox> */}
         <WhiteBox hasMargin={true}>
           <Stepper
             label="모임 구성원 수"

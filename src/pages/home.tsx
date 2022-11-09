@@ -14,6 +14,7 @@ import {
   TimerPopup
 } from '../components/molecules';
 import Image from '../components/utils/Image';
+import useGetMyRoom from '../hooks/api/room/getMyRoom';
 import colors from '../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
@@ -175,6 +176,11 @@ const Home = () => {
   const [isGroup, setIsGroup] = useState(false);
   const [isDisplayTimer, setIsDisplayTimer] = useState(false); // TODO: 서버에서 푸쉬 메시지 받아서 타이머 켜기.
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    data: myRoomData,
+    isLoading: isMyRoomLoading,
+    isError: isMyRoomError
+  } = useGetMyRoom();
 
   useEffect(() => {
     setIsGroup(Router.asPath.includes('group'));
@@ -187,16 +193,17 @@ const Home = () => {
   };
 
   const handleJoinClick = () => {
-    if (searchText !== '1234') {
-      setIsModalOpen(true);
-      return;
-    }
-    Router.push('/group/join');
+    if (searchText === '') return;
+    Router.push(`/group/join?code=${searchText}`);
   };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
   };
+
+  if (isMyRoomLoading) return <div>가입된 모임 로딩중...</div>;
+  if (isMyRoomError) return <div>가입된 모임 로딩 실패</div>;
+  if (myRoomData === undefined) return <div>가입된 모임 데이터 에러</div>;
 
   return (
     <>
@@ -245,29 +252,20 @@ const Home = () => {
             </LinkContainer>
           </Link>
         )}
-        {isGroup ? (
+        {myRoomData ? (
           <GroupContainer>
             <GroupType>가입된 모임</GroupType>
-            {GROUPS.map(
-              ({
-                id,
-                profileImageURL,
-                title,
-                numberOfMembers,
-                numberOfMyTodos,
-                tags,
-                nearMeeting
-              }) => (
-                <Link href="/group" key={id}>
+            {myRoomData.roomDtoList.map(
+              ({ id, mainImageUrl, name, nowPeopleNumber }) => (
+                <Link href={`/group?roomId=${id}`} key={id}>
                   <LinkContainer>
                     <GroupCard
                       {...{
-                        profileImageURL,
-                        title,
-                        numberOfMembers,
-                        numberOfMyTodos,
-                        tags,
-                        nearMeeting
+                        profileImageURL: mainImageUrl,
+                        title: name,
+                        numberOfMembers: nowPeopleNumber,
+                        numberOfMyTodos: 0,
+                        tags: []
                       }}
                     />
                   </LinkContainer>

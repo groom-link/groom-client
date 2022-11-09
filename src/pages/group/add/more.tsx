@@ -7,6 +7,8 @@ import { Thumbnail } from '../../../components/atoms';
 import { Warning } from '../../../components/atoms/icons';
 import { RadioButton, Stepper, TopNavBar } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import useGetProducts from '../../../hooks/api/product/getProducts';
+import usePostRoom from '../../../hooks/api/room/postRoom';
 import useNewGroupInformationStore from '../../../store/newGroupInformation';
 import colors from '../../../styles/colors';
 import {
@@ -113,8 +115,13 @@ const More = () => {
   const [selectedGifticon, setSelectedGifticon] = useState<Gifticon>(
     GIFTICON_MOCK[0]
   );
+  const {
+    data: products,
+    isError: isProductsError,
+    isLoading: isProductLoading
+  } = useGetProducts();
   const [penaltyCount, setPenaltyCount] = useState(0);
-  const [isPublic, SetIsPublic] = useState<1 | 2>(1);
+  const [isPublic, SetIsPublic] = useState<1 | 2>(2);
   const profileImageURL = useNewGroupInformationStore(
     (state) => state.profileImageURL
   );
@@ -124,6 +131,7 @@ const More = () => {
   const numberOfMembers = useNewGroupInformationStore(
     (state) => state.numberOfMembers
   );
+  const { mutate } = usePostRoom();
 
   const handleGifticonSelect = (gifticon: Gifticon) =>
     setSelectedGifticon(gifticon);
@@ -150,11 +158,31 @@ const More = () => {
       selectedGifticonID: selectedGifticon.id,
       penaltyCount
     });
-
-    Router.push('./success');
+    mutate(
+      {
+        name,
+        description,
+        mainImageUrl: '',
+        summary: '',
+        maxPeople: numberOfMembers,
+        roomParticipants: [3, 6],
+        roomPenaltyPostDto: {
+          maxAmount: penaltyCount,
+          gifticonId: parseInt(selectedGifticon.id),
+          roomId: 0
+        }
+      },
+      {
+        onSuccess: ({ data: { code } }) => Router.push(`./success?code=${code}`)
+      }
+    );
   };
 
   const handleBackButtonClick = () => Router.push('./basic');
+
+  if (isProductLoading) return <div>로딩중...</div>;
+  if (isProductsError) return <div>기프티콘 로딩 에러!</div>;
+  if (products === undefined) return <div>기프티콘 데이터 에러!</div>;
 
   return (
     <Background>
@@ -173,15 +201,26 @@ const More = () => {
           centerSlidePercentage={50}
           showIndicators={false}
         >
-          {GIFTICON_MOCK.map(({ id, company, menu, price }) => (
-            <Thumbnail
-              key={id}
-              size="small"
-              isActive={id === selectedGifticon?.id}
-              onClick={() => handleGifticonSelect({ id, company, menu, price })}
-              {...{ company, menu, price }}
-            />
-          ))}
+          {products.map(
+            ({ id, organization: { name: companyName }, name, price }) => (
+              <Thumbnail
+                key={id}
+                size="small"
+                isActive={id.toString() === selectedGifticon?.id}
+                onClick={() =>
+                  handleGifticonSelect({
+                    id: id.toString(),
+                    company: companyName,
+                    menu: name,
+                    price
+                  })
+                }
+                company={companyName}
+                menu={name}
+                price={price}
+              />
+            )
+          )}
         </Carousel>
         <PenaltyStepper
           label="1인 최대 패널티 횟수"
@@ -200,10 +239,10 @@ const More = () => {
       <WhiteBox>
         <RadioButton
           radioLabel="모임 공개 여부"
-          option1Label="전체 공개 (검색을 통해 찾을 수 있어요)"
+          option1Label="전체 공개 (검색을 통해 찾을 수 있어요, 준비중이에요!)"
           option2Label="비공개 (링크로만 초대할 수 있어요)"
           selectedValue={isPublic}
-          onChange={handleIsPublicChange}
+          onChange={() => {}}
         />
       </WhiteBox>
       <WhiteBox>

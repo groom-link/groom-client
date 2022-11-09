@@ -74,6 +74,7 @@ const GPSButtonStyled = styled(GPSButton)`
 `;
 
 const Map = () => {
+  const [roomId, setRoomId] = useState(0);
   const coords = useCoords();
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
   const { mapRef, map, center } = useKakaoMaps({
@@ -83,6 +84,13 @@ const Map = () => {
   const [address, setAddress] = useState('지도를 움직여 위치를 선택해주세요.');
   const setAddressStore = useNewMeetingFormStore((state) => state.setAddress);
   const setCoordsStore = useNewMeetingFormStore((state) => state.setCoords);
+
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setRoomId(parseInt(roomId, 10));
+  });
 
   useEffect(() => {
     window.kakao.maps.load(() => {
@@ -110,10 +118,10 @@ const Map = () => {
   const handleClickSetLocationButton = () => {
     setAddressStore(address);
     setCoordsStore(center);
-    Router.push('./');
+    Router.push(`./?roomId=${roomId}`);
   };
 
-  const handleBackButtonClick = () => Router.push('./');
+  const handleBackButtonClick = () => Router.push(`./?roomId=${roomId}`);
 
   return (
     <>

@@ -1,5 +1,6 @@
 import styled from '@emotion/styled';
 
+import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
 import colors from '../../../styles/colors';
 import { textEllipsis } from '../../../styles/mixins';
 import { medium10, medium12, medium18 } from '../../../styles/typography';
@@ -19,7 +20,7 @@ type Props = {
   numberOfMembers: number;
   numberOfMyTodos: number;
   tags: string[];
-  nearMeeting: Meeting | null;
+  nearMeeting?: Meeting;
 };
 
 const Container = styled.div<{ hasNearMeeting: boolean }>`
@@ -144,7 +145,11 @@ const ThumbnailList = ({
       <TopBox>
         <ImageBox>
           <Image
-            src={profileImageURL}
+            src={
+              profileImageURL === '' || 'string'
+                ? DEMO_GROUP_IMAGE_URL
+                : profileImageURL
+            }
             layout="fill"
             objectFit="cover"
             alt="모임 프로필"

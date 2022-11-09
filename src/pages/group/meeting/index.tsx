@@ -1,19 +1,32 @@
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 import { GROUP_NAME_MOCK } from '../../../__mocks__';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
+import useDeleteTeamSchedule from '../../../hooks/api/teamSchedule/deleteSchedule';
 import useGetTeamSchedules from '../../../hooks/api/teamSchedule/getSchedules';
+import { queryClient } from '../../_app';
 
 const Meeting = () => {
-  const handleClickFooterButton = () => Router.push('./meeting/suggestion');
+  const [roomId, setRoomId] = useState(0);
+  const { mutate } = useDeleteTeamSchedule();
   const {
     data: schedules,
     isLoading: isSchedulesLoading,
     isError: isSchedulesError
-  } = useGetTeamSchedules({ roomId: 66 });
-  // TODO: roomId 나중에 API로부터 받아오도록 수정합니다.
+  } = useGetTeamSchedules({ roomId });
+
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setRoomId(parseInt(roomId, 10));
+  });
+
+  const handleClickFooterButton = () =>
+    Router.push(`./meeting/suggestion?roomId=${roomId}`);
 
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
@@ -23,7 +36,11 @@ const Meeting = () => {
 
   return (
     <>
-      <GroupPage groupName={GROUP_NAME_MOCK} selectedTabIndex={1}>
+      <GroupPage
+        roomId={roomId}
+        groupName={GROUP_NAME_MOCK}
+        selectedTabIndex={1}
+      >
         {teamScheduleList.map(
           ({
             id,
@@ -34,13 +51,20 @@ const Meeting = () => {
           }) => (
             <MeetingCard
               key={id}
+              onDeleteClick={() =>
+                mutate(id, {
+                  onSuccess: () =>
+                    queryClient.invalidateQueries(['getTeamSchedules'])
+                })
+              }
               {...{
+                id,
                 title,
                 address,
                 startTime,
                 profiles
               }}
-              editLink="./meeting"
+              editLink=" "
             />
           )
         )}

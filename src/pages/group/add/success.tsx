@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Button } from '../../../components/atoms';
@@ -49,6 +50,15 @@ const KakaoShareButton = styled.button`
 `;
 
 const Success = () => {
+  const [code, setCode] = useState('');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('code');
+    if (!inviteCode) return;
+    setCode(inviteCode);
+  }, []);
+
   return (
     <>
       <TopCancelBar cancelURL="/home?group=true" />
@@ -63,7 +73,7 @@ const Success = () => {
         </LogoContainer>
         <BoldText>새로운 모임이 만들어졌습니다!</BoldText>
         <Description>이제 모임원들을 초대해보세요.</Description>
-        <BoldText>247 342</BoldText>
+        <BoldText>{code}</BoldText>
         <CodePasteButton
           width="250px"
           size="large"

@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { MeetingCard } from '../../components/molecules';
@@ -19,11 +21,19 @@ const SubTitle = styled.h2`
 `;
 
 const Home = () => {
+  const [roomId, setRoomId] = useState(0);
   const {
     data: schedules,
     isLoading: isSchedulesLoading,
     isError: isSchedulesError
-  } = useGetTeamSchedules({ roomId: 66 });
+  } = useGetTeamSchedules({ roomId });
+
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setRoomId(parseInt(roomId, 10));
+  }, []);
 
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
@@ -32,11 +42,14 @@ const Home = () => {
   const { teamScheduleList } = schedules;
 
   return (
-    <GroupPage selectedTabIndex={0} groupName={GROUP_NAME_MOCK}>
+    <GroupPage roomId={roomId} selectedTabIndex={0} groupName={GROUP_NAME_MOCK}>
       <SubTitle>가까운 회의 일정</SubTitle>
       {teamScheduleList.map(
         ({ id, title, meetingLocation: { address }, startTime, profiles }) => (
-          <MeetingCard key={id} {...{ title, address, startTime, profiles }} />
+          <MeetingCard
+            key={id}
+            {...{ id, title, address, startTime, profiles }}
+          />
         )
       )}
     </GroupPage>

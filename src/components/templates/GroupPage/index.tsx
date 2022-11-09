@@ -8,6 +8,7 @@ import { Tab } from '../../atoms';
 import { TopNavBar } from '../../molecules';
 
 type Props = {
+  roomId: number;
   className?: string;
   groupName: string;
   selectedTabIndex: 0 | 1 | 2;
@@ -49,6 +50,7 @@ const ContentBox = styled.div`
 `;
 
 const GroupPage = ({
+  roomId,
   className,
   groupName,
   selectedTabIndex,
@@ -60,7 +62,7 @@ const GroupPage = ({
     <Background className={className}>
       <TopNavBar
         setting={true}
-        settingURL="/group/setting/information"
+        settingURL={`/group/setting/information?roomId=${roomId}`}
         onBackButtonClick={handleBackButtonClick}
       />
       <GroupName>{groupName}</GroupName>
@@ -68,21 +70,22 @@ const GroupPage = ({
         <Tab
           isSelected={selectedTabIndex === TAB_INDEX.FIRST}
           htmlFor=""
-          href="/group"
+          href={`/group?roomId=${roomId}`}
         >
           홈
         </Tab>
         <Tab
           isSelected={selectedTabIndex === TAB_INDEX.SECOND}
           htmlFor=""
-          href="/group/meeting"
+          href={`/group/meeting?roomId=${roomId}`}
         >
           회의 시간
         </Tab>
         <Tab
           isSelected={selectedTabIndex === TAB_INDEX.THRID}
           htmlFor=""
-          href="/group/invite"
+          // TODO: 초대 코드 복사 페이지로 이동시키기.
+          href={`/group/meeting?roomId=${roomId}`}
         >
           초대하기
         </Tab>

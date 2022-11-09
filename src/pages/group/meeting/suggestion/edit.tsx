@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -6,42 +6,12 @@ import { Button, SuggestionTimeList } from '../../../../components/atoms';
 import { TopNavBar } from '../../../../components/molecules';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
+import useDeleteUnableSchedule from '../../../../hooks/api/room/deleteUnableSchedule';
+import useGetUnableScheduleTime from '../../../../hooks/api/room/getUnableScheduleTime';
 import usePostUnableSchedule from '../../../../hooks/api/unableSchedule/postUnableSchedule';
 import colors from '../../../../styles/colors';
 import { medium12, semiBold20 } from '../../../../styles/typography';
-
-const EXCEPTION_TIME_MOCK = [
-  {
-    id: 1,
-    startTime: '2022-11-04T10:00:00',
-    endTime: '2022-11-05T10:23:59'
-  },
-  {
-    id: 2,
-    startTime: '2022-11-04T10:00:00',
-    endTime: '2022-11-05T10:23:59'
-  },
-  {
-    id: 3,
-    startTime: '2022-11-04T10:00:00',
-    endTime: '2022-11-05T10:23:59'
-  },
-  {
-    id: 4,
-    startTime: '2022-11-04T10:00:00',
-    endTime: '2022-11-05T10:23:59'
-  },
-  {
-    id: 5,
-    startTime: '2022-11-04T10:00:00',
-    endTime: '2022-11-05T10:23:59'
-  },
-  {
-    id: 6,
-    startTime: '2022-11-04T10:00:00',
-    endTime: '2022-11-05T10:23:59'
-  }
-];
+import { queryClient } from '../../../_app';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -71,22 +41,39 @@ const Description = styled.span`
 `;
 
 const Edit = () => {
+  const [roomId, setRoomId] = useState(0);
+  const [deleteModeId, setDeleteModeId] = useState<number>(-1);
+  const { mutate: postUnableSchedule } = usePostUnableSchedule();
+  const { mutate: deleteUnableSchedule } = useDeleteUnableSchedule();
   const {
-    mutate: postUnableSchedule,
-    isError: isPostUnableSchduleError,
-    isLoading: isPostUnableSchduleLoading
-  } = usePostUnableSchedule();
+    data: unableScheduleTimeData,
+    isError: isUnableScheduleTimeError,
+    isLoading: isUnableScheduleTimeLoading
+  } = useGetUnableScheduleTime(roomId);
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
-  const [deleteModeId, setDeleteModeId] = useState<number>(-1);
+
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setRoomId(parseInt(roomId, 10));
+  });
 
   const handleExcludedTimeSumbit = () =>
-    postUnableSchedule({
-      startTime: startDatetime,
-      endTime: endDatetime,
-      roomId: 66
-    });
-  // TODO: roomId는 API에서 받아오도록 수정.
+    postUnableSchedule(
+      {
+        startTime: startDatetime,
+        endTime: endDatetime,
+        roomId
+      },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries(['getUnableScheduleTime']);
+          queryClient.invalidateQueries(['getRecommendTime']);
+        }
+      }
+    );
 
   const handleStartDatetimeChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -96,7 +83,13 @@ const Edit = () => {
     target: { value }
   }) => setEndDatetime(value);
 
-  const handleBackButtonClick = () => Router.push('./');
+  const handleBackButtonClick = () => Router.push(`./?roomId=${roomId}`);
+
+  if (isUnableScheduleTimeLoading) return <div>회의 불가능 시간 로딩중...</div>;
+  if (isUnableScheduleTimeError)
+    return <div>회의 불가능 시간 불러오기 에러!</div>;
+  if (unableScheduleTimeData === undefined)
+    return <div>회의 불가능 시간 데이터 에러!</div>;
 
   return (
     <Background>
@@ -124,13 +117,22 @@ const Edit = () => {
           추가시 아래에 회의 불가능한 시간으로 표시됩니다.
         </Description>
       </WhiteBox>
-      {EXCEPTION_TIME_MOCK.map(({ id, startTime, endTime }) => (
+      {unableScheduleTimeData.map(({ id, startTime, endTime }) => (
         <SuggestionTimeList
-          key={startTime + endTime}
+          key={id}
           type="delete"
-          isDeleteButtonExposed={true}
-          onClick={() => {}}
-          onDeleteButtonClick={() => {}}
+          isDeleteButtonExposed={deleteModeId === id}
+          onClick={() => {
+            setDeleteModeId(id);
+          }}
+          onDeleteButtonClick={() =>
+            deleteUnableSchedule(id, {
+              onSuccess: () => {
+                queryClient.invalidateQueries(['getUnableScheduleTime']);
+                queryClient.invalidateQueries(['getRecommendTime']);
+              }
+            })
+          }
           {...{ startTime, endTime }}
         />
       ))}

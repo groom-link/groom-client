@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -12,6 +12,7 @@ import {
 import ButtonFooter from '../../../../components/molecules/ButtonFooter';
 import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
+import useGetDetailWithRoomId from '../../../../hooks/api/room/getDetailWithRoomId';
 import usePostTeamSchedules from '../../../../hooks/api/teamSchedule/postSchedule';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
@@ -20,6 +21,7 @@ import {
   semiBold16,
   semiBold20
 } from '../../../../styles/typography';
+import { queryClient } from '../../../_app';
 
 const MEMBERS_MOCK = [
   {
@@ -101,6 +103,7 @@ const SearchInMapButton = styled(TextButton)`
 `;
 
 const Add = () => {
+  const [roomId, setRoomId] = useState(0);
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
   const [isOnlineMeeting, setIsOnlineMeeting] = useState(false);
@@ -120,7 +123,27 @@ const Add = () => {
   const setParticipants = useNewMeetingFormStore(
     (state) => state.setParticipants
   );
-  const { isError, isLoading, mutate, isSuccess } = usePostTeamSchedules();
+  const { mutate: postTeamScheduleMutate } = usePostTeamSchedules();
+  const {
+    data: groupDetailData,
+    isError: isGroupDetailError,
+    isLoading: isGroupDetailLoading
+  } = useGetDetailWithRoomId(roomId);
+
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setRoomId(parseInt(roomId, 10));
+  });
+
+  useEffect(() => {
+    const { startTime, endTime } = Router.query;
+    if (!startTime || !endTime) return;
+    if (typeof startTime !== 'string' || typeof endTime !== 'string') return;
+    setStartDatetimeStore(startTime.slice(0, 16));
+    setEndDatetimeStore(endTime.slice(0, 16));
+  });
 
   const getIsSelected = (id: number) => participants.includes(id);
 
@@ -152,31 +175,49 @@ const Add = () => {
 
   const handleClickToggle = () => setIsOnlineMeeting((pre) => !pre);
 
-  const handleSearchInMapClick = () => Router.push('./add/map');
+  const handleSearchInMapClick = () =>
+    Router.push(`./add/map?roomId=${roomId}`);
 
   const handleSubmitNewMeeting = () => {
     // room 도메인 API가 수정될 때까지 더미 데이터를 임시로 사용합니다.
-    mutate({
-      title,
-      startTime: startDatetime,
-      endTime: endDatetime,
-      participantsIds: [3, 6, 48],
-      meetingLocation: {
-        address,
-        latitude: coords[0].toString(10),
-        longitude: coords[1].toString(10)
+    postTeamScheduleMutate(
+      {
+        title,
+        startTime: startDatetime,
+        endTime: endDatetime,
+        participantsIds: participants,
+        meetingLocation: {
+          address,
+          latitude: coords[0].toString(10),
+          longitude: coords[1].toString(10)
+        },
+        roomId
       },
-      roomId: 66
-    });
+      {
+        onSuccess: () => {
+          clearStore();
+          queryClient.invalidateQueries(['getTeamSchedules']);
+          Router.push(`/group/meeting?roomId=${roomId}`);
+        }
+      }
+    );
   };
 
-  const handleBackButtonClick = () => {
+  const clearStore = () => {
     setTitle('');
     setStartDatetimeStore('');
     setEndDatetimeStore('');
     setParticipants([]);
-    Router.push('./suggestion');
   };
+
+  const handleBackButtonClick = () => {
+    clearStore();
+    Router.push(`./suggestion?roomId=${roomId}`);
+  };
+
+  if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
+  if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
+  if (groupDetailData === undefined) return <div>그룹 정보 데이터 에러!</div>;
 
   return (
     <Background>
@@ -197,15 +238,18 @@ const Add = () => {
         endDatetime={endDateStored || endDatetime}
       />
       <MemberListLabel>모임 구성원</MemberListLabel>
-      {MEMBERS_MOCK.map(({ id, src, name }) => (
-        <MemberList
-          key={id}
-          check={true}
-          isChecked={getIsSelected(id)}
-          onChange={() => selectMember(id)}
-          {...{ src, name }}
-        />
-      ))}
+      {groupDetailData.roomParticipants.map(
+        ({ id, profileImageUrl, nickname }) => (
+          <MemberList
+            key={id}
+            check={true}
+            src={profileImageUrl}
+            name={nickname}
+            isChecked={getIsSelected(id)}
+            onChange={() => selectMember(id)}
+          />
+        )
+      )}
       <ToggleContainer>
         <ToggleLabel>비대면 회의</ToggleLabel>
         <Toggle isOn={isOnlineMeeting} onClick={handleClickToggle} />
