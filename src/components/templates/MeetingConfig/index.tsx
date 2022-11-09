@@ -1,41 +1,12 @@
 import { ChangeEventHandler } from 'react';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
 import { TextButton, Toggle } from '../../atoms';
 import { MemberList, TextInput, TopNavBar } from '../../molecules';
 import ButtonFooter from '../../molecules/ButtonFooter';
 import TimePicker from '../../molecules/TimePicker';
-
-const MEMBERS_MOCK = [
-  {
-    id: 1,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름1'
-  },
-  {
-    id: 2,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름2'
-  },
-  {
-    id: 3,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름3'
-  },
-  {
-    id: 4,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름4'
-  },
-  {
-    id: 5,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름5'
-  }
-];
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -88,7 +59,15 @@ const SearchInMapButton = styled(TextButton)`
   margin: 16px auto 0;
 `;
 
+type GroupMember = {
+  id: number;
+  name: string;
+  profileImageURL: string;
+};
+
 type Props = {
+  onDeleteClick?: () => void;
+  groupMembers: GroupMember[];
   title: string;
   onBackButtonClick: () => void;
   onMeetingTitleChange: ChangeEventHandler<HTMLInputElement>;
@@ -106,6 +85,8 @@ type Props = {
 };
 
 const MeetingConfig = ({
+  onDeleteClick,
+  groupMembers,
   title,
   onBackButtonClick,
   onMeetingTitleChange,
@@ -142,13 +123,13 @@ const MeetingConfig = ({
         }}
       />
       <MemberListLabel>모임 구성원</MemberListLabel>
-      {MEMBERS_MOCK.map(({ id, src, name }) => (
+      {groupMembers.map(({ id, profileImageURL, name }) => (
         <MemberList
           key={id}
           check={true}
           isChecked={getIsMemberSelected(id)}
           onChange={() => onChangeMemberSelect(id)}
-          {...{ src, name }}
+          {...{ src: profileImageURL, name }}
         />
       ))}
       <ToggleContainer>

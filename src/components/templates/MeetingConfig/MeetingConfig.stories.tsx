@@ -1,8 +1,37 @@
 import React, { ChangeEventHandler, useState } from 'react';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 
+import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { UseDatetimePicker } from '../../../hooks';
 import MeetingConfig from './index';
+
+const MEMBERS_MOCK = [
+  {
+    id: 1,
+    profileImageURL: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름1'
+  },
+  {
+    id: 2,
+    profileImageURL: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름2'
+  },
+  {
+    id: 3,
+    profileImageURL: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름3'
+  },
+  {
+    id: 4,
+    profileImageURL: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름4'
+  },
+  {
+    id: 5,
+    profileImageURL: DEMO_PROFILE_IMAGE_URL,
+    name: '구성원 이름5'
+  }
+];
 
 export default {
   title: 'templates/MeetingConfig',
@@ -48,6 +77,7 @@ export const Primary: ComponentStory<typeof MeetingConfig> = () => {
 
   return (
     <MeetingConfig
+      groupMembers={MEMBERS_MOCK}
       {...{
         startDatetime,
         endDatetime,

@@ -5,7 +5,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import GlobalStyle from '../styles/Global';
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

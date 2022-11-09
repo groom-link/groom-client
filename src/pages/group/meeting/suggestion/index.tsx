@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
@@ -83,16 +84,27 @@ const AddTimeButton = styled(Button)`
 `;
 
 const Suggestion = () => {
+  const [roomId, setRoomId] = useState(0);
   const {
     data: recommendTimes,
     isError: isRecommendTimeError,
     isLoading: isRecommendTimeLoading
-  } = useGetRecommendTime({ roomId: 66, query: { date: '2022-11-04' } });
-  // TODO: roomId는 API에서 받아온 값으로, date는 현재 날짜로 변경해야 함
+  } = useGetRecommendTime({
+    roomId,
+    query: { date: new Date().toISOString().split('T')[0] }
+  });
 
-  const handleClickAddMenually = () => Router.push('./add');
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setRoomId(parseInt(roomId, 10));
+  });
 
-  const handleBackButtonClick = () => Router.push('./');
+  const handleClickAddMenually = () => Router.push(`./add?roomId=${roomId}`);
+
+  const handleBackButtonClick = () =>
+    Router.push(`/group/meeting?roomId=${roomId}`);
 
   if (isRecommendTimeLoading) return <div>추천 시간 로딩중...</div>;
   if (isRecommendTimeError) return <div>추천 시간 불러오기 에러!</div>;
@@ -101,11 +113,11 @@ const Suggestion = () => {
   return (
     <>
       <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
-      {SUGGESTION_TIME_MOCK.length ? (
+      {recommendTimes.length ? (
         <>
           <TitleContainer>
             <Title>회의가 가능한 날들이에요.</Title>
-            <Link passHref href="./suggestion/edit">
+            <Link passHref href={`./suggestion/edit?roomId=${roomId}`}>
               <EditLink>수정</EditLink>
             </Link>
           </TitleContainer>
@@ -113,7 +125,7 @@ const Suggestion = () => {
             <SuggestionTimeListStyled
               key={startTime + endTime}
               type="link"
-              href=""
+              href={`./add?roomId=${roomId}&startTime=${startTime}&endTime=${endTime}`}
               {...{ startTime, endTime }}
             />
           ))}

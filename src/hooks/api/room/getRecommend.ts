@@ -25,7 +25,8 @@ const getRecommandTime: GetRecommendTime = async ({ roomId, query }) => {
 
 const useGetRecommendTime = (query: GetRecommendTimeRequest) =>
   useQuery(['getRecommendTime'], () => getRecommandTime(query), {
-    select: (data) => data.data
+    select: (data) => data.data,
+    enabled: query.roomId !== 0
   });
 
 export default useGetRecommendTime;

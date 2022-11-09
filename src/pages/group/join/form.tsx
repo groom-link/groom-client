@@ -1,9 +1,11 @@
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { Dialog, TextArea, TopNavBar } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
+import useAddParticipant from '../../../hooks/api/room/addParticipant';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../../styles/typography';
 
@@ -42,7 +44,21 @@ const Money = styled.strong`
 
 const Form = () => {
   const [text, setText] = useState('');
+  const [joinRoomId, setJoinRoomId] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    data: myInformation,
+    isError: isMyInformationError,
+    isLoading: isMyInformationLoading
+  } = useGetMyInformation();
+  const { mutate } = useAddParticipant();
+
+  useEffect(() => {
+    const { roomId } = Router.query;
+    if (!roomId) return;
+    if (typeof roomId !== 'string') return;
+    setJoinRoomId(parseInt(roomId, 10));
+  }, []);
 
   const handleChange: ChangeEventHandler<HTMLTextAreaElement> = ({
     target: { value }
@@ -53,6 +69,10 @@ const Form = () => {
   const handleModalConfirmButtonClick = () => Router.push('./');
 
   const handleModalCancelButtonClick = () => setIsModalOpen(false);
+
+  if (isMyInformationLoading) return <div>로딩중...</div>;
+  if (isMyInformationError) return <div>내 정보 불러오기 에러!</div>;
+  if (myInformation === undefined) return <div>내 정보 데이터 에러!</div>;
 
   return (
     <>
@@ -77,7 +97,14 @@ const Form = () => {
         </WhiteBox>
         <ButtonFooter
           disabled={text === ''}
-          onClick={() => Router.push('./success')}
+          onClick={() => {
+            console.log(joinRoomId, myInformation.id);
+
+            mutate(
+              { roomId: joinRoomId, userId: myInformation.id },
+              { onSuccess: () => Router.push('./success') }
+            );
+          }}
         >
           모임비 결제하기
         </ButtonFooter>

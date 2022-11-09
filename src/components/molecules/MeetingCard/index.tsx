@@ -5,14 +5,17 @@ import styled from '@emotion/styled';
 import { useAdjustNumberOfProfiles } from '../../../hooks';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
+import makeDateTimeString from '../../../utils/makeDatetimeString';
 import { Avatar } from '../../atoms';
 
 type Props = {
+  id: number;
   title: string;
   address: string;
   startTime: string;
   profiles: string[];
   editLink?: string;
+  onDeleteClick?: (id: number) => void;
 };
 
 const Card = styled.div`
@@ -23,12 +26,24 @@ const Card = styled.div`
   background-color: ${colors.grayScale.white};
 `;
 
+const SettingContainer = styled.div`
+  display: flex;
+`;
+
 const EditLink = styled.a`
   ${semiBold16};
   display: block;
   padding: 10px 12px;
   text-decoration: none;
   color: ${colors.grayScale.gray04};
+`;
+
+const DeleteButton = styled.button`
+  ${semiBold16};
+  display: block;
+  padding: 10px 12px;
+  text-decoration: none;
+  color: ${colors.etcColor.alertRed};
 `;
 
 const TitleContainer = styled.div`
@@ -65,11 +80,13 @@ const ProfileImage = styled(Avatar)`
 `;
 
 const MeetingCard = ({
+  id,
   title,
   address,
   startTime,
   profiles,
-  editLink
+  editLink,
+  onDeleteClick
 }: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { numberOfOverflow, participantsToShow } = useAdjustNumberOfProfiles({
@@ -77,18 +94,27 @@ const MeetingCard = ({
     cardWidth: cardRef.current?.clientWidth ?? 0
   });
 
+  const { dateString, timeString } = makeDateTimeString(startTime);
+
   return (
     <Card>
       <TitleContainer>
         <MeetingTitle>{title}</MeetingTitle>
         {editLink && (
-          <Link passHref href={editLink}>
-            <EditLink>수정</EditLink>
-          </Link>
+          <SettingContainer>
+            <Link passHref href={editLink}>
+              <EditLink>수정</EditLink>
+            </Link>
+            {onDeleteClick && (
+              <DeleteButton type="button" onClick={() => onDeleteClick(id)}>
+                삭제
+              </DeleteButton>
+            )}
+          </SettingContainer>
         )}
       </TitleContainer>
       <MeetingLocation>{address}</MeetingLocation>
-      <MeetingDate>{startTime}</MeetingDate>
+      <MeetingDate>{`${dateString} ${timeString}`}</MeetingDate>
       <ProfileImageContainer ref={cardRef}>
         {participantsToShow.map((URL) => (
           <ProfileImage proptype="image" key={URL} src={URL} />

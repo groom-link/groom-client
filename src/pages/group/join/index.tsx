@@ -1,11 +1,12 @@
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { Avatar, Tag } from '../../../components/atoms';
 import { TopNavBar } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import Image from '../../../components/utils/Image';
+import useGetDetailWithCode from '../../../hooks/api/room/getDetailWithCode';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../../styles/typography';
 
@@ -68,7 +69,25 @@ const Money = styled.strong`
 `;
 
 const Detail = () => {
+  const [inviteCode, setInviteCode] = useState('');
+  const {
+    isError,
+    isLoading,
+    data: groupData
+  } = useGetDetailWithCode(inviteCode);
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const inviteCode = urlParams.get('code');
+    if (!inviteCode) return;
+    setInviteCode(inviteCode);
+  }, []);
+
   const handleBackButtonClick = () => Router.push('/home');
+
+  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (isLoading) return <div>로딩중...</div>;
+  if (groupData === undefined) return <div>그룹 데이터 에러!</div>;
 
   return (
     <Background>
@@ -81,35 +100,37 @@ const Detail = () => {
         width="414"
       />
       <WhiteBox>
-        <GroupName>모임 이름</GroupName>
-        <Description>
-          Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aut
-          accusantium autem fugit, odio in, excepturi voluptatum quia quaerat
-          exercitationem, quidem esse corporis sequi. Officiis asperiores illo,
-          necessitatibus ex tempore molestiae voluptas ullam maxime beatae
-          quaerat hic earum. Nemo voluptas a, molestiae rerum et unde esse.
-          Suscipit illum sit tenetur provident.
-        </Description>
+        <GroupName>{groupData.name}</GroupName>
+        <Description>{groupData.description}</Description>
+        {/* 
+        // TODO: room 테이블에 tags 데이터 추가되면 수정하기.
         <TagBox>
           <GroupTag type="default">태그</GroupTag>
           <GroupTag type="default">태그</GroupTag>
           <GroupTag type="default">태그</GroupTag>
           <GroupTag type="default">태그</GroupTag>
-        </TagBox>
+        </TagBox> */}
       </WhiteBox>
       <WhiteBox>
-        <SubTitle>팀원(5)</SubTitle>
+        <SubTitle>{`팀원(${groupData.nowPeopleNumber})`}</SubTitle>
         <ProfileBox>
-          <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
-          <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
-          <ProfileImage proptype="image" src={DEMO_PROFILE_IMAGE_URL} />
+          {groupData.roomParticipants.map(({ id, profileImageUrl }) => (
+            <ProfileImage proptype="image" src={profileImageUrl} key={id} />
+          ))}
         </ProfileBox>
       </WhiteBox>
+      {/*
+      // TODO: 모임비 관련 기능 추가되면 수정하기.
       <WhiteBox>
         <SubTitle>모임비</SubTitle>
         <Money>50,000원</Money>
-      </WhiteBox>
-      <ButtonFooter disabled={false} onClick={() => Router.push('./join/form')}>
+      </WhiteBox> */}
+      <ButtonFooter
+        disabled={false}
+        onClick={() =>
+          Router.push(`./join/form?code=${inviteCode}&roomId=${groupData.id}`)
+        }
+      >
         가입 초대받기
       </ButtonFooter>
     </Background>
