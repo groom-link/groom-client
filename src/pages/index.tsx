@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import Head from 'next/head';
-import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { AppleLoginButton, KakaoLoginButton } from '../components/atoms';
@@ -24,7 +23,6 @@ const Login = () => {
     Kakao.Auth.authorize({
       redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
     });
-    Router.push('/home');
   };
 
   const handleAppleLogin = () => console.log('apple login is not supported.');

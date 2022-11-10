@@ -2,7 +2,6 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
-import { setCookie } from 'cookies-next';
 
 import { DEMO_GROUP_IMAGE_URL } from '../__mocks__';
 import { Button, TextButton } from '../components/atoms';
@@ -205,8 +204,6 @@ const Home = () => {
   if (isMyRoomLoading) return <div>가입된 모임 로딩중...</div>;
   if (isMyRoomError) return <div>가입된 모임 로딩 실패</div>;
   if (myRoomData === undefined) return <div>가입된 모임 데이터 에러</div>;
-
-  setCookie('test', 'test');
 
   return (
     <>
