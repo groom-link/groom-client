@@ -5,6 +5,10 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <meta
+          httpEquiv="Content-Security-Policy"
+          content="upgrade-insecure-requests"
+        />
         <link rel="icon" href="#" />
         <link
           rel="stylesheet"
