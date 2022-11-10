@@ -1,5 +1,3 @@
-import { setCookie } from 'cookies-next';
-
 import {
   ACCESS_TOKEN_KEY,
   REFRESH_TOKEN_KEY
@@ -32,8 +30,8 @@ const loginWithKakao = async () => {
   try {
     const { accessToken, refreshToken } = await getServerToken(code);
     if (!accessToken || !refreshToken) throw Error();
-    setCookie(ACCESS_TOKEN_KEY, accessToken);
-    setCookie(REFRESH_TOKEN_KEY, refreshToken);
+    document.cookie = `${ACCESS_TOKEN_KEY}=${accessToken}`;
+    document.cookie = `${REFRESH_TOKEN_KEY}=${refreshToken}`;
 
     return 'success';
   } catch (error) {
