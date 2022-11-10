@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
-import { GROUP_NAME_MOCK } from '../../../__mocks__';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
+import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useDeleteTeamSchedule from '../../../hooks/api/teamSchedule/deleteSchedule';
 import useGetTeamSchedules from '../../../hooks/api/teamSchedule/getSchedules';
 import { queryClient } from '../../_app';
@@ -17,6 +17,11 @@ const Meeting = () => {
     isLoading: isSchedulesLoading,
     isError: isSchedulesError
   } = useGetTeamSchedules({ roomId });
+  const {
+    data: groupDetail,
+    isLoading: isGroupDetailLoading,
+    isError: isGroupDetailError
+  } = useGetDetailWithRoomId(roomId);
 
   useEffect(() => {
     const { roomId } = Router.query;
@@ -31,6 +36,9 @@ const Meeting = () => {
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
   if (schedules === undefined) return <div>스케쥴 데이터 오류!</div>;
+  if (isGroupDetailLoading) return <div>그룹 상세 로딩중...</div>;
+  if (isGroupDetailError) return <div>그룹 상세 로딩 에러!</div>;
+  if (groupDetail === undefined) return <div>그룹 상세 데이터 오류!</div>;
 
   const { teamScheduleList } = schedules;
 
@@ -38,7 +46,7 @@ const Meeting = () => {
     <>
       <GroupPage
         roomId={roomId}
-        groupName={GROUP_NAME_MOCK}
+        groupName={groupDetail?.name}
         selectedTabIndex={1}
       >
         {teamScheduleList.map(

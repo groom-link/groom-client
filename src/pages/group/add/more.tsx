@@ -7,6 +7,7 @@ import { Thumbnail } from '../../../components/atoms';
 import { Warning } from '../../../components/atoms/icons';
 import { RadioButton, Stepper, TopNavBar } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useGetProducts from '../../../hooks/api/product/getProducts';
 import usePostRoom from '../../../hooks/api/room/postRoom';
 import useNewGroupInformationStore from '../../../store/newGroupInformation';
@@ -120,6 +121,11 @@ const More = () => {
     isError: isProductsError,
     isLoading: isProductLoading
   } = useGetProducts();
+  const {
+    data: myInformation,
+    isError: isMyInformationError,
+    isLoading: isMyInformationLoading
+  } = useGetMyInformation();
   const [penaltyCount, setPenaltyCount] = useState(0);
   const [isPublic, SetIsPublic] = useState<1 | 2>(2);
   const profileImageURL = useNewGroupInformationStore(
@@ -148,7 +154,7 @@ const More = () => {
     target: { value }
   }) => SetIsPublic(parseInt(value) as 1 | 2);
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = (id: number) => {
     console.log({
       profileImageURL,
       name,
@@ -165,7 +171,7 @@ const More = () => {
         mainImageUrl: '',
         summary: '',
         maxPeople: numberOfMembers,
-        roomParticipants: [3, 6],
+        roomParticipants: [id],
         roomPenaltyPostDto: {
           maxAmount: penaltyCount,
           gifticonId: parseInt(selectedGifticon.id),
@@ -180,9 +186,13 @@ const More = () => {
 
   const handleBackButtonClick = () => Router.push('./basic');
 
-  if (isProductLoading) return <div>로딩중...</div>;
+  if (isProductLoading) return <div>기프티콘 로딩중...</div>;
   if (isProductsError) return <div>기프티콘 로딩 에러!</div>;
   if (products === undefined) return <div>기프티콘 데이터 에러!</div>;
+
+  if (isMyInformationLoading) return <div>내 정보 로딩중...</div>;
+  if (isMyInformationError) return <div>내 정보 데이터 에러!</div>;
+  if (myInformation === undefined) return <div>내 정보 데이터 에러!</div>;
 
   return (
     <Background>
@@ -278,7 +288,7 @@ const More = () => {
       </WhiteBox>
       <ButtonFooter
         disabled={!(selectedGifticon && penaltyCount)}
-        onClick={handleNextButtonClick}
+        onClick={() => handleNextButtonClick(myInformation.id)}
       >
         모임비 결제하기
       </ButtonFooter>

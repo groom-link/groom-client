@@ -4,11 +4,10 @@ import styled from '@emotion/styled';
 
 import { MeetingCard } from '../../components/molecules';
 import { GroupPage } from '../../components/templates';
+import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
 import colors from '../../styles/colors';
 import { semiBold16 } from '../../styles/typography';
-
-const GROUP_NAME_MOCK = 'SW마에스트로 그룹';
 
 export type Participant = {
   id: number;
@@ -27,6 +26,11 @@ const Home = () => {
     isLoading: isSchedulesLoading,
     isError: isSchedulesError
   } = useGetTeamSchedules({ roomId });
+  const {
+    data: groupDetail,
+    isLoading: isGroupDetailLoading,
+    isError: isGroupDetailError
+  } = useGetDetailWithRoomId(roomId);
 
   useEffect(() => {
     const { roomId } = Router.query;
@@ -38,11 +42,18 @@ const Home = () => {
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
   if (schedules === undefined) return <div>스케쥴 데이터 오류!</div>;
+  if (isGroupDetailLoading) return <div>그룹 상세 로딩중...</div>;
+  if (isGroupDetailError) return <div>그룹 상세 로딩 에러!</div>;
+  if (groupDetail === undefined) return <div>그룹 상세 데이터 오류!</div>;
 
   const { teamScheduleList } = schedules;
 
   return (
-    <GroupPage roomId={roomId} selectedTabIndex={0} groupName={GROUP_NAME_MOCK}>
+    <GroupPage
+      roomId={roomId}
+      selectedTabIndex={0}
+      groupName={groupDetail.name}
+    >
       <SubTitle>가까운 회의 일정</SubTitle>
       {teamScheduleList.map(
         ({ id, title, meetingLocation: { address }, startTime, profiles }) => (
