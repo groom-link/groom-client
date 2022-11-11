@@ -1,10 +1,11 @@
 import styled from '@emotion/styled';
 
+import { Avatar } from '../../../components/atoms';
 import { GroupPage } from '../../../components/templates';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useRoomIdParams from '../../../hooks/useRoomIdParams';
 import colors from '../../../styles/colors';
-import { medium12, semiBold16 } from '../../../styles/typography';
+import { medium12, regular16, semiBold16 } from '../../../styles/typography';
 
 type TodoColorKeys = keyof typeof colors.toDoColor;
 
@@ -15,6 +16,68 @@ type TOdoBoardData = {
   title: string;
   description: string;
 }[];
+
+type Todos = {
+  id: number;
+  title: string;
+  content: string;
+  nickname: string;
+  profileImage: string;
+  roomSlot: 'todo' | 'doing' | 'done';
+};
+
+// const TODOS_MOCK: Todos[] = [];
+
+const TODOS_MOCK = [
+  // {
+  //   id: 0,
+  //   title: '하기 전 일1',
+  //   content: 'string',
+  //   nickname: 'string',
+  //   profileImage: 'string',
+  //   roomSlot: 'todo' as const
+  // },
+  {
+    id: 1,
+    title: '하는 중 일2',
+    content: 'string',
+    nickname: 'string',
+    profileImage: 'string',
+    roomSlot: 'doing' as const
+  },
+  {
+    id: 2,
+    title: 'string',
+    content: 'string',
+    nickname: 'string',
+    profileImage: 'string',
+    roomSlot: 'doing' as const
+  },
+  {
+    id: 3,
+    title: '다 한 일',
+    content: 'string',
+    nickname: 'string',
+    profileImage: 'string',
+    roomSlot: 'done' as const
+  },
+  // {
+  //   id: 4,
+  //   title: 'string',
+  //   content: 'string',
+  //   nickname: 'string',
+  //   profileImage: 'string',
+  //   roomSlot: 'todo' as const
+  // },
+  {
+    id: 5,
+    title: 'string',
+    content: 'string',
+    nickname: 'string',
+    profileImage: 'string',
+    roomSlot: 'done' as const
+  }
+];
 
 const TODO_BOARD_DATA: TOdoBoardData = [
   {
@@ -63,6 +126,35 @@ const TodoBoard = styled.div<{ color: TodoColorProps }>`
     colors.toDoColor[`${color}Light` as TodoColorKeys]};
   border: 1px solid ${({ color }) => colors.toDoColor[color as TodoColorKeys]};
   border-radius: 8px;
+
+  &:last-of-type {
+    margin-bottom: 39px;
+  }
+`;
+
+const TodoItemContainer = styled.div`
+  box-sizing: border-box;
+  display: flex;
+  margin-bottom: 8px;
+  padding: 12px 16px;
+  background-color: ${colors.grayScale.white};
+  border-radius: 8px;
+`;
+
+const TodoOwnerAvatar = styled(Avatar)`
+  margin-right: 12px;
+`;
+
+const TodoOwnerName = styled.span`
+  ${medium12};
+  display: block;
+  margin-bottom: 1px;
+  color: ${colors.grayScale.gray03};
+`;
+
+const TodoName = styled.span`
+  ${regular16}
+  color: ${colors.grayScale.gray05};
 `;
 
 const Todo = () => {
@@ -72,6 +164,16 @@ const Todo = () => {
     isLoading: isGroupDetailLoading,
     isError: isGroupDetailError
   } = useGetDetailWithRoomId(roomId);
+
+  const getTodoData = (todos: Todos[], color: TodoColorProps) => {
+    const filterdTodo = todos.filter(({ roomSlot }) => {
+      if (color === 'red') return roomSlot === 'todo';
+      if (color === 'green') return roomSlot === 'doing';
+      return roomSlot === 'done';
+    });
+
+    return filterdTodo;
+  };
 
   if (isGroupDetailLoading) return <div>그룹 상세 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 상세 로딩 에러!</div>;
@@ -88,8 +190,22 @@ const Todo = () => {
       <SubTitle>할 일 보드</SubTitle>
       {TODO_BOARD_DATA.map(({ color, title, description }) => (
         <TodoBoard key={title} color={color}>
-          <TodoTitle color={color}>시작 전</TodoTitle>
-          <TodoDescription>{description}</TodoDescription>
+          <TodoTitle color={color}>{title}</TodoTitle>
+          {getTodoData(TODOS_MOCK, color).length ? (
+            getTodoData(TODOS_MOCK, color).map(
+              ({ id, title, profileImage, nickname }) => (
+                <TodoItemContainer key={id}>
+                  <TodoOwnerAvatar proptype="image" src={profileImage} />
+                  <div>
+                    <TodoOwnerName>{nickname}</TodoOwnerName>
+                    <TodoName>{title}</TodoName>
+                  </div>
+                </TodoItemContainer>
+              )
+            )
+          ) : (
+            <TodoDescription>{description}</TodoDescription>
+          )}
         </TodoBoard>
       ))}
     </GroupPage>
