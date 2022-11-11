@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import { Avatar } from '../../../components/atoms';
@@ -134,13 +135,14 @@ const TodoBoardContainer = styled.div<{ color: TodoColorProps }>`
   }
 `;
 
-const TodoItemContainer = styled.div`
+const TodoItemContainer = styled.a`
   box-sizing: border-box;
   display: flex;
   margin-bottom: 8px;
   padding: 12px 16px;
   background-color: ${colors.grayScale.white};
   border-radius: 8px;
+  text-decoration: none;
 `;
 
 const TodoOwnerAvatar = styled(Avatar)`
@@ -210,13 +212,15 @@ const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
       <TodoTitle color={color}>{title}</TodoTitle>
       {filteredTodos.length
         ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
-            <TodoItemContainer key={id}>
-              <TodoOwnerAvatar proptype="image" src={profileImage} />
-              <div>
-                <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
-                <TodoName>{title}</TodoName>
-              </div>
-            </TodoItemContainer>
+            <Link key={id} passHref href="./todo/edit">
+              <TodoItemContainer>
+                <TodoOwnerAvatar proptype="image" src={profileImage} />
+                <div>
+                  <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
+                  <TodoName>{title}</TodoName>
+                </div>
+              </TodoItemContainer>
+            </Link>
           ))
         : color === 'red' || <TodoDescription>{description}</TodoDescription>}
       {color === 'red' && (

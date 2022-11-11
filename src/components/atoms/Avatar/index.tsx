@@ -29,6 +29,7 @@ const Circle = styled.div`
 const ProfileImg = styled(Image)`
   border-radius: 22px;
   object-fit: cover;
+  color: ${colors.grayScale.gray06};
 `;
 
 const MoreProfile = styled.span`
