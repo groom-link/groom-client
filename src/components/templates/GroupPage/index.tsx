@@ -11,14 +11,15 @@ type Props = {
   roomId: number;
   className?: string;
   groupName: string;
-  selectedTabIndex: 0 | 1 | 2;
+  selectedTabIndex: 0 | 1 | 2 | 3;
   children: ReactNode;
 };
 
 const TAB_INDEX = {
   FIRST: 0,
   SECOND: 1,
-  THRID: 2
+  THRID: 2,
+  FOURTH: 3
 };
 
 const Background = styled.div`
@@ -83,6 +84,13 @@ const GroupPage = ({
         </Tab>
         <Tab
           isSelected={selectedTabIndex === TAB_INDEX.THRID}
+          htmlFor=""
+          href={`/group/todo?roomId=${roomId}`}
+        >
+          할 일
+        </Tab>
+        <Tab
+          isSelected={selectedTabIndex === TAB_INDEX.FOURTH}
           htmlFor=""
           // TODO: 초대 코드 복사 페이지로 이동시키기.
           href={`/group/meeting?roomId=${roomId}`}

@@ -14,6 +14,7 @@ import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
 import useGetDetailWithRoomId from '../../../../hooks/api/room/getDetailWithRoomId';
 import usePostTeamSchedules from '../../../../hooks/api/teamSchedule/postSchedule';
+import useRoomIdParams from '../../../../hooks/useRoomIdParams';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
@@ -103,7 +104,7 @@ const SearchInMapButton = styled(TextButton)`
 `;
 
 const Add = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
   const [isOnlineMeeting, setIsOnlineMeeting] = useState(false);
@@ -129,13 +130,6 @@ const Add = () => {
     isError: isGroupDetailError,
     isLoading: isGroupDetailLoading
   } = useGetDetailWithRoomId(roomId);
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
-  });
 
   useEffect(() => {
     const { startTime, endTime } = Router.query;

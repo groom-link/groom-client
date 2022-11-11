@@ -1,4 +1,4 @@
-import { ChangeEventHandler, useEffect, useState } from 'react';
+import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -9,6 +9,7 @@ import { UseDatetimePicker } from '../../../../hooks';
 import useDeleteUnableSchedule from '../../../../hooks/api/room/deleteUnableSchedule';
 import useGetUnableScheduleTime from '../../../../hooks/api/room/getUnableScheduleTime';
 import usePostUnableSchedule from '../../../../hooks/api/unableSchedule/postUnableSchedule';
+import useRoomIdParams from '../../../../hooks/useRoomIdParams';
 import colors from '../../../../styles/colors';
 import { medium12, semiBold20 } from '../../../../styles/typography';
 import { queryClient } from '../../../_app';
@@ -41,7 +42,7 @@ const Description = styled.span`
 `;
 
 const Edit = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const [deleteModeId, setDeleteModeId] = useState<number>(-1);
   const { mutate: postUnableSchedule } = usePostUnableSchedule();
   const { mutate: deleteUnableSchedule } = useDeleteUnableSchedule();
@@ -52,13 +53,6 @@ const Edit = () => {
   } = useGetUnableScheduleTime(roomId);
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
-  });
 
   const handleExcludedTimeSumbit = () =>
     postUnableSchedule(

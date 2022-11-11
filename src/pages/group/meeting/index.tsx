@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Router from 'next/router';
 
 import { MeetingCard } from '../../../components/molecules';
@@ -7,10 +6,11 @@ import { GroupPage } from '../../../components/templates';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useDeleteTeamSchedule from '../../../hooks/api/teamSchedule/deleteSchedule';
 import useGetTeamSchedules from '../../../hooks/api/teamSchedule/getSchedules';
+import useRoomIdParams from '../../../hooks/useRoomIdParams';
 import { queryClient } from '../../_app';
 
 const Meeting = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const { mutate } = useDeleteTeamSchedule();
   const {
     data: schedules,
@@ -22,13 +22,6 @@ const Meeting = () => {
     isLoading: isGroupDetailLoading,
     isError: isGroupDetailError
   } = useGetDetailWithRoomId(roomId);
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
-  });
 
   const handleClickFooterButton = () =>
     Router.push(`./meeting/suggestion?roomId=${roomId}`);
@@ -43,44 +36,36 @@ const Meeting = () => {
   const { teamScheduleList } = schedules;
 
   return (
-    <>
-      <GroupPage
-        roomId={roomId}
-        groupName={groupDetail?.name}
-        selectedTabIndex={1}
-      >
-        {teamScheduleList.map(
-          ({
-            id,
-            title,
-            meetingLocation: { address },
-            startTime,
-            profiles
-          }) => (
-            <MeetingCard
-              key={id}
-              onDeleteClick={() =>
-                mutate(id, {
-                  onSuccess: () =>
-                    queryClient.invalidateQueries(['getTeamSchedules'])
-                })
-              }
-              {...{
-                id,
-                title,
-                address,
-                startTime,
-                profiles
-              }}
-              editLink=" "
-            />
-          )
-        )}
-        <ButtonFooter disabled={false} onClick={handleClickFooterButton}>
-          회의 만들기
-        </ButtonFooter>
-      </GroupPage>
-    </>
+    <GroupPage
+      roomId={roomId}
+      groupName={groupDetail?.name}
+      selectedTabIndex={1}
+    >
+      {teamScheduleList.map(
+        ({ id, title, meetingLocation: { address }, startTime, profiles }) => (
+          <MeetingCard
+            key={id}
+            onDeleteClick={() =>
+              mutate(id, {
+                onSuccess: () =>
+                  queryClient.invalidateQueries(['getTeamSchedules'])
+              })
+            }
+            {...{
+              id,
+              title,
+              address,
+              startTime,
+              profiles
+            }}
+            editLink=" "
+          />
+        )
+      )}
+      <ButtonFooter disabled={false} onClick={handleClickFooterButton}>
+        회의 만들기
+      </ButtonFooter>
+    </GroupPage>
   );
 };
 

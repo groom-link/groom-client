@@ -1,11 +1,10 @@
-import { useEffect, useState } from 'react';
-import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { MeetingCard } from '../../components/molecules';
 import { GroupPage } from '../../components/templates';
 import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
+import useRoomIdParams from '../../hooks/useRoomIdParams';
 import colors from '../../styles/colors';
 import { semiBold16 } from '../../styles/typography';
 
@@ -20,7 +19,7 @@ const SubTitle = styled.h2`
 `;
 
 const Home = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const {
     data: schedules,
     isLoading: isSchedulesLoading,
@@ -31,13 +30,6 @@ const Home = () => {
     isLoading: isGroupDetailLoading,
     isError: isGroupDetailError
   } = useGetDetailWithRoomId(roomId);
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
-  }, []);
 
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;

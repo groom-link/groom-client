@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
@@ -6,6 +5,7 @@ import styled from '@emotion/styled';
 import { Button, Logo, SuggestionTimeList } from '../../../../components/atoms';
 import { TopNavBar } from '../../../../components/molecules';
 import useGetRecommendTime from '../../../../hooks/api/room/getRecommend';
+import useRoomIdParams from '../../../../hooks/useRoomIdParams';
 import colors from '../../../../styles/colors';
 import { semiBold16, semiBold20 } from '../../../../styles/typography';
 
@@ -84,7 +84,7 @@ const AddTimeButton = styled(Button)`
 `;
 
 const Suggestion = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const {
     data: recommendTimes,
     isError: isRecommendTimeError,
@@ -92,13 +92,6 @@ const Suggestion = () => {
   } = useGetRecommendTime({
     roomId,
     query: { date: new Date().toISOString().split('T')[0] }
-  });
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
   });
 
   const handleClickAddMenually = () => Router.push(`./add?roomId=${roomId}`);

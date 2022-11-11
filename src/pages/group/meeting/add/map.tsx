@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import { Button } from '../../../../components/atoms';
 import { GPSButton, TopNavBar } from '../../../../components/molecules';
 import { useCoords, useKakaoMaps } from '../../../../hooks';
+import useRoomIdParams from '../../../../hooks/useRoomIdParams';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import { shadow01 } from '../../../../styles/mixins';
@@ -74,7 +75,7 @@ const GPSButtonStyled = styled(GPSButton)`
 `;
 
 const Map = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const coords = useCoords();
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
   const { mapRef, map, center } = useKakaoMaps({
@@ -84,13 +85,6 @@ const Map = () => {
   const [address, setAddress] = useState('지도를 움직여 위치를 선택해주세요.');
   const setAddressStore = useNewMeetingFormStore((state) => state.setAddress);
   const setCoordsStore = useNewMeetingFormStore((state) => state.setCoords);
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
-  });
 
   useEffect(() => {
     window.kakao.maps.load(() => {
