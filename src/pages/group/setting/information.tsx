@@ -2,28 +2,20 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
-import { Button } from '../../../components/atoms';
 import {
   Dialog,
   ImageUploadInput,
   SegmentTab,
-  TagInput,
   TextArea,
   TextInput,
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { useRoomIdParams } from '../../../hooks';
+import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import colors from '../../../styles/colors';
+import { semiBold16 } from '../../../styles/typography';
 import readFileAsURL from '../../../utils/readFileAsURL';
-
-const PRE_GROUP_INFORMATION_MOCK = {
-  profileImage: DEMO_GROUP_IMAGE_URL,
-  meetingTitle: '원래 모임 이름',
-  meetingDescription: '원래 모임 내용',
-  tagList: ['원래 태그1', '원래 태그2', '원래 태그3']
-};
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -50,6 +42,17 @@ const TextAreaStyled = styled(TextArea)`
   margin-top: 20px;
 `;
 
+// TODO: Button 컴포넌트 안에 통합하기.
+const DeleteButton = styled.button`
+  ${semiBold16};
+  width: 100%;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid ${colors.etcColor.alertRed};
+  color: ${colors.etcColor.alertRed};
+  background-color: ${colors.grayScale.white};
+`;
+
 const Information = () => {
   const roomId = useRoomIdParams();
   const [profileImage, setProfileImage] = useState('');
@@ -57,15 +60,20 @@ const Information = () => {
   const [meetingDescription, setMeetingDescription] = useState('');
   const [tagList, setTagList] = useState<string[]>([]);
   const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const {
+    data: roomDetail,
+    isLoading: isRoomDetailLoading,
+    isError: isRoomDetailError
+  } = useGetDetailWithRoomId(roomId);
 
   useEffect(() => {
-    const { profileImage, meetingTitle, meetingDescription, tagList } =
-      PRE_GROUP_INFORMATION_MOCK;
-    setProfileImage(profileImage);
-    setMeetingTitle(meetingTitle);
-    setMeetingDescription(meetingDescription);
+    if (!roomDetail) return;
+    const { name, description, mainImageUrl } = roomDetail;
+    setProfileImage(mainImageUrl);
+    setMeetingTitle(name);
+    setMeetingDescription(description);
     setTagList(tagList);
-  }, []);
+  }, [roomDetail]);
 
   const handleDeleteImage = () => setProfileImage('');
 
@@ -115,6 +123,10 @@ const Information = () => {
 
   const handleBackButtonClick = () => Router.push(`/group?roomId=${roomId}`);
 
+  if (isRoomDetailLoading) return <div>그룹 정보 로딩중</div>;
+  if (isRoomDetailError) return <div>그룹 정보 에러</div>;
+  if (roomDetail === undefined) return <div>그룹 정보 없음</div>;
+
   return (
     <>
       <Background>
@@ -147,7 +159,7 @@ const Information = () => {
             placeholder="예시) 저희는 oo을 하는 모임입니다."
           />
         </WhiteBox>
-        <WhiteBox>
+        {/* <WhiteBox>
           <TagInput
             label="태그"
             tagList={tagList}
@@ -155,16 +167,12 @@ const Information = () => {
             addTag={handleAddTag}
             deleteTag={deleteTag}
           />
-        </WhiteBox>
+        </WhiteBox> */}
+        {/* TODO: 태그 기능 추가하기 */}
         <WhiteBox>
-          <Button
-            size="medium"
-            disabled={false}
-            color="gray"
-            onClick={handleClickCloseMeeting}
-          >
+          <DeleteButton onClick={handleClickCloseMeeting}>
             모임 끝내기
-          </Button>
+          </DeleteButton>
         </WhiteBox>
         <ButtonFooter disabled={false} onClick={handleMeetingInformationSubmit}>
           모임 정보 수정하기
