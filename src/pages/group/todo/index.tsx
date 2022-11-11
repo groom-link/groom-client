@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Avatar } from '../../../components/atoms';
@@ -17,7 +18,7 @@ type TOdoBoardData = {
   description: string;
 }[];
 
-type Todos = {
+type Todo = {
   id: number;
   title: string;
   content: string;
@@ -83,7 +84,7 @@ const TODO_BOARD_DATA: TOdoBoardData = [
   {
     color: 'red',
     title: '하기 전',
-    description: '“할 일 서랍"에 할 일을 추가하세요.'
+    description: '터치해서 할 일을 만들어보세요.'
   },
   {
     color: 'green',
@@ -118,8 +119,9 @@ const TodoDescription = styled.span`
   color: ${colors.grayScale.gray03};
 `;
 
-const TodoBoard = styled.div<{ color: TodoColorProps }>`
+const TodoBoardContainer = styled.div<{ color: TodoColorProps }>`
   box-sizing: border-box;
+  min-height: 110px;
   margin-bottom: 16px;
   padding: 16px;
   background-color: ${({ color }) =>
@@ -157,15 +159,43 @@ const TodoName = styled.span`
   color: ${colors.grayScale.gray05};
 `;
 
-const Todo = () => {
-  const roomId = useRoomIdParams();
-  const {
-    data: groupDetail,
-    isLoading: isGroupDetailLoading,
-    isError: isGroupDetailError
-  } = useGetDetailWithRoomId(roomId);
+type TodoBoardProps = {
+  color: TodoColorProps;
+  title: string;
+  description: string;
+  todos: Todo[];
+};
 
-  const getTodoData = (todos: Todos[], color: TodoColorProps) => {
+const TodoInput = styled.input`
+  ${regular16};
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  margin-bottom: 8px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  color: ${colors.grayScale.gray05};
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: ${colors.grayScale.gray03};
+  }
+`;
+
+const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
+  const [todoTitle, setTodoTitle] = useState('');
+  const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    const filteredTodos = getTodoData(todos, color);
+    setFilteredTodos(filteredTodos);
+  }, [todos, color]);
+
+  const getTodoData = (todos: Todo[], color: TodoColorProps) => {
     const filterdTodo = todos.filter(({ roomSlot }) => {
       if (color === 'red') return roomSlot === 'todo';
       if (color === 'green') return roomSlot === 'doing';
@@ -174,6 +204,57 @@ const Todo = () => {
 
     return filterdTodo;
   };
+
+  return (
+    <TodoBoardContainer key={title} color={color}>
+      <TodoTitle color={color}>{title}</TodoTitle>
+      {filteredTodos.length
+        ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
+            <TodoItemContainer key={id}>
+              <TodoOwnerAvatar proptype="image" src={profileImage} />
+              <div>
+                <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
+                <TodoName>{title}</TodoName>
+              </div>
+            </TodoItemContainer>
+          ))
+        : color === 'red' || <TodoDescription>{description}</TodoDescription>}
+      {color === 'red' && (
+        <TodoInput
+          placeholder="할 일이 있나요?"
+          type="text"
+          value={todoTitle}
+          onChange={({ target: { value } }) => setTodoTitle(value)}
+          onKeyDown={({ key, nativeEvent: { isComposing } }) => {
+            if (!todoTitle || isComposing) return;
+            if (key === 'Enter') {
+              setFilteredTodos((pre) => [
+                ...pre,
+                {
+                  id: 10,
+                  title: todoTitle,
+                  content: '',
+                  nickname: '',
+                  profileImage: '',
+                  roomSlot: 'todo'
+                }
+              ]);
+              setTodoTitle('');
+            }
+          }}
+        />
+      )}
+    </TodoBoardContainer>
+  );
+};
+
+const Todo = () => {
+  const roomId = useRoomIdParams();
+  const {
+    data: groupDetail,
+    isLoading: isGroupDetailLoading,
+    isError: isGroupDetailError
+  } = useGetDetailWithRoomId(roomId);
 
   if (isGroupDetailLoading) return <div>그룹 상세 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 상세 로딩 에러!</div>;
@@ -189,24 +270,11 @@ const Todo = () => {
       {/* TODO: 할 일 서랍 만들어지면 SubTitle 빼기 */}
       <SubTitle>할 일 보드</SubTitle>
       {TODO_BOARD_DATA.map(({ color, title, description }) => (
-        <TodoBoard key={title} color={color}>
-          <TodoTitle color={color}>{title}</TodoTitle>
-          {getTodoData(TODOS_MOCK, color).length ? (
-            getTodoData(TODOS_MOCK, color).map(
-              ({ id, title, profileImage, nickname }) => (
-                <TodoItemContainer key={id}>
-                  <TodoOwnerAvatar proptype="image" src={profileImage} />
-                  <div>
-                    <TodoOwnerName>{nickname}</TodoOwnerName>
-                    <TodoName>{title}</TodoName>
-                  </div>
-                </TodoItemContainer>
-              )
-            )
-          ) : (
-            <TodoDescription>{description}</TodoDescription>
-          )}
-        </TodoBoard>
+        <TodoBoard
+          key={color}
+          todos={TODOS_MOCK}
+          {...{ color, title, description }}
+        />
       ))}
     </GroupPage>
   );
