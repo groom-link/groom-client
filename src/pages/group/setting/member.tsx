@@ -1,7 +1,6 @@
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { TextButton } from '../../../components/atoms';
 import {
   MemberList,
@@ -13,46 +12,6 @@ import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId'
 import useGetInviteCode from '../../../hooks/api/room/getInviteCode';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16 } from '../../../styles/typography';
-
-const GROUP_MEMBERS_MOCK = [
-  {
-    id: 1,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 2,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 3,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 4,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 5,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 6,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 7,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  }
-];
-
-const INVITE_CODE_MOCK = '122 321';
 
 const Background = styled.div`
   box-sizing: border-box;
