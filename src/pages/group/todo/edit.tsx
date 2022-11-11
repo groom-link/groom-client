@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
@@ -12,6 +12,7 @@ import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { useRoomIdParams, useTodoIdParams } from '../../../hooks';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useDeleteTodo from '../../../hooks/api/todo/deleteTodo';
+import useGetTodoDetail from '../../../hooks/api/todo/getTodoDetail';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
 import { queryClient } from '../../_app';
@@ -66,12 +67,30 @@ const Edit = () => {
   const router = useRouter();
   const [participants, setParticipants] = useState(0);
   const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const {
     data: groupDetailData,
     isError: isGroupDetailError,
     isLoading: isGroupDetailLoading
   } = useGetDetailWithRoomId(202);
+  const {
+    data: todoDetailData,
+    isError: isTodoDetailError,
+    isLoading: isTodoDetailLoading
+  } = useGetTodoDetail(todoId);
   const { mutate } = useDeleteTodo();
+
+  useEffect(() => {
+    if (!todoDetailData) return;
+    const {
+      title: preTitle,
+      content: preContent,
+      todoOwner: { id }
+    } = todoDetailData;
+    setTitle(preTitle);
+    setContent(preContent);
+    setParticipants(id);
+  }, [todoDetailData]);
 
   const selectMember = (id: number) => {
     if (participants === id) {
@@ -89,9 +108,16 @@ const Edit = () => {
       }
     });
 
+  const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = ({
+    target: { value }
+  }) => setContent(value);
+
   if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
   if (groupDetailData === undefined) return <div>그룹 정보 데이터 에러!</div>;
+  if (isTodoDetailLoading) return <div>할 일 정보 로딩중...</div>;
+  if (isTodoDetailError) return <div>할 일 정보 불러오기 에러!</div>;
+  if (todoDetailData === undefined) return <div>할 일 정보 데이터 에러!</div>;
 
   return (
     <Background>
@@ -111,8 +137,8 @@ const Edit = () => {
         <TextArea
           label="할 일 내용"
           placeholder="무슨 일을 해야하는지 적어보세요."
-          value=""
-          onChange={() => {}}
+          value={content}
+          onChange={handleContentChange}
         />
       </WhiteBox>
       <MemberListLabel>할 일을 맡을 사람</MemberListLabel>
