@@ -6,6 +6,8 @@ import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { Avatar } from '../../../components/atoms';
 import { GroupPage } from '../../../components/templates';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
+import useGetTodo from '../../../hooks/api/todo/getTodo';
+import { Todo } from '../../../hooks/api/todo/getTodo';
 import useRoomIdParams from '../../../hooks/useRoomIdParams';
 import colors from '../../../styles/colors';
 import { medium12, regular16, semiBold16 } from '../../../styles/typography';
@@ -19,15 +21,6 @@ type TOdoBoardData = {
   title: string;
   description: string;
 }[];
-
-type Todo = {
-  id: number;
-  title: string;
-  content: string;
-  nickname: string;
-  profileImage: string;
-  roomSlot: 'todo' | 'doing' | 'done';
-};
 
 // const TODOS_MOCK: Todos[] = [];
 
@@ -289,10 +282,18 @@ const Todo = () => {
     isLoading: isGroupDetailLoading,
     isError: isGroupDetailError
   } = useGetDetailWithRoomId(roomId);
+  const {
+    data: todoData,
+    isLoading: isTodoLoading,
+    isError: isTodoError
+  } = useGetTodo({ roomId });
 
   if (isGroupDetailLoading) return <div>그룹 상세 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 상세 로딩 에러!</div>;
   if (groupDetail === undefined) return <div>그룹 상세 데이터 오류!</div>;
+  if (isTodoLoading) return <div>할 일 로딩중...</div>;
+  if (isTodoError) return <div>할 일 로딩 에러!</div>;
+  if (todoData === undefined) return <div>할 일 데이터 오류!</div>;
 
   return (
     <GroupPage
@@ -306,7 +307,7 @@ const Todo = () => {
       {TODO_BOARD_DATA.map(({ color, title, description }) => (
         <TodoBoard
           key={color}
-          todos={TODOS_MOCK}
+          todos={todoData.todoList}
           {...{ color, title, description }}
         />
       ))}
