@@ -271,7 +271,6 @@ const Todo = () => {
   return (
     <GroupPage
       roomId={roomId}
-      groupName={groupDetail.name}
       selectedTabIndex={2}
       // TODO: TabIndex constant로 빼기
     >

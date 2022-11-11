@@ -2,9 +2,9 @@ import styled from '@emotion/styled';
 
 import { MeetingCard } from '../../components/molecules';
 import { GroupPage } from '../../components/templates';
+import { useRoomIdParams } from '../../hooks';
 import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
-import useRoomIdParams from '../../hooks/useRoomIdParams';
 import colors from '../../styles/colors';
 import { semiBold16 } from '../../styles/typography';
 
@@ -41,11 +41,7 @@ const Home = () => {
   const { teamScheduleList } = schedules;
 
   return (
-    <GroupPage
-      roomId={roomId}
-      selectedTabIndex={0}
-      groupName={groupDetail.name}
-    >
+    <GroupPage roomId={roomId} selectedTabIndex={0}>
       <SubTitle>가까운 회의 일정</SubTitle>
       {teamScheduleList.map(
         ({ id, title, meetingLocation: { address }, startTime, profiles }) => (

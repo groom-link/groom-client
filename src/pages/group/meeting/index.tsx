@@ -3,10 +3,10 @@ import Router from 'next/router';
 import { MeetingCard } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { GroupPage } from '../../../components/templates';
+import { useRoomIdParams } from '../../../hooks';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useDeleteTeamSchedule from '../../../hooks/api/teamSchedule/deleteSchedule';
 import useGetTeamSchedules from '../../../hooks/api/teamSchedule/getSchedules';
-import useRoomIdParams from '../../../hooks/useRoomIdParams';
 import { queryClient } from '../../_app';
 
 const Meeting = () => {
@@ -36,11 +36,7 @@ const Meeting = () => {
   const { teamScheduleList } = schedules;
 
   return (
-    <GroupPage
-      roomId={roomId}
-      groupName={groupDetail?.name}
-      selectedTabIndex={1}
-    >
+    <GroupPage roomId={roomId} selectedTabIndex={1}>
       {teamScheduleList.map(
         ({ id, title, meetingLocation: { address }, startTime, profiles }) => (
           <MeetingCard
