@@ -14,6 +14,7 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import { useRoomIdParams } from '../../../hooks';
 import colors from '../../../styles/colors';
 import readFileAsURL from '../../../utils/readFileAsURL';
 
@@ -50,6 +51,7 @@ const TextAreaStyled = styled(TextArea)`
 `;
 
 const Information = () => {
+  const roomId = useRoomIdParams();
   const [profileImage, setProfileImage] = useState('');
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDescription, setMeetingDescription] = useState('');
@@ -111,7 +113,7 @@ const Information = () => {
 
   const closeMeeting = () => Router.push('/home');
 
-  const handleBackButtonClick = () => Router.push('/group');
+  const handleBackButtonClick = () => Router.push(`/group?roomId=${roomId}`);
 
   return (
     <>
@@ -122,7 +124,7 @@ const Information = () => {
             leftTabLabel="모임 정보"
             rightTabLabel="구성원 관리"
             leftTabHref=""
-            rightTabHref="./member"
+            rightTabHref={`./member?roomId=${roomId}`}
             selectedTabIndex={0}
           />
         </TabContainer>
