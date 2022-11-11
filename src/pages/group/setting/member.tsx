@@ -1,55 +1,17 @@
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { TextButton } from '../../../components/atoms';
 import {
   MemberList,
   SegmentTab,
   TopNavBar
 } from '../../../components/molecules';
+import { useRoomIdParams } from '../../../hooks';
+import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
+import useGetInviteCode from '../../../hooks/api/room/getInviteCode';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16 } from '../../../styles/typography';
-
-const GROUP_MEMBERS_MOCK = [
-  {
-    id: 1,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 2,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 3,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 4,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 5,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 6,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  },
-  {
-    id: 7,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름'
-  }
-];
-
-const INVITE_CODE_MOCK = '122 321';
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -91,7 +53,34 @@ const WhiteBox = styled.div`
 `;
 
 const Member = () => {
-  const handleBackButtonClick = () => Router.push('/group');
+  const roomId = useRoomIdParams();
+  const {
+    data: inviteCode,
+    isLoading: isInviteCodeLoading,
+    isError: isInviteCodeError
+  } = useGetInviteCode(roomId);
+  const {
+    data: roomDetail,
+    isLoading: isRoomDetailLoading,
+    isError: isRoomDetailError
+  } = useGetDetailWithRoomId(roomId);
+
+  const setClipboard = (text: string) => {
+    const type = 'text/plain';
+    const blob = new Blob([text], { type });
+    const data = [new ClipboardItem({ [type]: blob })];
+
+    navigator.clipboard.write(data);
+  };
+
+  const handleBackButtonClick = () => Router.push(`/group?roomId=${roomId}`);
+
+  if (isInviteCodeLoading) return <div>초대코드 로딩중...</div>;
+  if (isInviteCodeError) return <div>초대코드 로딩 실패</div>;
+  if (inviteCode === undefined) return <div>초대코드 에러</div>;
+  if (isRoomDetailLoading) return <div>방 정보 로딩중...</div>;
+  if (isRoomDetailError) return <div>방 정보 로딩 실패</div>;
+  if (roomDetail === undefined) return <div>방 정보 에러</div>;
 
   return (
     <Background>
@@ -100,28 +89,33 @@ const Member = () => {
         <SegmentTab
           leftTabLabel="모임 정보"
           rightTabLabel="구성원 관리"
-          leftTabHref="./information"
+          leftTabHref={`./information?roomId=${roomId}`}
           rightTabHref=""
           selectedTabIndex={1}
         />
       </TabContainer>
       <InviteCodeContainer>
         <CodeLabel>초대 코드</CodeLabel>
-        <InviteCode>{INVITE_CODE_MOCK}</InviteCode>
+        <InviteCode>{inviteCode}</InviteCode>
         <InviteCodePasteButton
           color="navy"
           disabled={false}
-          onClick={function (): void {
-            throw new Error('Function not implemented.');
-          }}
+          onClick={() => setClipboard(inviteCode)}
         >
           초대 코드 복사하기
         </InviteCodePasteButton>
       </InviteCodeContainer>
       <WhiteBox>
-        {GROUP_MEMBERS_MOCK.map(({ id, src, name }) => (
-          <MemberList key={id} check={false} {...{ src, name }} />
-        ))}
+        {roomDetail.roomParticipants.map(
+          ({ id, profileImageUrl, nickname }) => (
+            <MemberList
+              key={id}
+              check={false}
+              src={profileImageUrl}
+              name={nickname}
+            />
+          )
+        )}
       </WhiteBox>
     </Background>
   );
