@@ -9,9 +9,12 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import { useRoomIdParams, useTodoIdParams } from '../../../hooks';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
+import useDeleteTodo from '../../../hooks/api/todo/deleteTodo';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
+import { queryClient } from '../../_app';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -58,6 +61,8 @@ const DeleteButton = styled.button`
 `;
 
 const Edit = () => {
+  const roomId = useRoomIdParams();
+  const todoId = useTodoIdParams();
   const router = useRouter();
   const [participants, setParticipants] = useState(0);
   const [title, setTitle] = useState('');
@@ -66,6 +71,7 @@ const Edit = () => {
     isError: isGroupDetailError,
     isLoading: isGroupDetailLoading
   } = useGetDetailWithRoomId(202);
+  const { mutate } = useDeleteTodo();
 
   const selectMember = (id: number) => {
     if (participants === id) {
@@ -74,6 +80,14 @@ const Edit = () => {
     }
     setParticipants(id);
   };
+
+  const handleClickButton = () =>
+    mutate(todoId, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['todo']);
+        router.push(`./?roomId=${roomId}`);
+      }
+    });
 
   if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
@@ -115,7 +129,9 @@ const Edit = () => {
         )
       )}
       <WhiteBox>
-        <DeleteButton>할 일 삭제하기</DeleteButton>
+        <DeleteButton type="button" onClick={handleClickButton}>
+          할 일 삭제하기
+        </DeleteButton>
       </WhiteBox>
       <ButtonFooter
         disabled={false}

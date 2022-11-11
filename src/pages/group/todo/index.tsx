@@ -210,7 +210,9 @@ const TodoBoard = ({
         ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
             <TodoItemContainer
               key={id}
-              onClick={() => router.push('./todo/edit')}
+              onClick={() =>
+                router.push(`./todo/edit?roomId=${roomId}&todoId=${id}`)
+              }
             >
               <ContentContainer>
                 <TodoOwnerAvatar proptype="image" src={profileImage} />
