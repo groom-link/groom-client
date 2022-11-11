@@ -171,7 +171,7 @@ const More = () => {
         mainImageUrl: '',
         summary: '',
         maxPeople: numberOfMembers,
-        roomParticipants: [id],
+        roomParticipants: [],
         roomPenaltyPostDto: {
           maxAmount: penaltyCount,
           gifticonId: parseInt(selectedGifticon.id),

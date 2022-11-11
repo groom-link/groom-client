@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { Button } from '../../../components/atoms';
-import { Kakao } from '../../../components/atoms/icons';
 import { TopCancelBar } from '../../../components/molecules';
 import Image from '../../../components/utils/Image';
 import colors from '../../../styles/colors';
@@ -59,6 +58,14 @@ const Success = () => {
     setCode(inviteCode);
   }, []);
 
+  const setClipboard = (text: string) => {
+    const type = 'text/plain';
+    const blob = new Blob([text], { type });
+    const data = [new ClipboardItem({ [type]: blob })];
+
+    navigator.clipboard.write(data);
+  };
+
   return (
     <>
       <TopCancelBar cancelURL="/home?group=true" />
@@ -79,14 +86,15 @@ const Success = () => {
           size="large"
           disabled={false}
           color="gray"
-          onClick={() => console.log('clicked')}
+          onClick={() => setClipboard(code)}
         >
           모임 초대 링크 복사하기
         </CodePasteButton>
-        <KakaoShareButton>
+        {/* <KakaoShareButton>
           <Kakao />
           카카오톡으로 공유하기
-        </KakaoShareButton>
+        </KakaoShareButton> */}
+        {/* TODO: 웹, 앱 환경에 따라 다르게 구현하기. */}
       </MainBox>
     </>
   );

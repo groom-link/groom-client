@@ -3,8 +3,7 @@ import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { Button, TextButton } from '../components/atoms';
-import { NotificationOff, NotificationOn } from '../components/atoms/icons';
+import { TextButton } from '../components/atoms';
 import {
   Dialog,
   Tab,
@@ -12,6 +11,7 @@ import {
   ThumbnailList,
   TimerPopup
 } from '../components/molecules';
+import ButtonFooter from '../components/molecules/ButtonFooter';
 import Image from '../components/utils/Image';
 import useGetMyRoom from '../hooks/api/room/getMyRoom';
 import colors from '../styles/colors';
@@ -100,12 +100,6 @@ const GroupCard = styled(ThumbnailList)`
   margin-bottom: 12px;
 `;
 
-const MakeGroupButton = styled(Button)`
-  position: fixed;
-  bottom: 65px;
-  width: calc(100% - 40px);
-`;
-
 const Footer = styled(Tab)`
   position: fixed;
   bottom: 0;
@@ -161,7 +155,7 @@ const Home = () => {
         <Header>
           <TopBox>
             <Title>내 모임</Title>
-            <Link href="/notifications">
+            {/* <Link href="/notifications">
               <a>
                 {hasNotification ? (
                   <NotificationOn width="36px" />
@@ -169,7 +163,8 @@ const Home = () => {
                   <NotificationOff width="36px" />
                 )}
               </a>
-            </Link>
+            </Link> */}
+            {/* TODO: 알람 API 추가하기. */}
           </TopBox>
           <BottomBox>
             <SearchInput
@@ -231,15 +226,15 @@ const Home = () => {
             </EmptyDescription>
           </>
         )}
-        <MakeGroupButton
-          size="medium"
+        <ButtonFooter
           disabled={false}
-          color="purple"
           onClick={() => Router.push('/group/add/basic')}
         >
           모임 만들기
-        </MakeGroupButton>
-        <Footer activeMenu="홈" />
+        </ButtonFooter>
+
+        {/* <Footer activeMenu="홈" /> */}
+        {/* TODO: 다른 메뉴 추가되면 푸터 넣기. */}
       </Background>
     </>
   );

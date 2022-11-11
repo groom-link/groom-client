@@ -159,7 +159,8 @@ const ThumbnailList = ({
         <TextContainer>
           <TitleContainer>
             <Title>{title}</Title>
-            <NumberOfMyTodos>할 일 {numberOfMyTodos}개</NumberOfMyTodos>
+            {/* <NumberOfMyTodos>할 일 {numberOfMyTodos}개</NumberOfMyTodos> */}
+            {/* TODO: 내가 속한 그룹 조회할 때 나의 할 일 개수도 받아오기 */}
           </TitleContainer>
           <NumberOfMembers>인원 수 {numberOfMembers}명</NumberOfMembers>
         </TextContainer>
