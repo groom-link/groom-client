@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
+import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { Avatar } from '../../../components/atoms';
 import { GroupPage } from '../../../components/templates';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
@@ -31,20 +32,20 @@ type Todo = {
 // const TODOS_MOCK: Todos[] = [];
 
 const TODOS_MOCK = [
-  // {
-  //   id: 0,
-  //   title: '하기 전 일1',
-  //   content: 'string',
-  //   nickname: 'string',
-  //   profileImage: 'string',
-  //   roomSlot: 'todo' as const
-  // },
+  {
+    id: 0,
+    title: '하기 전 일1',
+    content: 'string',
+    nickname: 'string',
+    profileImage: DEMO_PROFILE_IMAGE_URL,
+    roomSlot: 'todo' as const
+  },
   {
     id: 1,
     title: '하는 중 일2',
     content: 'string',
     nickname: 'string',
-    profileImage: 'string',
+    profileImage: DEMO_PROFILE_IMAGE_URL,
     roomSlot: 'doing' as const
   },
   {
@@ -52,7 +53,7 @@ const TODOS_MOCK = [
     title: 'string',
     content: 'string',
     nickname: 'string',
-    profileImage: 'string',
+    profileImage: DEMO_PROFILE_IMAGE_URL,
     roomSlot: 'doing' as const
   },
   {
@@ -60,23 +61,23 @@ const TODOS_MOCK = [
     title: '다 한 일',
     content: 'string',
     nickname: 'string',
-    profileImage: 'string',
+    profileImage: DEMO_PROFILE_IMAGE_URL,
     roomSlot: 'done' as const
   },
-  // {
-  //   id: 4,
-  //   title: 'string',
-  //   content: 'string',
-  //   nickname: 'string',
-  //   profileImage: 'string',
-  //   roomSlot: 'todo' as const
-  // },
+  {
+    id: 4,
+    title: 'string',
+    content: 'string',
+    nickname: 'string',
+    profileImage: DEMO_PROFILE_IMAGE_URL,
+    roomSlot: 'todo' as const
+  },
   {
     id: 5,
     title: 'string',
     content: 'string',
     nickname: 'string',
-    profileImage: 'string',
+    profileImage: DEMO_PROFILE_IMAGE_URL,
     roomSlot: 'done' as const
   }
 ];
@@ -135,14 +136,18 @@ const TodoBoardContainer = styled.div<{ color: TodoColorProps }>`
   }
 `;
 
-const TodoItemContainer = styled.a`
+const TodoItemContainer = styled.button`
   box-sizing: border-box;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
   margin-bottom: 8px;
   padding: 12px 16px;
   background-color: ${colors.grayScale.white};
   border-radius: 8px;
   text-decoration: none;
+  text-align: left;
 `;
 
 const TodoOwnerAvatar = styled(Avatar)`
@@ -188,9 +193,22 @@ const TodoInput = styled.input`
   }
 `;
 
+const MoveButton = styled.button<{ color: TodoColorProps }>`
+  padding: 10px;
+  background-color: ${colors.grayScale.gray01};
+  color: ${({ color }) => colors.toDoColor[`${color}Text` as TodoColorKeys]};
+  border-radius: 10px;
+`;
+
+const ContentContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
   const [todoTitle, setTodoTitle] = useState('');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const filteredTodos = getTodoData(todos, color);
@@ -207,20 +225,32 @@ const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
     return filterdTodo;
   };
 
+  const getButtonName = (color: TodoColorProps) => {
+    if (color === 'red') return '시작';
+    if (color === 'green') return '마치기';
+    return '다시 하기';
+  };
+
   return (
     <TodoBoardContainer key={title} color={color}>
       <TodoTitle color={color}>{title}</TodoTitle>
       {filteredTodos.length
         ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
-            <Link key={id} passHref href="./todo/edit">
-              <TodoItemContainer>
+            <TodoItemContainer
+              key={id}
+              onClick={() => router.push('./todo/edit')}
+            >
+              <ContentContainer>
                 <TodoOwnerAvatar proptype="image" src={profileImage} />
                 <div>
                   <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
                   <TodoName>{title}</TodoName>
                 </div>
-              </TodoItemContainer>
-            </Link>
+              </ContentContainer>
+              <MoveButton color={color} onClick={(e) => e.stopPropagation()}>
+                {getButtonName(color)}
+              </MoveButton>
+            </TodoItemContainer>
           ))
         : color === 'red' || <TodoDescription>{description}</TodoDescription>}
       {color === 'red' && (

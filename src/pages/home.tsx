@@ -3,7 +3,6 @@ import Link from 'next/link';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_GROUP_IMAGE_URL } from '../__mocks__';
 import { Button, TextButton } from '../components/atoms';
 import { NotificationOff, NotificationOn } from '../components/atoms/icons';
 import {
@@ -19,64 +18,6 @@ import colors from '../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../styles/typography';
 
 const HEADER_HEIGHT = '136px' as const;
-
-const GROUPS = [
-  {
-    id: 1,
-    profileImageURL: DEMO_GROUP_IMAGE_URL,
-    title: '소마 개발 그룹',
-    numberOfMembers: 3,
-    numberOfMyTodos: 2,
-    tags: ['#태그1', '#태그2', '#태그3'],
-    nearMeeting: {
-      title: '개발 모임',
-      location: '서울시 강남구 선릉역 4번 출구',
-      date: '2022.06.17(목)'
-    }
-  },
-  {
-    id: 2,
-    profileImageURL: DEMO_GROUP_IMAGE_URL,
-    title:
-      '소마 개발 그룹소마 개발 그룹소마 개발 그룹소마 개발 그룹소마 개발 그룹소마 개발 그룹',
-    numberOfMembers: 3,
-    numberOfMyTodos: 2,
-    tags: ['#태그1', '#태그2', '#태그3'],
-    nearMeeting: {
-      title: '개발 모임개발 모임개발 모임개발 모임개발 모임개발 모임',
-      location:
-        '서울시 강남구 선릉역 4번 출구서울시 강남구 선릉역 4번 출구서울시 강남구 선릉역 4번 출구서울시 강남구 선릉역 4번 출구',
-      date: '2022.06.17(목)'
-    }
-  },
-  {
-    id: 3,
-    profileImageURL: DEMO_GROUP_IMAGE_URL,
-    title: '소마 개발 그룹',
-    numberOfMembers: 3,
-    numberOfMyTodos: 2,
-    tags: ['#태그1', '#태그2', '#태그3'],
-    nearMeeting: null
-  },
-  {
-    id: 4,
-    profileImageURL: DEMO_GROUP_IMAGE_URL,
-    title: '소마 개발 그룹',
-    numberOfMembers: 3,
-    numberOfMyTodos: 2,
-    tags: ['#태그1', '#태그2', '#태그3'],
-    nearMeeting: null
-  },
-  {
-    id: 5,
-    profileImageURL: DEMO_GROUP_IMAGE_URL,
-    title: '소마 개발 그룹',
-    numberOfMembers: 3,
-    numberOfMyTodos: 2,
-    tags: ['#태그1', '#태그2', '#태그3'],
-    nearMeeting: null
-  }
-];
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -156,7 +97,7 @@ const GroupType = styled.h2`
 `;
 
 const GroupCard = styled(ThumbnailList)`
-  margin-bottom: 32px;
+  margin-bottom: 12px;
 `;
 
 const MakeGroupButton = styled(Button)`

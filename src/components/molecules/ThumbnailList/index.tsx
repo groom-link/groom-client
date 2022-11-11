@@ -141,7 +141,8 @@ const ThumbnailList = ({
   tags
 }: Props) => (
   <div className={className}>
-    <Container hasNearMeeting={nearMeeting !== null}>
+    {/* TODO: 가까운 회의 표시 기능 만들 때 수정하기 */}
+    <Container hasNearMeeting={false}>
       <TopBox>
         <ImageBox>
           <Image

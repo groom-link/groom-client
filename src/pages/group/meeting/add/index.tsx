@@ -2,7 +2,6 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../../__mocks__';
 import { TextButton, Toggle } from '../../../../components/atoms';
 import {
   MemberList,
@@ -23,34 +22,6 @@ import {
   semiBold20
 } from '../../../../styles/typography';
 import { queryClient } from '../../../_app';
-
-const MEMBERS_MOCK = [
-  {
-    id: 1,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름1'
-  },
-  {
-    id: 2,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름2'
-  },
-  {
-    id: 3,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름3'
-  },
-  {
-    id: 4,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름4'
-  },
-  {
-    id: 5,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름5'
-  }
-];
 
 const Background = styled.div`
   box-sizing: border-box;
