@@ -2,7 +2,6 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../../__mocks__';
 import { TextButton, Toggle } from '../../../../components/atoms';
 import {
   MemberList,
@@ -14,6 +13,7 @@ import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
 import useGetDetailWithRoomId from '../../../../hooks/api/room/getDetailWithRoomId';
 import usePostTeamSchedules from '../../../../hooks/api/teamSchedule/postSchedule';
+import useRoomIdParams from '../../../../hooks/useRoomIdParams';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
@@ -22,34 +22,6 @@ import {
   semiBold20
 } from '../../../../styles/typography';
 import { queryClient } from '../../../_app';
-
-const MEMBERS_MOCK = [
-  {
-    id: 1,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름1'
-  },
-  {
-    id: 2,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름2'
-  },
-  {
-    id: 3,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름3'
-  },
-  {
-    id: 4,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름4'
-  },
-  {
-    id: 5,
-    src: DEMO_PROFILE_IMAGE_URL,
-    name: '구성원 이름5'
-  }
-];
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -103,7 +75,7 @@ const SearchInMapButton = styled(TextButton)`
 `;
 
 const Add = () => {
-  const [roomId, setRoomId] = useState(0);
+  const roomId = useRoomIdParams();
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
   const [isOnlineMeeting, setIsOnlineMeeting] = useState(false);
@@ -129,13 +101,6 @@ const Add = () => {
     isError: isGroupDetailError,
     isLoading: isGroupDetailLoading
   } = useGetDetailWithRoomId(roomId);
-
-  useEffect(() => {
-    const { roomId } = Router.query;
-    if (!roomId) return;
-    if (typeof roomId !== 'string') return;
-    setRoomId(parseInt(roomId, 10));
-  });
 
   useEffect(() => {
     const { startTime, endTime } = Router.query;
