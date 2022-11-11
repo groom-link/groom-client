@@ -1,16 +1,18 @@
-import { useEffect, useState } from 'react';
+import { KeyboardEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import { Avatar } from '../../../components/atoms';
 import { GroupPage } from '../../../components/templates';
+import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useGetTodo from '../../../hooks/api/todo/getTodo';
 import { Todo } from '../../../hooks/api/todo/getTodo';
+import usePostTodo from '../../../hooks/api/todo/postTodo';
 import useRoomIdParams from '../../../hooks/useRoomIdParams';
 import colors from '../../../styles/colors';
 import { medium12, regular16, semiBold16 } from '../../../styles/typography';
+import { queryClient } from '../../_app';
 
 type TodoColorKeys = keyof typeof colors.toDoColor;
 
@@ -21,59 +23,6 @@ type TOdoBoardData = {
   title: string;
   description: string;
 }[];
-
-// const TODOS_MOCK: Todos[] = [];
-
-const TODOS_MOCK = [
-  {
-    id: 0,
-    title: '하기 전 일1',
-    content: 'string',
-    nickname: 'string',
-    profileImage: DEMO_PROFILE_IMAGE_URL,
-    roomSlot: 'todo' as const
-  },
-  {
-    id: 1,
-    title: '하는 중 일2',
-    content: 'string',
-    nickname: 'string',
-    profileImage: DEMO_PROFILE_IMAGE_URL,
-    roomSlot: 'doing' as const
-  },
-  {
-    id: 2,
-    title: 'string',
-    content: 'string',
-    nickname: 'string',
-    profileImage: DEMO_PROFILE_IMAGE_URL,
-    roomSlot: 'doing' as const
-  },
-  {
-    id: 3,
-    title: '다 한 일',
-    content: 'string',
-    nickname: 'string',
-    profileImage: DEMO_PROFILE_IMAGE_URL,
-    roomSlot: 'done' as const
-  },
-  {
-    id: 4,
-    title: 'string',
-    content: 'string',
-    nickname: 'string',
-    profileImage: DEMO_PROFILE_IMAGE_URL,
-    roomSlot: 'todo' as const
-  },
-  {
-    id: 5,
-    title: 'string',
-    content: 'string',
-    nickname: 'string',
-    profileImage: DEMO_PROFILE_IMAGE_URL,
-    roomSlot: 'done' as const
-  }
-];
 
 const TODO_BOARD_DATA: TOdoBoardData = [
   {
@@ -159,13 +108,6 @@ const TodoName = styled.span`
   color: ${colors.grayScale.gray05};
 `;
 
-type TodoBoardProps = {
-  color: TodoColorProps;
-  title: string;
-  description: string;
-  todos: Todo[];
-};
-
 const TodoInput = styled.input`
   ${regular16};
   display: block;
@@ -198,10 +140,27 @@ const ContentContainer = styled.div`
   align-items: center;
 `;
 
-const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
+type TodoBoardProps = {
+  userId: number;
+  color: TodoColorProps;
+  title: string;
+  description: string;
+  todos: Todo[];
+  roomId: number;
+};
+
+const TodoBoard = ({
+  color,
+  title,
+  description,
+  todos,
+  userId,
+  roomId
+}: TodoBoardProps) => {
+  const router = useRouter();
   const [todoTitle, setTodoTitle] = useState('');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
-  const router = useRouter();
+  const { mutate } = usePostTodo();
 
   useEffect(() => {
     const filteredTodos = getTodoData(todos, color);
@@ -222,6 +181,26 @@ const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
     if (color === 'red') return '시작';
     if (color === 'green') return '마치기';
     return '다시 하기';
+  };
+
+  const handleTodoSubmit: KeyboardEventHandler = ({
+    key,
+    nativeEvent: { isComposing }
+  }) => {
+    if (!todoTitle || isComposing) return;
+    if (key !== 'Enter') return;
+    const newTodo = {
+      title: todoTitle,
+      content: '',
+      todoOwnerId: userId,
+      roomId
+    };
+    mutate(newTodo, {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['todo']);
+        setTodoTitle('');
+      }
+    });
   };
 
   return (
@@ -252,23 +231,7 @@ const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
           type="text"
           value={todoTitle}
           onChange={({ target: { value } }) => setTodoTitle(value)}
-          onKeyDown={({ key, nativeEvent: { isComposing } }) => {
-            if (!todoTitle || isComposing) return;
-            if (key === 'Enter') {
-              setFilteredTodos((pre) => [
-                ...pre,
-                {
-                  id: 10,
-                  title: todoTitle,
-                  content: '',
-                  nickname: '',
-                  profileImage: '',
-                  roomSlot: 'todo'
-                }
-              ]);
-              setTodoTitle('');
-            }
-          }}
+          onKeyDown={handleTodoSubmit}
         />
       )}
     </TodoBoardContainer>
@@ -277,6 +240,11 @@ const TodoBoard = ({ color, title, description, todos }: TodoBoardProps) => {
 
 const Todo = () => {
   const roomId = useRoomIdParams();
+  const {
+    data: myInformatin,
+    isLoading: isMyInformatinLoading,
+    isError: isMyInformationError
+  } = useGetMyInformation();
   const {
     data: groupDetail,
     isLoading: isGroupDetailLoading,
@@ -294,6 +262,9 @@ const Todo = () => {
   if (isTodoLoading) return <div>할 일 로딩중...</div>;
   if (isTodoError) return <div>할 일 로딩 에러!</div>;
   if (todoData === undefined) return <div>할 일 데이터 오류!</div>;
+  if (isMyInformatinLoading) return <div>내 정보 로딩중...</div>;
+  if (isMyInformationError) return <div>내 정보 로딩 에러!</div>;
+  if (myInformatin === undefined) return <div>내 정보 데이터 오류!</div>;
 
   return (
     <GroupPage
@@ -307,8 +278,9 @@ const Todo = () => {
       {TODO_BOARD_DATA.map(({ color, title, description }) => (
         <TodoBoard
           key={color}
+          userId={myInformatin.id}
           todos={todoData.todoList}
-          {...{ color, title, description }}
+          {...{ color, title, description, roomId }}
         />
       ))}
     </GroupPage>
