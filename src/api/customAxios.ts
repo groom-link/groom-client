@@ -14,11 +14,14 @@ const customAxios = axios.create({
 export const requestIntercepter = customAxios.interceptors.request.use(
   (config) => {
     const accessToken = getCookie(ACCESS_TOKEN_KEY);
-    console.log(config.url);
-
+    if (!accessToken) {
+      console.log('no token');
+      return config;
+    }
     if (config.url === 'auth/kakao/login') return config;
     if (!config.headers) config.headers = {};
-    config.headers['x-access-token'] = accessToken ? accessToken : '';
+    config.headers['x-access-token'] = accessToken;
+    console.log('token set');
     return config;
   }
 );
