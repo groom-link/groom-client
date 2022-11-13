@@ -6,6 +6,7 @@ import { TopCancelBar } from '../../../components/molecules';
 import Image from '../../../components/utils/Image';
 import colors from '../../../styles/colors';
 import { bold16, regular16, semiBold24 } from '../../../styles/typography';
+import showToastMessage from '../../../utils/showToastMessage';
 
 const MainBox = styled.div`
   display: flex;
@@ -86,7 +87,10 @@ const Success = () => {
           size="large"
           disabled={false}
           color="gray"
-          onClick={() => setClipboard(code)}
+          onClick={() => {
+            setClipboard(code);
+            showToastMessage('모임 초대 링크가 복사되었습니다.', 'success');
+          }}
         >
           모임 초대 링크 복사하기
         </CodePasteButton>

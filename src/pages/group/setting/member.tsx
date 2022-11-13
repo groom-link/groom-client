@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { TextButton } from '../../../components/atoms';
 import {
+  Dialog,
   MemberList,
   SegmentTab,
   TopNavBar
@@ -15,6 +16,7 @@ import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId'
 import useGetInviteCode from '../../../hooks/api/room/getInviteCode';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16 } from '../../../styles/typography';
+import showToastMessage from '../../../utils/showToastMessage';
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -57,6 +59,7 @@ const WhiteBox = styled.div`
 
 const Member = () => {
   const roomId = useRoomIdParams();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const {
     data: inviteCode,
     isLoading: isInviteCodeLoading,
@@ -82,6 +85,8 @@ const Member = () => {
 
     navigator.clipboard.write(data);
   };
+
+  useEffect(() => console.log(deleteModeId), [deleteModeId]);
 
   const handleBackButtonClick = () => Router.push(`/group?roomId=${roomId}`);
 
@@ -113,7 +118,10 @@ const Member = () => {
         <InviteCodePasteButton
           color="navy"
           disabled={false}
-          onClick={() => setClipboard(inviteCode)}
+          onClick={() => {
+            setClipboard(inviteCode);
+            showToastMessage('초대 코드가 복사되었습니다.', 'success');
+          }}
         >
           초대 코드 복사하기
         </InviteCodePasteButton>
@@ -124,7 +132,10 @@ const Member = () => {
             <MemberList
               key={id}
               check={false}
-              onBlur={() => setDeleteModeId(0)}
+              onBlur={() => {
+                if (isDialogOpen) return;
+                setDeleteModeId(0);
+              }}
               isDeleteButtonExposed={deleteModeId === id}
               onListClick={() => {
                 if (id === myInformation.id) return;
@@ -133,15 +144,38 @@ const Member = () => {
                   return id;
                 });
               }}
-              onDeleteButtonClick={() =>
-                deleteParticipant({ roomId, userId: id })
-              }
+              onDeleteButtonClick={() => {
+                setIsDialogOpen(true);
+              }}
               src={profileImageUrl}
               name={nickname}
             />
           )
         )}
       </WhiteBox>
+      <Dialog
+        buttonType="two"
+        illustrationURL="/illustrations/Warning.png"
+        isOpen={isDialogOpen}
+        isGrayButtonDisabled={false}
+        isPurpleButtonDisabled={false}
+        onGrayButtonClick={() => {
+          deleteParticipant(
+            { roomId, userId: deleteModeId },
+            {
+              onSuccess: () => {
+                setIsDialogOpen(false);
+                showToastMessage('모임에서 내보냈습니다.', 'success');
+              }
+            }
+          );
+        }}
+        onPurpleButtonClick={() => setIsDialogOpen(false)}
+        title="정말 내보내시겠어요?"
+        description="모임에서 내보내면 다시 초대해야 합니다."
+        grayButtonText="네, 내보낼게요"
+        purpleButtonText="아니요"
+      />
     </Background>
   );
 };

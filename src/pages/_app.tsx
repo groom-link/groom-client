@@ -2,6 +2,7 @@ import React from 'react';
 import type { AppProps } from 'next/app';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Toaster } from 'react-hot-toast';
 
 import GlobalStyle from '../styles/Global';
 
@@ -13,6 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyle />
       <Component {...pageProps} />
       <ReactQueryDevtools initialIsOpen={false} />
+      <Toaster position="bottom-center" />
     </QueryClientProvider>
   );
 }

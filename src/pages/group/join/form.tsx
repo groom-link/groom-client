@@ -6,6 +6,7 @@ import { Dialog, TextArea, TopNavBar } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useAddParticipant from '../../../hooks/api/room/addParticipant';
+import useInviteCodeParams from '../../../hooks/useInviteCodeParams';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../../styles/typography';
 
@@ -43,6 +44,7 @@ const Money = styled.strong`
 `;
 
 const Form = () => {
+  const code = useInviteCodeParams();
   const [text, setText] = useState('');
   const [joinRoomId, setJoinRoomId] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -66,7 +68,7 @@ const Form = () => {
 
   const handleBackButtonClick = () => setIsModalOpen(true);
 
-  const handleModalConfirmButtonClick = () => Router.push('./');
+  const handleModalConfirmButtonClick = () => Router.push(`./?code=${code}`);
 
   const handleModalCancelButtonClick = () => setIsModalOpen(false);
 

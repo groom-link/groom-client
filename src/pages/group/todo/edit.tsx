@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import {
+  Dialog,
   MemberList,
   TextArea,
   TextInput,
@@ -16,6 +17,7 @@ import useGetTodoDetail from '../../../hooks/api/todo/getTodoDetail';
 import usePatchTodo from '../../../hooks/api/todo/patchTodo';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
+import showToastMessage from '../../../utils/showToastMessage';
 import { queryClient } from '../../_app';
 
 const Background = styled.div`
@@ -66,6 +68,7 @@ const Edit = () => {
   const roomId = useRoomIdParams();
   const todoId = useTodoIdParams();
   const router = useRouter();
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [owner, setOwner] = useState(0);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -102,13 +105,7 @@ const Edit = () => {
     setOwner(id);
   };
 
-  const handleClickButton = () =>
-    mutate(todoId, {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['todo']);
-        router.push(`./?roomId=${roomId}`);
-      }
-    });
+  const handleClickButton = () => setIsDialogOpen(true);
 
   const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = ({
     target: { value }
@@ -125,7 +122,10 @@ const Edit = () => {
       todoOwnerId: owner
     };
     patchTodo(body, {
-      onSuccess: () => router.push(`./?roomId=${roomId}`)
+      onSuccess: () => {
+        router.push(`./?roomId=${roomId}`);
+        showToastMessage('할 일이 수정되었습니다.', 'success');
+      }
     });
   };
 
@@ -179,6 +179,26 @@ const Edit = () => {
       <ButtonFooter disabled={false} onClick={handleTodoSubmit}>
         할 일 수정하기
       </ButtonFooter>
+      <Dialog
+        buttonType="two"
+        illustrationURL="/illustrations/Trash.png"
+        isOpen={isDialogOpen}
+        isGrayButtonDisabled={false}
+        isPurpleButtonDisabled={false}
+        onGrayButtonClick={() =>
+          mutate(todoId, {
+            onSuccess: () => {
+              queryClient.invalidateQueries(['todo']);
+              router.push(`./?roomId=${roomId}`);
+              showToastMessage('할 일이 삭제되었습니다.', 'success');
+            }
+          })
+        }
+        onPurpleButtonClick={() => setIsDialogOpen(false)}
+        title="할 일을 삭제하시겠어요?"
+        grayButtonText="네, 삭제할게요"
+        purpleButtonText="아니요"
+      />
     </Background>
   );
 };

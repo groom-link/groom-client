@@ -19,6 +19,7 @@ import usePatchRoom from '../../../hooks/api/room/patchRoom';
 import colors from '../../../styles/colors';
 import { semiBold16 } from '../../../styles/typography';
 import readFileAsURL from '../../../utils/readFileAsURL';
+import showToastMessage from '../../../utils/showToastMessage';
 
 const Background = styled.div`
   box-sizing: border-box;
@@ -137,7 +138,10 @@ const Information = () => {
       maxPeople
     };
     patchRoom(body, {
-      onSuccess: () => router.push(`/group?roomId=${roomId}`)
+      onSuccess: () => {
+        router.push(`/group?roomId=${roomId}`);
+        showToastMessage('모임 정보가 수정되었습니다.', 'success');
+      }
     });
   };
 
@@ -246,7 +250,10 @@ const Information = () => {
           exitRoom(
             { roomId },
             {
-              onSuccess: () => router.push('/home')
+              onSuccess: () => {
+                router.push('/home');
+                showToastMessage('모임에서 나갔습니다.', 'success');
+              }
             }
           )
         }
