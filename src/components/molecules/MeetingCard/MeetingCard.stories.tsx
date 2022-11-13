@@ -11,7 +11,6 @@ export default {
 } as ComponentMeta<typeof MeetingCard>;
 
 export const Primary: ComponentStory<typeof MeetingCard> = ({
-  id,
   title = '회의 제목',
   address: location = '회의하는 곳의 주소',
   startTime: date = '2022년 10월 21일',
@@ -20,7 +19,6 @@ export const Primary: ComponentStory<typeof MeetingCard> = ({
 }) => (
   <MeetingCard
     {...{
-      id,
       title,
       address: location,
       startTime: date,

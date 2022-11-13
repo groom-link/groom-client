@@ -27,6 +27,7 @@ export const Primary: ComponentStory<typeof SuggestionTimeList> = ({
   return (
     <SuggestionTimeList
       type="delete"
+      onBlur={() => setIsDeleteButtonExposed(false)}
       isDeleteButtonExposed={isDeleteButtonExposed}
       onClick={handleListClick}
       onDeleteButtonClick={handleDeleteButtonClick}
