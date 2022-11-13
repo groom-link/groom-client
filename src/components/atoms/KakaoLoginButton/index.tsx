@@ -9,6 +9,7 @@ type Props = {
 
 const Button = styled.button<Pick<Props, 'width' | 'height'>>`
   width: ${({ width }) => (width ??= '374px')};
+  max-width: 90%;
   height: ${({ height }) => (height ??= '56px')};
 `;
 

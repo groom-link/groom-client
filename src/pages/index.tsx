@@ -14,6 +14,11 @@ const AppleLoginButtonStyled = styled(AppleLoginButton)`
   margin-top: 20px;
 `;
 
+const KakaoLoginButtonStyled = styled(KakaoLoginButton)`
+  display: block;
+  margin: 0 auto;
+`;
+
 const Login = () => {
   useEffect(() => {
     window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string);
@@ -38,8 +43,7 @@ const Login = () => {
           height="75.5"
         />
       </LogoContainer>
-
-      <KakaoLoginButton onClick={handleKakaoLogin} width="100%" />
+      <KakaoLoginButtonStyled onClick={handleKakaoLogin} width="100%" />
     </>
   );
 };

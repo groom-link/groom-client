@@ -43,6 +43,7 @@ const FullPageModal = styled.div<Pick<Props, 'isOpen'>>`
 
 const Container = styled.div`
   width: 340px;
+  max-width: 80%;
   display: flex;
   flex-direction: column;
   align-items: center;
