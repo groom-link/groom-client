@@ -114,7 +114,7 @@ const FloatingButton = styled.button<{ isButtonLong: boolean }>`
   width: ${({ isButtonLong }) => (isButtonLong ? '133px' : '56px')};
   padding: 16px;
   z-index: 1;
-  bottom: 50px;
+  bottom: 20px;
   border-radius: ${({ isButtonLong }) => (isButtonLong ? '24px' : '28px')};
   right: 10px;
   color: ${colors.grayScale.white};

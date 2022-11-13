@@ -45,6 +45,7 @@ const EditLink = styled.a`
   display: block;
   padding: 10px 12px;
   text-decoration: none;
+  word-break: keep-all;
   color: ${colors.grayScale.gray04};
 `;
 
@@ -52,6 +53,7 @@ const DeleteButton = styled.button`
   ${semiBold16};
   display: block;
   padding: 10px 12px;
+  word-break: keep-all;
   color: ${colors.etcColor.alertRed};
 `;
 
