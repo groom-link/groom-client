@@ -9,21 +9,31 @@ import makeDateTimeString from '../../../utils/makeDatetimeString';
 import { Avatar } from '../../atoms';
 
 type Props = {
-  id: number;
   title: string;
   address: string;
   startTime: string;
   profiles: string[];
   editLink?: string;
-  onDeleteClick?: (id: number) => void;
+  detailHref?: string;
+  onDeleteClick?: () => void;
 };
 
 const Card = styled.div`
   box-sizing: border-box;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  width: 100%;
   margin-top: 12px;
   padding: 16px;
   border-radius: 8px;
   background-color: ${colors.grayScale.white};
+  text-align: left;
+`;
+
+const ContentContainer = styled.a`
+  display: block;
+  text-decoration: none;
 `;
 
 const SettingContainer = styled.div`
@@ -42,7 +52,6 @@ const DeleteButton = styled.button`
   ${semiBold16};
   display: block;
   padding: 10px 12px;
-  text-decoration: none;
   color: ${colors.etcColor.alertRed};
 `;
 
@@ -80,13 +89,13 @@ const ProfileImage = styled(Avatar)`
 `;
 
 const MeetingCard = ({
-  id,
   title,
   address,
   startTime,
   profiles,
   editLink,
-  onDeleteClick
+  onDeleteClick,
+  detailHref
 }: Props) => {
   const cardRef = useRef<HTMLDivElement>(null);
   const { numberOfOverflow, participantsToShow } = useAdjustNumberOfProfiles({
@@ -98,31 +107,62 @@ const MeetingCard = ({
 
   return (
     <Card>
-      <TitleContainer>
-        <MeetingTitle>{title}</MeetingTitle>
-        {editLink && (
-          <SettingContainer>
-            <Link passHref href={editLink}>
-              <EditLink>수정</EditLink>
-            </Link>
-            {onDeleteClick && (
-              <DeleteButton type="button" onClick={() => onDeleteClick(id)}>
-                삭제
-              </DeleteButton>
+      {detailHref ? (
+        <Link href={detailHref} passHref>
+          <ContentContainer>
+            <TitleContainer>
+              <MeetingTitle>{title}</MeetingTitle>
+            </TitleContainer>
+            <MeetingLocation>{address}</MeetingLocation>
+            <MeetingDate>{`${dateString} ${timeString}`}</MeetingDate>
+            <ProfileImageContainer ref={cardRef}>
+              {participantsToShow.map((URL) => (
+                <ProfileImage proptype="image" key={URL} src={URL} />
+              ))}
+              {numberOfOverflow !== 0 && (
+                <ProfileImage
+                  proptype="more-profile"
+                  count={numberOfOverflow}
+                />
+              )}
+            </ProfileImageContainer>
+          </ContentContainer>
+        </Link>
+      ) : (
+        <ContentContainer>
+          <TitleContainer>
+            <MeetingTitle>{title}</MeetingTitle>
+          </TitleContainer>
+          <MeetingLocation>{address}</MeetingLocation>
+          <MeetingDate>{`${dateString} ${timeString}`}</MeetingDate>
+          <ProfileImageContainer ref={cardRef}>
+            {participantsToShow.map((URL) => (
+              <ProfileImage proptype="image" key={URL} src={URL} />
+            ))}
+            {numberOfOverflow !== 0 && (
+              <ProfileImage proptype="more-profile" count={numberOfOverflow} />
             )}
-          </SettingContainer>
-        )}
-      </TitleContainer>
-      <MeetingLocation>{address}</MeetingLocation>
-      <MeetingDate>{`${dateString} ${timeString}`}</MeetingDate>
-      <ProfileImageContainer ref={cardRef}>
-        {participantsToShow.map((URL) => (
-          <ProfileImage proptype="image" key={URL} src={URL} />
-        ))}
-        {numberOfOverflow !== 0 && (
-          <ProfileImage proptype="more-profile" count={numberOfOverflow} />
-        )}
-      </ProfileImageContainer>
+          </ProfileImageContainer>
+        </ContentContainer>
+      )}
+      {editLink && (
+        <SettingContainer>
+          <Link passHref href={editLink}>
+            <EditLink>수정</EditLink>
+          </Link>
+          {onDeleteClick && (
+            <DeleteButton
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onDeleteClick();
+              }}
+            >
+              삭제
+            </DeleteButton>
+          )}
+        </SettingContainer>
+      )}
     </Card>
   );
 };

@@ -21,6 +21,7 @@ type DeleteProps = {
   isDeleteButtonExposed: boolean;
   onClick: () => void;
   onDeleteButtonClick: () => void;
+  onBlur: () => void;
 } & DefaultProps;
 
 type Props = LinkProps | DeleteProps;
@@ -43,7 +44,7 @@ const LinkContainer = styled.a`
 const Container = styled.button`
   display: flex;
   align-items: center;
-  width: 100%;
+  min-width: 100%;
   padding: 16px 20px;
   background-color: ${colors.grayScale.white};
   border-bottom: 1px solid ${colors.grayScale.gray02};
@@ -124,11 +125,11 @@ const SuggestionTimeList = ({
     );
   }
 
-  const { isDeleteButtonExposed, onClick, onDeleteButtonClick } = props;
+  const { isDeleteButtonExposed, onClick, onDeleteButtonClick, onBlur } = props;
 
   return (
     <>
-      <TimeList className={className}>
+      <TimeList tabIndex={0} {...{ className, onBlur }}>
         <Container onClick={onClick}>
           <DateAndTime {...{ startTime, endTime }} />
         </Container>

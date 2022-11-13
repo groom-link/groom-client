@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -78,9 +78,10 @@ const Map = () => {
   const roomId = useRoomIdParams();
   const coords = useCoords();
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
+  const onMapDragEvent = useCallback(() => setIsGPSButtonActive(false), []);
   const { mapRef, map, center } = useKakaoMaps({
     coords,
-    onMapDragEvent: () => setIsGPSButtonActive(false)
+    onMapDragEvent
   });
   const [address, setAddress] = useState('지도를 움직여 위치를 선택해주세요.');
   const setAddressStore = useNewMeetingFormStore((state) => state.setAddress);

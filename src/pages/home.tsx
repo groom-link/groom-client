@@ -4,6 +4,7 @@ import Router from 'next/router';
 import styled from '@emotion/styled';
 
 import { TextButton } from '../components/atoms';
+import { Add } from '../components/atoms/icons';
 import {
   Dialog,
   Tab,
@@ -11,11 +12,16 @@ import {
   ThumbnailList,
   TimerPopup
 } from '../components/molecules';
-import ButtonFooter from '../components/molecules/ButtonFooter';
 import Image from '../components/utils/Image';
+import useGetDetailWithCode from '../hooks/api/room/getDetailWithCode';
 import useGetMyRoom from '../hooks/api/room/getMyRoom';
 import colors from '../styles/colors';
-import { regular16, semiBold16, semiBold24 } from '../styles/typography';
+import {
+  bold16,
+  regular16,
+  semiBold16,
+  semiBold24
+} from '../styles/typography';
 
 const HEADER_HEIGHT = '136px' as const;
 
@@ -100,6 +106,22 @@ const GroupCard = styled(ThumbnailList)`
   margin-bottom: 12px;
 `;
 
+const FloatingButton = styled.button<{ isButtonLong: boolean }>`
+  ${bold16};
+  position: fixed;
+  display: flex;
+  align-items: center;
+  width: ${({ isButtonLong }) => (isButtonLong ? '133px' : '56px')};
+  padding: 16px;
+  z-index: 1;
+  bottom: 50px;
+  border-radius: ${({ isButtonLong }) => (isButtonLong ? '24px' : '28px')};
+  right: 10px;
+  color: ${colors.grayScale.white};
+  background-color: ${colors.mainColor.purple};
+  transition: all 0.7s ease-in-out;
+`;
+
 const Footer = styled(Tab)`
   position: fixed;
   bottom: 0;
@@ -107,19 +129,35 @@ const Footer = styled(Tab)`
 
 const Home = () => {
   const [searchText, setSearchText] = useState('');
+  const [code, setCode] = useState('');
   const [hasNotification, setHasNotification] = useState(true); // TODO: 알림 존재 여부 API 연동하기.
   const [isGroup, setIsGroup] = useState(false);
   const [isDisplayTimer, setIsDisplayTimer] = useState(false); // TODO: 서버에서 푸쉬 메시지 받아서 타이머 켜기.
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isButtonLong, setIsButtonLong] = useState(true);
   const {
     data: myRoomData,
     isLoading: isMyRoomLoading,
     isError: isMyRoomError
   } = useGetMyRoom();
+  const { isError, isSuccess } = useGetDetailWithCode(code, 0);
+
+  useEffect(() => {
+    setTimeout(() => setIsButtonLong(false), 1000);
+  }, []);
 
   useEffect(() => {
     setIsGroup(Router.asPath.includes('group'));
   }, []);
+
+  useEffect(() => {
+    if (isError) {
+      setCode('');
+      setIsModalOpen(true);
+      return;
+    }
+    if (isSuccess) Router.push(`/group/join?code=${code}`);
+  }, [isError, isSuccess, code]);
 
   const handleSearchChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
@@ -129,7 +167,7 @@ const Home = () => {
 
   const handleJoinClick = () => {
     if (searchText === '') return;
-    Router.push(`/group/join?code=${searchText}`);
+    setCode(searchText);
   };
 
   const handleCloseModal = () => {
@@ -226,12 +264,13 @@ const Home = () => {
             </EmptyDescription>
           </>
         )}
-        <ButtonFooter
-          disabled={false}
+        <FloatingButton
+          isButtonLong={isButtonLong}
           onClick={() => Router.push('/group/add/basic')}
         >
-          모임 만들기
-        </ButtonFooter>
+          <Add width="24px" color={colors.grayScale.white} />
+          {isButtonLong && '모임 만들기'}
+        </FloatingButton>
 
         {/* <Footer activeMenu="홈" /> */}
         {/* TODO: 다른 메뉴 추가되면 푸터 넣기. */}

@@ -1,14 +1,20 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { DEMO_PROFILE_IMAGE_URL } from '../../../__mocks__';
 import {
   GPSButton,
   TimerPopup,
   TopNavBar
 } from '../../../components/molecules';
-import { useCoords, useKakaoMaps } from '../../../hooks';
+import {
+  useCoords,
+  useKakaoMaps,
+  useMeetingIdParams,
+  useRoomIdParams
+} from '../../../hooks';
+import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
+import useGetScheduleDetail from '../../../hooks/api/teamSchedule/getScheduleDetail';
 import colors from '../../../styles/colors';
 import {
   checkArrival,
@@ -42,33 +48,54 @@ const GPSButtonStyled = styled(GPSButton)`
 `;
 
 const TimerMap = () => {
+  const roomId = useRoomIdParams();
+  const meetingId = useMeetingIdParams();
+  const [timer, setTimer] = useState('');
   const coords = useCoords();
-  // TODO: 실제 약속 장소의 위도, 경도 연동하기.
-  // 사용자의 프로필 마커와 도착 장소 마커를 한 눈에 볼 수 있도록 임시로 설정해놓았습니다.
-  const destinationCoords: [number, number] = useMemo(
-    () => [coords[0] + 0.001, coords[1] + 0.001],
-    [coords]
-  );
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
   const [isTimerButtonDisabled, setIsTimerButtonDisabled] = useState(true);
+  const {
+    data: scheduleDetail,
+    isLoading: isScheduleDetailLoading,
+    isError: isScheduleDetailError
+  } = useGetScheduleDetail(meetingId);
+  const {
+    data: myInformation,
+    isLoading: isMyInformationLoading,
+    isError: isMyInformationError
+  } = useGetMyInformation();
+  const onMapDragEvent = useCallback(() => setIsGPSButtonActive(false), []);
   const { mapRef, map } = useKakaoMaps({
     coords,
-    onMapDragEvent: () => setIsGPSButtonActive(false)
+    onMapDragEvent
   });
 
-  useEffect(() => {
-    renderDestinationMarker({ coords: destinationCoords, map });
-  }, [destinationCoords, map]);
+  useEffect(() => {});
 
   useEffect(() => {
+    if (!scheduleDetail) return;
+    const {
+      meetingLocation: { latitude, longitude }
+    } = scheduleDetail;
+    const destinationCoords = [Number(latitude), Number(longitude)] as Coords;
+    renderDestinationMarker({ coords: destinationCoords, map });
+  }, [scheduleDetail, map]);
+
+  useEffect(() => {
+    if (!myInformation) return;
     renderProfileMarker({
       coords,
       map,
-      profileImageURL: DEMO_PROFILE_IMAGE_URL
+      profileImageURL: myInformation.profileImageUrl
     });
-  }, [map, coords]);
+  }, [map, coords, myInformation]);
 
   useEffect(() => {
+    if (!scheduleDetail) return;
+    const {
+      meetingLocation: { latitude, longitude }
+    } = scheduleDetail;
+    const destinationCoords = [Number(latitude), Number(longitude)] as Coords;
     checkArrival({
       coords1: coords,
       coords2: destinationCoords,
@@ -76,11 +103,30 @@ const TimerMap = () => {
       onArrival: () => setIsTimerButtonDisabled(false),
       onNotArrival: () => setIsTimerButtonDisabled(true)
     });
-  }, [coords, destinationCoords]);
+  }, [coords, scheduleDetail]);
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setTimer(() => {
+        if (!scheduleDetail) return '로딩중';
+        const { startTime } = scheduleDetail;
+        const startTimeObj = new Date(startTime).valueOf();
+        const currentTime = new Date().valueOf();
+        const timeDiff = startTimeObj - currentTime;
+        if (timeDiff < 0) return '타이머 종료';
+        if (timeDiff < 30 * 60 * 1000) {
+          const minutes = Math.floor(timeDiff / 1000 / 60);
+          const seconds = Math.floor((timeDiff / 1000) % 60);
+          return `${minutes}분 ${seconds}초`;
+        }
+        return '대기중';
+      });
+    }, 1000);
+    return () => clearInterval(id);
+  }, [scheduleDetail]);
 
   const handleClearTimerButtonClick = () => {
-    const timer = 0; // TODO: 실제 시간 연동하기.
-    if (timer === 0) {
+    if (timer === '타이머 종료') {
       Router.push('./fail');
       return;
     }
@@ -92,7 +138,15 @@ const TimerMap = () => {
     setIsGPSButtonActive(true);
   };
 
-  const handleBackButtonClick = () => Router.push('/home');
+  const handleBackButtonClick = () =>
+    Router.push(`/group/meeting?roomId=${roomId}`);
+
+  if (isScheduleDetailLoading) return <div>로딩 중...</div>;
+  if (isScheduleDetailError) return <div>에러 발생!</div>;
+  if (scheduleDetail === undefined) return <div>데이터 없음!</div>;
+  if (isMyInformationLoading) return <div>로딩 중...</div>;
+  if (isMyInformationError) return <div>에러 발생!</div>;
+  if (myInformation === undefined) return <div>데이터 없음!</div>;
 
   return (
     <>
@@ -107,8 +161,8 @@ const TimerMap = () => {
             type="button"
             onClick={handleClearTimerButtonClick}
             disabled={isTimerButtonDisabled}
-            groupName="소마 그룹"
-            timer="10:31"
+            groupName={scheduleDetail.title}
+            timer={timer}
           />
         </TimerMenuContainer>
       </Map>

@@ -13,6 +13,7 @@ import { useRoomIdParams, useTodoIdParams } from '../../../hooks';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useDeleteTodo from '../../../hooks/api/todo/deleteTodo';
 import useGetTodoDetail from '../../../hooks/api/todo/getTodoDetail';
+import usePatchTodo from '../../../hooks/api/todo/patchTodo';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
 import { queryClient } from '../../_app';
@@ -65,7 +66,7 @@ const Edit = () => {
   const roomId = useRoomIdParams();
   const todoId = useTodoIdParams();
   const router = useRouter();
-  const [participants, setParticipants] = useState(0);
+  const [owner, setOwner] = useState(0);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const {
@@ -79,6 +80,7 @@ const Edit = () => {
     isLoading: isTodoDetailLoading
   } = useGetTodoDetail(todoId);
   const { mutate } = useDeleteTodo();
+  const { mutate: patchTodo } = usePatchTodo();
 
   useEffect(() => {
     if (!todoDetailData) return;
@@ -89,15 +91,15 @@ const Edit = () => {
     } = todoDetailData;
     setTitle(preTitle);
     setContent(preContent);
-    setParticipants(id);
+    setOwner(id);
   }, [todoDetailData]);
 
   const selectMember = (id: number) => {
-    if (participants === id) {
-      setParticipants(0);
+    if (owner === id) {
+      setOwner(0);
       return;
     }
-    setParticipants(id);
+    setOwner(id);
   };
 
   const handleClickButton = () =>
@@ -111,6 +113,21 @@ const Edit = () => {
   const handleContentChange: ChangeEventHandler<HTMLTextAreaElement> = ({
     target: { value }
   }) => setContent(value);
+
+  const handleTodoSubmit = () => {
+    if (!todoDetailData) return;
+    const { roomSlot } = todoDetailData;
+    const body = {
+      id: todoId,
+      title,
+      content,
+      roomSlot,
+      todoOwnerId: owner
+    };
+    patchTodo(body, {
+      onSuccess: () => router.push(`./?roomId=${roomId}`)
+    });
+  };
 
   if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
@@ -149,7 +166,7 @@ const Edit = () => {
             check={true}
             src={profileImageUrl}
             name={nickname}
-            isChecked={id === participants}
+            isChecked={id === owner}
             onChange={() => selectMember(id)}
           />
         )
@@ -159,12 +176,7 @@ const Edit = () => {
           할 일 삭제하기
         </DeleteButton>
       </WhiteBox>
-      <ButtonFooter
-        disabled={false}
-        onClick={function (): void {
-          throw new Error('Function not implemented.');
-        }}
-      >
+      <ButtonFooter disabled={false} onClick={handleTodoSubmit}>
         할 일 수정하기
       </ButtonFooter>
     </Background>

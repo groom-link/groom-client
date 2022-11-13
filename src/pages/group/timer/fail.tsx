@@ -1,20 +1,24 @@
+import { useRouter } from 'next/router';
+
 import { GoBackHome } from '../../../components/templates';
 
 const Fail = () => {
+  const router = useRouter();
+
+  const handleGoHomeClick = () => router.push('/home');
+
   return (
     <GoBackHome
-      proptype="two-button"
+      proptype="one-button"
       title="타이머를 해제하지 못했어요."
       description={
         <>
           회의에 지각했어요.
-          <br /> 패널티가 자동으로 부여됩니다.
+          <br /> 팀원들에게 기프티콘을 보내볼까요?
         </>
       }
-      purpleButtonLabel="팀원에게 용서 구하기"
-      grayButtonLabel="패널티 받기"
-      grayButtonOnClick={() => {}}
-      onPurpleButtonClick={() => {}}
+      purpleButtonLabel="홈화면으로 돌아가기"
+      onPurpleButtonClick={handleGoHomeClick}
       logoImageSrc="/illustrations/Warning.png"
     />
   );

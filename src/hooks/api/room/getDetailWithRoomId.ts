@@ -2,15 +2,15 @@ import { useQuery } from '@tanstack/react-query';
 
 import customAxios from '../../../api/customAxios';
 
-type GetDetailWithRoomIdResponse = GroomApiResponse<
-  Room & {
-    roomParticipants: {
-      id: number;
-      nickname: string;
-      profileImageUrl: string;
-    }[];
-  }
->;
+export type RoomDetail = Room & {
+  roomParticipants: {
+    id: number;
+    nickname: string;
+    profileImageUrl: string;
+  }[];
+};
+
+type GetDetailWithRoomIdResponse = GroomApiResponse<RoomDetail>;
 
 type GetDetailWithRoomId = (
   roomId: number

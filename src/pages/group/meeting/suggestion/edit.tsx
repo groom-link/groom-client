@@ -116,8 +116,12 @@ const Edit = () => {
           key={id}
           type="delete"
           isDeleteButtonExposed={deleteModeId === id}
+          onBlur={() => setDeleteModeId(0)}
           onClick={() => {
-            setDeleteModeId(id);
+            setDeleteModeId((pre) => {
+              if (pre === id) return 0;
+              return id;
+            });
           }}
           onDeleteButtonClick={() =>
             deleteUnableSchedule(id, {

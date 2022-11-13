@@ -121,7 +121,7 @@ export const renderKakapMap = ({ coords, mapRef }: RenderKakaoMapProps) => {
     center: new window.kakao.maps.LatLng(coords[0], coords[1]),
     level: 3
   };
-  const map = new window.kakao.maps.Map(mapRef.current, options);
+  const map = new window.kakao.maps.Map(mapRef, options);
   return map;
 };
 

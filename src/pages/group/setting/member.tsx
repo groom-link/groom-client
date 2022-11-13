@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -8,6 +9,8 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import { useRoomIdParams } from '../../../hooks';
+import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
+import useDeleteParticipant from '../../../hooks/api/room/deleteParticipant';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useGetInviteCode from '../../../hooks/api/room/getInviteCode';
 import colors from '../../../styles/colors';
@@ -64,6 +67,13 @@ const Member = () => {
     isLoading: isRoomDetailLoading,
     isError: isRoomDetailError
   } = useGetDetailWithRoomId(roomId);
+  const {
+    data: myInformation,
+    isLoading: isMyInformationLoading,
+    isError: isMyInformationError
+  } = useGetMyInformation();
+  const { mutate: deleteParticipant } = useDeleteParticipant();
+  const [deleteModeId, setDeleteModeId] = useState<number>(0);
 
   const setClipboard = (text: string) => {
     const type = 'text/plain';
@@ -81,6 +91,9 @@ const Member = () => {
   if (isRoomDetailLoading) return <div>방 정보 로딩중...</div>;
   if (isRoomDetailError) return <div>방 정보 로딩 실패</div>;
   if (roomDetail === undefined) return <div>방 정보 에러</div>;
+  if (isMyInformationLoading) return <div>내 정보 로딩중...</div>;
+  if (isMyInformationError) return <div>내 정보 로딩 실패</div>;
+  if (myInformation === undefined) return <div>내 정보 에러</div>;
 
   return (
     <Background>
@@ -111,6 +124,18 @@ const Member = () => {
             <MemberList
               key={id}
               check={false}
+              onBlur={() => setDeleteModeId(0)}
+              isDeleteButtonExposed={deleteModeId === id}
+              onListClick={() => {
+                if (id === myInformation.id) return;
+                setDeleteModeId((pre) => {
+                  if (pre === id) return 0;
+                  return id;
+                });
+              }}
+              onDeleteButtonClick={() =>
+                deleteParticipant({ roomId, userId: id })
+              }
               src={profileImageUrl}
               name={nickname}
             />

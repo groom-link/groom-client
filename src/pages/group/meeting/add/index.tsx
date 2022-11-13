@@ -148,8 +148,8 @@ const Add = () => {
     postTeamScheduleMutate(
       {
         title,
-        startTime: startDatetime,
-        endTime: endDatetime,
+        startTime: startDateStored,
+        endTime: endDateStored,
         participantsIds: participants,
         meetingLocation: {
           address,
@@ -185,60 +185,62 @@ const Add = () => {
   if (groupDetailData === undefined) return <div>그룹 정보 데이터 에러!</div>;
 
   return (
-    <Background>
-      <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
-      <TitleContainer>
-        <Title>회의 일정을 등록해보세요.</Title>
-        <TextInput
-          value={title}
-          placeholder="회의 일정 제목을 입력하세요."
-          onChange={handleMeetingTitleChange}
-        />
-      </TitleContainer>
-      <TimePicker
-        allDayOption={false}
-        onChangeStartDatetime={handleStartDateTimeChange}
-        onChangeEndDatetime={handleEndDateTimeChange}
-        startDatetime={startDateStored || startDatetime}
-        endDatetime={endDateStored || endDatetime}
-      />
-      <MemberListLabel>모임 구성원</MemberListLabel>
-      {groupDetailData.roomParticipants.map(
-        ({ id, profileImageUrl, nickname }) => (
-          <MemberList
-            key={id}
-            check={true}
-            src={profileImageUrl}
-            name={nickname}
-            isChecked={getIsSelected(id)}
-            onChange={() => selectMember(id)}
-          />
-        )
-      )}
-      <ToggleContainer>
-        <ToggleLabel>비대면 회의</ToggleLabel>
-        <Toggle isOn={isOnlineMeeting} onClick={handleClickToggle} />
-      </ToggleContainer>
-      {isOnlineMeeting || (
-        <AddressInputContainer>
+    <>
+      <Background>
+        <TopNavBar setting={false} onBackButtonClick={handleBackButtonClick} />
+        <TitleContainer>
+          <Title>회의 일정을 등록해보세요.</Title>
           <TextInput
-            placeholder="주소를 입력하세요."
-            value={address}
-            onChange={() => {}}
+            value={title}
+            placeholder="회의 일정 제목을 입력하세요."
+            onChange={handleMeetingTitleChange}
           />
-          <SearchInMapButton
-            color="navy"
-            disabled={false}
-            onClick={handleSearchInMapClick}
-          >
-            지도에서 찾기
-          </SearchInMapButton>
-        </AddressInputContainer>
-      )}
-      <ButtonFooter disabled={false} onClick={handleSubmitNewMeeting}>
-        회의 만들기
-      </ButtonFooter>
-    </Background>
+        </TitleContainer>
+        <TimePicker
+          allDayOption={false}
+          onChangeStartDatetime={handleStartDateTimeChange}
+          onChangeEndDatetime={handleEndDateTimeChange}
+          startDatetime={startDateStored || startDatetime}
+          endDatetime={endDateStored || endDatetime}
+        />
+        <MemberListLabel>모임 구성원</MemberListLabel>
+        {groupDetailData.roomParticipants.map(
+          ({ id, profileImageUrl, nickname }) => (
+            <MemberList
+              key={id}
+              check={true}
+              src={profileImageUrl}
+              name={nickname}
+              isChecked={getIsSelected(id)}
+              onChange={() => selectMember(id)}
+            />
+          )
+        )}
+        <ToggleContainer>
+          <ToggleLabel>비대면 회의</ToggleLabel>
+          <Toggle isOn={isOnlineMeeting} onClick={handleClickToggle} />
+        </ToggleContainer>
+        {isOnlineMeeting || (
+          <AddressInputContainer>
+            <TextInput
+              placeholder="주소를 입력하세요."
+              value={address}
+              onChange={() => {}}
+            />
+            <SearchInMapButton
+              color="navy"
+              disabled={false}
+              onClick={handleSearchInMapClick}
+            >
+              지도에서 찾기
+            </SearchInMapButton>
+          </AddressInputContainer>
+        )}
+        <ButtonFooter disabled={false} onClick={handleSubmitNewMeeting}>
+          회의 만들기
+        </ButtonFooter>
+      </Background>
+    </>
   );
 };
 

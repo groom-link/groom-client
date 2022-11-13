@@ -1,18 +1,21 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import {
   Dialog,
   ImageUploadInput,
   SegmentTab,
+  Stepper,
   TextArea,
   TextInput,
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { useRoomIdParams } from '../../../hooks';
+import useExitRoom from '../../../hooks/api/room/exitRoom';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
+import usePatchRoom from '../../../hooks/api/room/patchRoom';
 import colors from '../../../styles/colors';
 import { semiBold16 } from '../../../styles/typography';
 import readFileAsURL from '../../../utils/readFileAsURL';
@@ -33,7 +36,7 @@ const WhiteBox = styled.div`
   padding: 20px;
   background-color: ${colors.grayScale.white};
 
-  &:not(:nth-of-type(5)) {
+  &:not(:nth-of-type(6)) {
     margin-bottom: 16px;
   }
 `;
@@ -43,7 +46,7 @@ const TextAreaStyled = styled(TextArea)`
 `;
 
 // TODO: Button 컴포넌트 안에 통합하기.
-const DeleteButton = styled.button`
+const ExitButton = styled.button`
   ${semiBold16};
   width: 100%;
   padding: 12px;
@@ -53,26 +56,43 @@ const DeleteButton = styled.button`
   background-color: ${colors.grayScale.white};
 `;
 
+const DeleteButton = styled.button`
+  ${semiBold16};
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  border-radius: 12px;
+  color: ${colors.grayScale.white};
+  background-color: ${colors.etcColor.alertRed};
+`;
+
 const Information = () => {
+  const router = useRouter();
   const roomId = useRoomIdParams();
   const [profileImage, setProfileImage] = useState('');
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDescription, setMeetingDescription] = useState('');
+  const [maxPeople, setMaxPeople] = useState(0);
   const [tagList, setTagList] = useState<string[]>([]);
-  const [isConfirmModalOpen, setIsConfirmModalOpen] = useState(false);
+  const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
+    useState(false);
+  const [isExitConfirmModalOpen, setIsExitConfirmModalOpen] = useState(false);
   const {
     data: roomDetail,
     isLoading: isRoomDetailLoading,
     isError: isRoomDetailError
   } = useGetDetailWithRoomId(roomId);
+  const { mutate: exitRoom } = useExitRoom();
+  const { mutate: patchRoom } = usePatchRoom();
 
   useEffect(() => {
     if (!roomDetail) return;
-    const { name, description, mainImageUrl } = roomDetail;
+    const { name, description, mainImageUrl, maxPeopleNumber } = roomDetail;
     setProfileImage(mainImageUrl);
     setMeetingTitle(name);
     setMeetingDescription(description);
     setTagList(tagList);
+    setMaxPeople(maxPeopleNumber);
   }, [roomDetail]);
 
   const handleDeleteImage = () => setProfileImage('');
@@ -106,22 +126,30 @@ const Information = () => {
     });
   };
 
-  const handleClickCloseMeeting = () => setIsConfirmModalOpen(true);
+  const handleClickCloseMeeting = () => setIsDeleteConfirmModalOpen(true);
 
   const handleMeetingInformationSubmit = () => {
-    console.log({
-      profileImage,
-      meetingTitle,
-      meetingDescription,
-      tagList
+    const body = {
+      id: roomId,
+      name: meetingTitle,
+      mainImageUrl: profileImage,
+      description: meetingDescription,
+      maxPeople
+    };
+    patchRoom(body, {
+      onSuccess: () => router.push(`/group?roomId=${roomId}`)
     });
   };
 
-  const handleModalClose = () => setIsConfirmModalOpen(false);
+  const handleDeleteModalClose = () => setIsDeleteConfirmModalOpen(false);
 
-  const closeMeeting = () => Router.push('/home');
+  const closeMeeting = () => router.push('/home');
 
-  const handleBackButtonClick = () => Router.push(`/group?roomId=${roomId}`);
+  const handleBackButtonClick = () => router.push(`/group?roomId=${roomId}`);
+
+  const handleExitButtonClick = () => setIsExitConfirmModalOpen(true);
+
+  const handleDeleteButtonClick = () => setIsDeleteConfirmModalOpen(true);
 
   if (isRoomDetailLoading) return <div>그룹 정보 로딩중</div>;
   if (isRoomDetailError) return <div>그룹 정보 에러</div>;
@@ -170,7 +198,19 @@ const Information = () => {
         </WhiteBox> */}
         {/* TODO: 태그 기능 추가하기 */}
         <WhiteBox>
-          <DeleteButton onClick={handleClickCloseMeeting}>
+          <Stepper
+            label="모임 구성원 수"
+            value={maxPeople}
+            onDecrease={() => setMaxPeople((pre) => (pre ? pre - 1 : pre))}
+            onIncrease={() => setMaxPeople((pre) => pre + 1)}
+            color="navy"
+            decreaseDisabled={false}
+            increaseDisabled={false}
+          />
+        </WhiteBox>
+        <WhiteBox>
+          <ExitButton onClick={handleExitButtonClick}>모임 나가기</ExitButton>
+          <DeleteButton onClick={handleDeleteButtonClick}>
             모임 끝내기
           </DeleteButton>
         </WhiteBox>
@@ -179,17 +219,37 @@ const Information = () => {
         </ButtonFooter>
       </Background>
       <Dialog
-        isOpen={isConfirmModalOpen}
+        isOpen={isDeleteConfirmModalOpen}
         title="정말 모임을 끝내시겠어요?"
         description="모든 팀원들은 모임에서 나가게 되며, 남은 모임비는 자동으로 반환됩니다."
         buttonType="two"
         grayButtonText="네, 끝낼게요"
         purpleButtonText="아니요"
         onGrayButtonClick={closeMeeting}
-        onPurpleButtonClick={handleModalClose}
+        onPurpleButtonClick={handleDeleteModalClose}
         isGrayButtonDisabled={false}
         isPurpleButtonDisabled={false}
         illustrationURL="/illustrations/Warning.png"
+      />
+      <Dialog
+        isOpen={isExitConfirmModalOpen}
+        illustrationURL="/illustrations/Warning.png"
+        title="정말 모임을 나가시겠어요?"
+        purpleButtonText="아니요"
+        isGrayButtonDisabled={false}
+        isPurpleButtonDisabled={false}
+        description="모임에서 나가면 다시 초대코드를 받아야 해요."
+        buttonType="two"
+        grayButtonText="네, 나갈게요"
+        onPurpleButtonClick={() => setIsExitConfirmModalOpen(false)}
+        onGrayButtonClick={() =>
+          exitRoom(
+            { roomId },
+            {
+              onSuccess: () => router.push('/home')
+            }
+          )
+        }
       />
     </>
   );

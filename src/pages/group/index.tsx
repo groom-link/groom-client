@@ -8,6 +8,7 @@ import { useRoomIdParams } from '../../hooks';
 import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
 import useGetTodo from '../../hooks/api/todo/getTodo';
+import usePatchTodo from '../../hooks/api/todo/patchTodo';
 import colors from '../../styles/colors';
 import { regular16, semiBold16 } from '../../styles/typography';
 
@@ -66,6 +67,7 @@ const Home = () => {
     isLoading: isTodoLoading,
     isError: isTodoError
   } = useGetTodo({ roomId });
+  const { mutate: patchTodo } = usePatchTodo();
 
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
@@ -92,8 +94,7 @@ const Home = () => {
           ))}
         </>
       )}
-
-      {teamScheduleList.length ? (
+      {!!teamScheduleList.length && (
         <>
           <SubTitle>가까운 회의 일정</SubTitle>
           {teamScheduleList.map(
@@ -111,7 +112,8 @@ const Home = () => {
             )
           )}
         </>
-      ) : (
+      )}
+      {!!teamScheduleList.length || !!todoData.todoList.length || (
         <>
           <LogoContainer>
             <Image

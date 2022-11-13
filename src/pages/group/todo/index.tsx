@@ -183,6 +183,12 @@ const TodoBoard = ({
     return '다시 하기';
   };
 
+  const getSlotName = (color: TodoColorProps) => {
+    if (color === 'red') return 'doing';
+    if (color === 'green') return 'done';
+    return 'doing';
+  };
+
   const handleTodoSubmit: KeyboardEventHandler = ({
     key,
     nativeEvent: { isComposing }
@@ -221,7 +227,12 @@ const TodoBoard = ({
                   <TodoName>{title}</TodoName>
                 </div>
               </ContentContainer>
-              <MoveButton color={color} onClick={(e) => e.stopPropagation()}>
+              <MoveButton
+                color={color}
+                onClick={(e) => {
+                  e.stopPropagation();
+                }}
+              >
                 {getButtonName(color)}
               </MoveButton>
             </TodoItemContainer>

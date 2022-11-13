@@ -12,7 +12,7 @@ type DefaultProps = {
   purpleButtonText: string;
   isPurpleButtonDisabled: boolean;
   onPurpleButtonClick: () => void;
-  description: string;
+  description?: string;
 };
 
 type OneButtonProps = {

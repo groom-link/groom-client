@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import {
   addMapDragEventHandler,
@@ -12,14 +12,21 @@ type Props = {
 };
 
 const useKakaoMaps = ({ coords, onMapDragEvent }: Props) => {
-  const mapRef = useRef<HTMLDivElement>(null);
+  const [targetDiv, setTargetDiv] = useState<HTMLDivElement | null>(null);
   const [map, setMap] = useState<any>();
   const [isMapLoaded, setIsMapLoaded] = useState(false);
   const [center, setCenter] = useState<Coords>(coords);
 
+  const setMapRefDiv = useCallback((node: HTMLDivElement) => {
+    if (node !== null) {
+      setTargetDiv(node);
+    }
+  }, []);
+
   useEffect(() => {
+    if (!targetDiv) return;
     window.kakao.maps.load(() => {
-      const mapObj = renderKakapMap({ coords, mapRef });
+      const mapObj = renderKakapMap({ coords, mapRef: targetDiv });
       setMap(mapObj);
       addMapDragEventHandler({
         map: mapObj,
@@ -39,9 +46,9 @@ const useKakaoMaps = ({ coords, onMapDragEvent }: Props) => {
           eventHandler: onMapDragEvent
         });
     });
-  }, [coords]);
+  }, [coords, targetDiv, onMapDragEvent]);
 
-  return { mapRef, map, isMapLoaded, center };
+  return { mapRef: setMapRefDiv, map, isMapLoaded, center };
 };
 
 export default useKakaoMaps;

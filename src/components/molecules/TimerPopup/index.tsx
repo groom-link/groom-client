@@ -69,21 +69,21 @@ const ButtonDescription = styled.span`
 
 type DefaultProps = {
   className?: string;
-  type: 'normal';
   groupName: string;
   timer: string;
 };
 
+type NormalProps = {
+  type: 'normal';
+} & DefaultProps;
+
 type ButtonProps = {
-  className?: string;
   type: 'button';
   onClick: () => void;
   disabled: boolean;
-  groupName: string;
-  timer: string;
-};
+} & DefaultProps;
 
-type Props = DefaultProps | ButtonProps;
+type Props = NormalProps | ButtonProps;
 
 const TimerPopup = (props: Props) => {
   const { className, groupName, timer, type } = props;
@@ -92,8 +92,13 @@ const TimerPopup = (props: Props) => {
       <Top>
         <TextBox>
           <Title>{groupName}</Title>
-          <Warning>회의 시간까지 얼마 남지 않았어요!</Warning>
-          <Description>지각 시 기여도 10% 차감 예정입니다.</Description>
+          <Warning>
+            {timer === '대기중'
+              ? '회의가 시작하려면 한참 남았어요.'
+              : '회의 시간까지 얼마 남지 않았어요!'}
+          </Warning>
+          {/* <Description>지각 시 기여도 10% 차감 예정입니다.</Description> */}
+          {/* TODO: 패널티 관련 정책 수립되면 설명 문구 추가하기. */}
         </TextBox>
         <TimerBox>
           <Clock width="24px" color={colors.mainColor.purple} />
@@ -111,7 +116,7 @@ const TimerPopup = (props: Props) => {
             타이머 해제
           </ClearTimerButton>
           <ButtonDescription>
-            모임 장소 20m 이내에서 해제 가능합니다.
+            모임 장소 30m 이내에서 해제 가능합니다.
           </ButtonDescription>
         </>
       )}

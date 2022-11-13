@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
-import { regular16 } from '../../../styles/typography';
+import { regular16, semiBold16 } from '../../../styles/typography';
 import getRandomString from '../../../utils/getRandomString';
 import Avatar from '../../atoms/Avatar';
 import { CheckCircle } from '../../atoms/icons';
@@ -23,13 +23,27 @@ type CheckProps = {
   onChange: () => void;
 } & DefaultProps;
 
-type Props = ListProps | CheckProps;
+type DeleteProps = {
+  check: false;
+  isDeleteButtonExposed: boolean;
+  onBlur: () => void;
+  onListClick: () => void;
+  onDeleteButtonClick: () => void;
+} & DefaultProps;
 
-const Container = styled.label`
+type Props = ListProps | CheckProps | DeleteProps;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  overflow: hidden;
+`;
+
+const ListItemContainer = styled.label`
   box-sizing: border-box;
   display: flex;
   align-items: center;
-  width: 100%;
+  min-width: 100%;
   padding: 8px 20px;
   background-color: ${colors.grayScale.white};
 `;
@@ -48,6 +62,18 @@ const CheckCircleStyled = styled(CheckCircle)`
   margin-left: auto;
 `;
 
+const DeleteButton = styled.button<Pick<DeleteProps, 'isDeleteButtonExposed'>>`
+  ${semiBold16}
+  min-width: ${({ isDeleteButtonExposed }) =>
+    isDeleteButtonExposed ? '64px' : '0'};
+  max-width: ${({ isDeleteButtonExposed }) =>
+    isDeleteButtonExposed ? '64px' : '0'};
+  color: ${colors.grayScale.white};
+  background-color: ${colors.etcColor.alertRed};
+  transition: min-width 0.15s;
+  word-break: keep-all;
+`;
+
 const MemberList = ({ className, src, name, ...props }: Props) => {
   const [inputID, setInputID] = useState('');
 
@@ -58,18 +84,32 @@ const MemberList = ({ className, src, name, ...props }: Props) => {
 
   return (
     <>
-      <Container className={className} htmlFor={inputID}>
-        <Avatar proptype="image" src={src} />
-        <Name>{name}</Name>
-        {props.check && (
-          <CheckCircleStyled
-            width="36px"
-            color={
-              props.isChecked
-                ? colors.mainColor.purple
-                : colors.grayScale.gray02
-            }
-          />
+      <Container
+        tabIndex={0}
+        onClick={'onListClick' in props ? props.onListClick : () => {}}
+        onBlur={'onBlur' in props ? props.onBlur : () => {}}
+      >
+        <ListItemContainer className={className} htmlFor={inputID}>
+          <Avatar proptype="image" src={src} />
+          <Name>{name}</Name>
+          {props.check && (
+            <CheckCircleStyled
+              width="36px"
+              color={
+                props.isChecked
+                  ? colors.mainColor.purple
+                  : colors.grayScale.gray02
+              }
+            />
+          )}
+        </ListItemContainer>
+        {'onListClick' in props && (
+          <DeleteButton
+            onClick={props.onDeleteButtonClick}
+            isDeleteButtonExposed={props.isDeleteButtonExposed}
+          >
+            삭제
+          </DeleteButton>
         )}
       </Container>
       {props.check && (

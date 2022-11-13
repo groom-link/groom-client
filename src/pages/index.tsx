@@ -25,8 +25,6 @@ const Login = () => {
     });
   };
 
-  const handleAppleLogin = () => console.log('apple login is not supported.');
-
   return (
     <>
       <Head>
@@ -42,7 +40,6 @@ const Login = () => {
       </LogoContainer>
 
       <KakaoLoginButton onClick={handleKakaoLogin} width="100%" />
-      <AppleLoginButtonStyled onClick={handleAppleLogin} width="100%" />
     </>
   );
 };
