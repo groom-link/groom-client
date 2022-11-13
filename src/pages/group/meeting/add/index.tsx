@@ -106,7 +106,11 @@ const Add = () => {
 
   useEffect(() => {
     const { startTime, endTime } = Router.query;
-    if (!startTime || !endTime) return;
+    if (!startTime || !endTime) {
+      setStartDatetimeStore(startDatetime);
+      setEndDatetimeStore(endDatetime);
+      return;
+    }
     if (typeof startTime !== 'string' || typeof endTime !== 'string') return;
     setStartDatetimeStore(startTime.slice(0, 16));
     setEndDatetimeStore(endTime.slice(0, 16));
@@ -184,6 +188,13 @@ const Add = () => {
     Router.push(`./suggestion?roomId=${roomId}`);
   };
 
+  const isSubmitButtonDisabled = () =>
+    !title ||
+    !startDateStored ||
+    !endDateStored ||
+    !participants.length ||
+    !address;
+
   if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
   if (groupDetailData === undefined) return <div>그룹 정보 데이터 에러!</div>;
@@ -242,7 +253,10 @@ const Add = () => {
             </SearchInMapButton>
           </AddressInputContainer>
         )}
-        <ButtonFooter disabled={false} onClick={handleSubmitNewMeeting}>
+        <ButtonFooter
+          disabled={isSubmitButtonDisabled()}
+          onClick={handleSubmitNewMeeting}
+        >
           회의 만들기
         </ButtonFooter>
       </Background>

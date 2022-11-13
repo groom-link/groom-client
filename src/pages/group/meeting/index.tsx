@@ -56,7 +56,7 @@ const Meeting = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['getTeamSchedules']);
         setIsDialogOpen(false);
-        showToastMessage('모임이 삭제되었습니다.', 'success');
+        showToastMessage('회의가 삭제되었습니다.', 'success');
       }
     });
 

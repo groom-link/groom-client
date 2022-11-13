@@ -155,6 +155,8 @@ const Information = () => {
 
   const handleDeleteButtonClick = () => setIsDeleteConfirmModalOpen(true);
 
+  const isSumbitDisabled = !meetingTitle || !meetingDescription || !maxPeople;
+
   if (isRoomDetailLoading) return <div>그룹 정보 로딩중</div>;
   if (isRoomDetailError) return <div>그룹 정보 에러</div>;
   if (roomDetail === undefined) return <div>그룹 정보 없음</div>;
@@ -218,7 +220,10 @@ const Information = () => {
             모임 끝내기
           </DeleteButton>
         </WhiteBox>
-        <ButtonFooter disabled={false} onClick={handleMeetingInformationSubmit}>
+        <ButtonFooter
+          disabled={isSumbitDisabled}
+          onClick={handleMeetingInformationSubmit}
+        >
           모임 정보 수정하기
         </ButtonFooter>
       </Background>
