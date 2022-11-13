@@ -162,7 +162,7 @@ const TimerMap = () => {
             onClick={handleClearTimerButtonClick}
             disabled={isTimerButtonDisabled}
             groupName={scheduleDetail.title}
-            timer={timer}
+            timer={timer && '10분 30초'}
           />
         </TimerMenuContainer>
       </Map>

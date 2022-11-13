@@ -23,6 +23,7 @@ const Top = styled.div`
 `;
 
 const TextBox = styled.div`
+  flex: 2;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -41,6 +42,7 @@ const Warning = styled.strong`
 `;
 
 const TimerBox = styled.div`
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
