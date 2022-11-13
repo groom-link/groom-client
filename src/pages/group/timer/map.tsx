@@ -31,7 +31,7 @@ const Map = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-  height: calc(100vh - 44px);
+  height: calc(var(--vh, 1vh) * 100 - 44px);
   padding-bottom: 42px;
   background-color: ${colors.grayScale.gray02};
 `;
