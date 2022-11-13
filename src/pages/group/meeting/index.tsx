@@ -12,6 +12,7 @@ import useDeleteTeamSchedule from '../../../hooks/api/teamSchedule/deleteSchedul
 import useGetTeamSchedules from '../../../hooks/api/teamSchedule/getSchedules';
 import colors from '../../../styles/colors';
 import { regular16 } from '../../../styles/typography';
+import showToastMessage from '../../../utils/showToastMessage';
 import { queryClient } from '../../_app';
 
 const LogoContainer = styled.div`
@@ -55,6 +56,7 @@ const Meeting = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(['getTeamSchedules']);
         setIsDialogOpen(false);
+        showToastMessage('모임이 삭제되었습니다.', 'success');
       }
     });
 

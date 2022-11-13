@@ -1,5 +1,5 @@
 import { KeyboardEventHandler, useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import Link from 'next/link';
 import styled from '@emotion/styled';
 
 import { Avatar } from '../../../components/atoms';
@@ -78,7 +78,7 @@ const TodoBoardContainer = styled.div<{ color: TodoColorProps }>`
   }
 `;
 
-const TodoItemContainer = styled.button`
+const TodoItemContainer = styled.div`
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -129,15 +129,17 @@ const TodoInput = styled.input`
 `;
 
 const MoveButton = styled.button<{ color: TodoColorProps }>`
+  ${medium12};
   padding: 10px;
   background-color: ${colors.grayScale.gray01};
   color: ${({ color }) => colors.toDoColor[`${color}Text` as TodoColorKeys]};
   border-radius: 10px;
 `;
 
-const ContentContainer = styled.div`
+const ContentContainer = styled.a`
   display: flex;
   align-items: center;
+  text-decoration: none;
 `;
 
 type TodoBoardProps = {
@@ -157,7 +159,6 @@ const TodoBoard = ({
   userId,
   roomId
 }: TodoBoardProps) => {
-  const router = useRouter();
   const [todoTitle, setTodoTitle] = useState('');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
   const { mutate } = usePostTodo();
@@ -214,19 +215,16 @@ const TodoBoard = ({
       <TodoTitle color={color}>{title}</TodoTitle>
       {filteredTodos.length
         ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
-            <TodoItemContainer
-              key={id}
-              onClick={() =>
-                router.push(`./todo/edit?roomId=${roomId}&todoId=${id}`)
-              }
-            >
-              <ContentContainer>
-                <TodoOwnerAvatar proptype="image" src={profileImage} />
-                <div>
-                  <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
-                  <TodoName>{title}</TodoName>
-                </div>
-              </ContentContainer>
+            <TodoItemContainer key={id}>
+              <Link passHref href={`./todo/edit?roomId=${roomId}&todoId=${id}`}>
+                <ContentContainer>
+                  <TodoOwnerAvatar proptype="image" src={profileImage} />
+                  <div>
+                    <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
+                    <TodoName>{title}</TodoName>
+                  </div>
+                </ContentContainer>
+              </Link>
               <MoveButton
                 color={color}
                 onClick={(e) => {

@@ -2,7 +2,7 @@ import { ChangeEventHandler, useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import { TextButton, Toggle } from '../../../../components/atoms';
+import { TextButton } from '../../../../components/atoms';
 import {
   MemberList,
   TextInput,
@@ -21,6 +21,7 @@ import {
   semiBold16,
   semiBold20
 } from '../../../../styles/typography';
+import showToastMessage from '../../../../utils/showToastMessage';
 import { queryClient } from '../../../_app';
 
 const Background = styled.div`
@@ -95,6 +96,7 @@ const Add = () => {
   const setParticipants = useNewMeetingFormStore(
     (state) => state.setParticipants
   );
+  const setAddress = useNewMeetingFormStore((state) => state.setAddress);
   const { mutate: postTeamScheduleMutate } = usePostTeamSchedules();
   const {
     data: groupDetailData,
@@ -163,6 +165,7 @@ const Add = () => {
           clearStore();
           queryClient.invalidateQueries(['getTeamSchedules']);
           Router.push(`/group/meeting?roomId=${roomId}`);
+          showToastMessage('새로운 회의가 추가되었습니다.', 'success');
         }
       }
     );
@@ -173,6 +176,7 @@ const Add = () => {
     setStartDatetimeStore('');
     setEndDatetimeStore('');
     setParticipants([]);
+    setAddress('');
   };
 
   const handleBackButtonClick = () => {
@@ -217,8 +221,10 @@ const Add = () => {
           )
         )}
         <ToggleContainer>
-          <ToggleLabel>비대면 회의</ToggleLabel>
-          <Toggle isOn={isOnlineMeeting} onClick={handleClickToggle} />
+          <ToggleLabel>회의 장소</ToggleLabel>
+          {/* TODO: 비대면 회의 기능 추가하기 */}
+          {/* <ToggleLabel>비대면 회의</ToggleLabel>
+          <Toggle isOn={isOnlineMeeting} onClick={handleClickToggle} /> */}
         </ToggleContainer>
         {isOnlineMeeting || (
           <AddressInputContainer>

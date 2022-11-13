@@ -11,6 +11,7 @@ import colors from '../../../../styles/colors';
 import { shadow01 } from '../../../../styles/mixins';
 import { bold16 } from '../../../../styles/typography';
 import { moveCenterOfMap } from '../../../../utils/kakaoMapsTools';
+import showToastMessage from '../../../../utils/showToastMessage';
 
 const MapContainer = styled.div`
   box-sizing: border-box;
@@ -114,6 +115,7 @@ const Map = () => {
     setAddressStore(address);
     setCoordsStore(center);
     Router.push(`./?roomId=${roomId}`);
+    showToastMessage('주소가 설정되었습니다.', 'success');
   };
 
   const handleBackButtonClick = () => Router.push(`./?roomId=${roomId}`);
