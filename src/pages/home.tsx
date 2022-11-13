@@ -111,7 +111,7 @@ const FloatingButton = styled.button<{ isButtonLong: boolean }>`
   position: fixed;
   display: flex;
   align-items: center;
-  width: ${({ isButtonLong }) => (isButtonLong ? '133px' : '56px')};
+  min-width: ${({ isButtonLong }) => (isButtonLong ? '133px' : '56px')};
   padding: 16px;
   z-index: 1;
   bottom: 20px;
