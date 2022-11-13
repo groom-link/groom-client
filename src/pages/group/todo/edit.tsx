@@ -129,6 +129,8 @@ const Edit = () => {
     });
   };
 
+  const isSubmitDisabled = () => !title || !owner;
+
   if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
   if (groupDetailData === undefined) return <div>그룹 정보 데이터 에러!</div>;
@@ -139,7 +141,7 @@ const Edit = () => {
   return (
     <Background>
       <TopNavBar
-        onBackButtonClick={() => router.push('./?roomId=202')}
+        onBackButtonClick={() => router.push(`./?roomId=${roomId}`)}
         setting={false}
       />
       <TitleContainer>
@@ -176,7 +178,7 @@ const Edit = () => {
           할 일 삭제하기
         </DeleteButton>
       </WhiteBox>
-      <ButtonFooter disabled={false} onClick={handleTodoSubmit}>
+      <ButtonFooter disabled={isSubmitDisabled()} onClick={handleTodoSubmit}>
         할 일 수정하기
       </ButtonFooter>
       <Dialog

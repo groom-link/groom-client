@@ -119,7 +119,7 @@ const FloatingButton = styled.button<{ isButtonLong: boolean }>`
   right: 10px;
   color: ${colors.grayScale.white};
   background-color: ${colors.mainColor.purple};
-  transition: all 0.7s ease-in-out;
+  transition: all 0.3s ease-out;
 `;
 
 const Footer = styled(Tab)`
@@ -143,7 +143,7 @@ const Home = () => {
   const { isError, isSuccess } = useGetDetailWithCode(code, 0);
 
   useEffect(() => {
-    setTimeout(() => setIsButtonLong(false), 1000);
+    setTimeout(() => setIsButtonLong(false), 1500);
   }, []);
 
   useEffect(() => {

@@ -138,6 +138,7 @@ const MoveButton = styled.button<{ color: TodoColorProps }>`
 
 const ContentContainer = styled.a`
   display: flex;
+  flex: 1;
   align-items: center;
   text-decoration: none;
 `;
