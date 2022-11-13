@@ -76,7 +76,7 @@ const Edit = () => {
     data: groupDetailData,
     isError: isGroupDetailError,
     isLoading: isGroupDetailLoading
-  } = useGetDetailWithRoomId(202);
+  } = useGetDetailWithRoomId(roomId);
   const {
     data: todoDetailData,
     isError: isTodoDetailError,
