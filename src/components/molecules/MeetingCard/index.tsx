@@ -38,6 +38,8 @@ const ContentContainer = styled.a`
 
 const SettingContainer = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 const EditLink = styled.a`

@@ -61,6 +61,7 @@ const LocationSelectContainer = styled.div`
   ${shadow01}
   box-sizing: border-box;
   width: 374px;
+  max-width: 90vw;
   padding: 16px 20px;
   border-radius: 8px;
   background-color: ${colors.grayScale.white};

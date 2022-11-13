@@ -10,6 +10,7 @@ const PopupBox = styled.div`
   ${shadow01}
   box-sizing: border-box;
   width: 374px;
+  max-width: 90vw;
   padding: 16px 20px;
   border-radius: 8px;
   background-color: ${colors.grayScale.white};
@@ -25,6 +26,7 @@ const TextBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  word-break: keep-all;
   justify-content: space-between;
 `;
 
@@ -42,6 +44,7 @@ const TimerBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  word-break: keep-all;
 `;
 
 const Description = styled.span`

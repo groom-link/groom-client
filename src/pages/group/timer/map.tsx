@@ -113,7 +113,7 @@ const TimerMap = () => {
         const startTimeObj = new Date(startTime).valueOf();
         const currentTime = new Date().valueOf();
         const timeDiff = startTimeObj - currentTime;
-        if (timeDiff < 0) return '타이머 종료';
+        if (timeDiff < 0) return '종료';
         if (timeDiff < 30 * 60 * 1000) {
           const minutes = Math.floor(timeDiff / 1000 / 60);
           const seconds = Math.floor((timeDiff / 1000) % 60);
@@ -126,7 +126,7 @@ const TimerMap = () => {
   }, [scheduleDetail]);
 
   const handleClearTimerButtonClick = () => {
-    if (timer === '타이머 종료') {
+    if (timer === '종료') {
       Router.push('./fail');
       return;
     }
