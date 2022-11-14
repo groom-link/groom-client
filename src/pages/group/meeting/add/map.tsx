@@ -4,7 +4,8 @@ import styled from '@emotion/styled';
 
 import { Button } from '../../../../components/atoms';
 import { GPSButton, TopNavBar } from '../../../../components/molecules';
-import { useCoords, useKakaoMaps } from '../../../../hooks';
+import { useCoords, useKakaoMaps, useMeetingIdParams } from '../../../../hooks';
+import useEditParams from '../../../../hooks/useEditParams';
 import useRoomIdParams from '../../../../hooks/useRoomIdParams';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
@@ -79,6 +80,8 @@ const GPSButtonStyled = styled(GPSButton)`
 const Map = () => {
   const roomId = useRoomIdParams();
   const coords = useCoords();
+  const meetingId = useMeetingIdParams();
+  const edit = useEditParams();
   const [isGPSButtonActive, setIsGPSButtonActive] = useState(true);
   const onMapDragEvent = useCallback(() => setIsGPSButtonActive(false), []);
   const { mapRef, map, center } = useKakaoMaps({
@@ -115,8 +118,12 @@ const Map = () => {
   const handleClickSetLocationButton = () => {
     setAddressStore(address);
     setCoordsStore(center);
-    Router.push(`./?roomId=${roomId}`);
     showToastMessage('주소가 설정되었습니다.', 'success');
+    if (edit === 'true') {
+      Router.push(`../edit?roomId=${roomId}&meetingId=${meetingId}&edit=true`);
+      return;
+    }
+    Router.push(`./?roomId=${roomId}`);
   };
 
   const handleBackButtonClick = () => Router.push(`./?roomId=${roomId}`);
