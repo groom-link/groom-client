@@ -13,7 +13,7 @@ export default {
 export const Primary: ComponentStory<typeof MeetingCard> = ({
   title = '회의 제목',
   address: location = '회의하는 곳의 주소',
-  startTime: date = '2022년 10월 21일',
+  startTime = '2022-10-06T00:00:00',
   profiles: participants = PARTICIPANT_MOCK,
   editLink = ''
 }) => (
@@ -21,7 +21,7 @@ export const Primary: ComponentStory<typeof MeetingCard> = ({
     {...{
       title,
       address: location,
-      startTime: date,
+      startTime,
       profiles: participants,
       editLink
     }}

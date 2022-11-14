@@ -2,7 +2,6 @@ import { ReactNode } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
-import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import colors from '../../../styles/colors';
 import { semiBold20 } from '../../../styles/typography';
 import { Tab } from '../../atoms';
@@ -10,6 +9,7 @@ import { TopNavBar } from '../../molecules';
 
 type Props = {
   roomId: number;
+  roomName: string;
   className?: string;
   selectedTabIndex: 0 | 1 | 2 | 3;
   children: ReactNode;
@@ -52,20 +52,12 @@ const ContentBox = styled.div`
 
 const GroupPage = ({
   roomId,
+  roomName,
   className,
   selectedTabIndex,
   children
 }: Props) => {
   const handleBackButtonClick = () => Router.push('/home');
-  const {
-    data: roomDetail,
-    isError: isRoomDetailError,
-    isLoading: isRoomDetailLoading
-  } = useGetDetailWithRoomId(roomId);
-
-  if (isRoomDetailError) return <div>그룹 정보 에러!</div>;
-  if (isRoomDetailLoading) return <div>그룹 정보 로딩중...</div>;
-  if (roomDetail === undefined) return <div>그룹 정보 없음!</div>;
 
   return (
     <Background className={className}>
@@ -74,7 +66,7 @@ const GroupPage = ({
         settingURL={`/group/setting/information?roomId=${roomId}`}
         onBackButtonClick={handleBackButtonClick}
       />
-      <GroupName>{roomDetail.name}</GroupName>
+      <GroupName>{roomName}</GroupName>
       <NavigationBox>
         <Tab
           isSelected={selectedTabIndex === TAB_INDEX.FIRST}

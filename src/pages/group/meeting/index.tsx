@@ -71,7 +71,11 @@ const Meeting = () => {
 
   return (
     <>
-      <GroupPage roomId={roomId} selectedTabIndex={1}>
+      <GroupPage
+        roomName={groupDetail.name}
+        roomId={roomId}
+        selectedTabIndex={1}
+      >
         {teamScheduleList.length ? (
           teamScheduleList.map(
             ({

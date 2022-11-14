@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 
 import { GroupPage } from '../../components/templates';
 import { useRoomIdParams } from '../../hooks';
+import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetInviteCode from '../../hooks/api/room/getInviteCode';
 import colors from '../../styles/colors';
 import { regular16, semiBold16, semiBold24 } from '../../styles/typography';
@@ -40,13 +41,21 @@ const Invite = () => {
     isLoading: isInviteCodeLoading,
     isError: isInviteCodeError
   } = useGetInviteCode(roomId);
+  const {
+    data: groupDetail,
+    isLoading: isGroupDetailLoading,
+    isError: isGroupDetailError
+  } = useGetDetailWithRoomId(roomId);
 
   if (isInviteCodeLoading) return <div>초대코드 로딩중...</div>;
   if (isInviteCodeError) return <div>초대코드 로딩 실패</div>;
   if (inviteCode === undefined) return <div>초대코드 오류</div>;
+  if (isGroupDetailLoading) return <div>그룹 상세 로딩중...</div>;
+  if (isGroupDetailError) return <div>그룹 상세 로딩 에러!</div>;
+  if (groupDetail === undefined) return <div>그룹 상세 데이터 오류!</div>;
 
   return (
-    <GroupPage roomId={roomId} selectedTabIndex={3}>
+    <GroupPage roomName={groupDetail.name} roomId={roomId} selectedTabIndex={3}>
       <InviteCode>{inviteCode}</InviteCode>
       <Title>친구들을 초대하세요!</Title>
       <Description>

@@ -8,7 +8,6 @@ import { useRoomIdParams } from '../../hooks';
 import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
 import useGetTodo from '../../hooks/api/todo/getTodo';
-import usePatchTodo from '../../hooks/api/todo/patchTodo';
 import colors from '../../styles/colors';
 import { regular16, semiBold16 } from '../../styles/typography';
 
@@ -67,7 +66,6 @@ const Home = () => {
     isLoading: isTodoLoading,
     isError: isTodoError
   } = useGetTodo({ roomId });
-  const { mutate: patchTodo } = usePatchTodo();
 
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
@@ -82,7 +80,7 @@ const Home = () => {
   const { teamScheduleList } = schedules;
 
   return (
-    <GroupPage roomId={roomId} selectedTabIndex={0}>
+    <GroupPage roomName={groupDetail.name} roomId={roomId} selectedTabIndex={0}>
       {!!todoData.todoList.length && (
         <>
           <SubTitle>내 할 일</SubTitle>
