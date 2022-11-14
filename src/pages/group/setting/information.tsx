@@ -13,6 +13,7 @@ import {
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { useRoomIdParams } from '../../../hooks';
+import useDeleteRoom from '../../../hooks/api/room/deleteRoom';
 import useExitRoom from '../../../hooks/api/room/exitRoom';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import usePatchRoom from '../../../hooks/api/room/patchRoom';
@@ -85,6 +86,7 @@ const Information = () => {
   } = useGetDetailWithRoomId(roomId);
   const { mutate: exitRoom } = useExitRoom();
   const { mutate: patchRoom } = usePatchRoom();
+  const { mutate: deleteRoom } = useDeleteRoom();
 
   useEffect(() => {
     if (!roomDetail) return;
@@ -147,7 +149,13 @@ const Information = () => {
 
   const handleDeleteModalClose = () => setIsDeleteConfirmModalOpen(false);
 
-  const closeMeeting = () => router.push('/home');
+  const closeRoom = () =>
+    deleteRoom(roomId, {
+      onSuccess: () => {
+        router.push('/home');
+        showToastMessage('모임이 삭제되었습니다.', 'success');
+      }
+    });
 
   const handleBackButtonClick = () => router.push(`/group?roomId=${roomId}`);
 
@@ -230,11 +238,11 @@ const Information = () => {
       <Dialog
         isOpen={isDeleteConfirmModalOpen}
         title="정말 모임을 끝내시겠어요?"
-        description="모든 팀원들은 모임에서 나가게 되며, 남은 모임비는 자동으로 반환됩니다."
+        description="모든 팀원들은 모임에서 나가게 되며, 취소할 수 없습니다."
         buttonType="two"
         grayButtonText="네, 끝낼게요"
         purpleButtonText="아니요"
-        onGrayButtonClick={closeMeeting}
+        onGrayButtonClick={closeRoom}
         onPurpleButtonClick={handleDeleteModalClose}
         isGrayButtonDisabled={false}
         isPurpleButtonDisabled={false}

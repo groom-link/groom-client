@@ -8,6 +8,7 @@ import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import useGetTodo from '../../../hooks/api/todo/getTodo';
 import { Todo } from '../../../hooks/api/todo/getTodo';
+import usePatchOnlySlot from '../../../hooks/api/todo/patchOnlySlot';
 import usePostTodo from '../../../hooks/api/todo/postTodo';
 import useRoomIdParams from '../../../hooks/useRoomIdParams';
 import colors from '../../../styles/colors';
@@ -132,7 +133,10 @@ const MoveButton = styled.button<{ color: TodoColorProps }>`
   ${medium12};
   padding: 10px;
   background-color: ${colors.grayScale.gray01};
-  color: ${({ color }) => colors.toDoColor[`${color}Text` as TodoColorKeys]};
+  color: ${({ color }) => {
+    if (color === 'gray') return colors.grayScale.gray04;
+    return colors.toDoColor[`${color}Text` as TodoColorKeys];
+  }};
   border-radius: 10px;
 `;
 
@@ -163,6 +167,7 @@ const TodoBoard = ({
   const [todoTitle, setTodoTitle] = useState('');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
   const { mutate } = usePostTodo();
+  const { mutate: patchOnlySlot } = usePatchOnlySlot();
 
   useEffect(() => {
     const filteredTodos = getTodoData(todos, color);
@@ -230,6 +235,10 @@ const TodoBoard = ({
                 color={color}
                 onClick={(e) => {
                   e.stopPropagation();
+                  patchOnlySlot({
+                    id,
+                    roomSlot: getSlotName(color)
+                  });
                 }}
               >
                 {getButtonName(color)}

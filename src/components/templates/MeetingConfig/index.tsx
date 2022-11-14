@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
-import { TextButton, Toggle } from '../../atoms';
+import { TextButton } from '../../atoms';
 import { MemberList, TextInput, TopNavBar } from '../../molecules';
 import ButtonFooter from '../../molecules/ButtonFooter';
 import TimePicker from '../../molecules/TimePicker';
@@ -61,8 +61,8 @@ const SearchInMapButton = styled(TextButton)`
 
 type GroupMember = {
   id: number;
-  name: string;
-  profileImageURL: string;
+  nickname: string;
+  profileImageUrl: string;
 };
 
 type Props = {
@@ -82,6 +82,8 @@ type Props = {
   address: string;
   onSearchMapButtonClick: () => void;
   onSubmitMeeting: () => void;
+  submitText?: string;
+  isSumbitButtonDisabled?: boolean;
 };
 
 const MeetingConfig = ({
@@ -100,7 +102,9 @@ const MeetingConfig = ({
   onOnlineMeetingToggleChange,
   address,
   onSearchMapButtonClick,
-  onSubmitMeeting
+  onSubmitMeeting,
+  submitText,
+  isSumbitButtonDisabled
 }: Props) => {
   return (
     <Background>
@@ -123,21 +127,23 @@ const MeetingConfig = ({
         }}
       />
       <MemberListLabel>모임 구성원</MemberListLabel>
-      {groupMembers.map(({ id, profileImageURL, name }) => (
+      {groupMembers.map(({ id, profileImageUrl, nickname }) => (
         <MemberList
           key={id}
           check={true}
           isChecked={getIsMemberSelected(id)}
           onChange={() => onChangeMemberSelect(id)}
-          {...{ src: profileImageURL, name }}
+          {...{ src: profileImageUrl, name: nickname }}
         />
       ))}
       <ToggleContainer>
-        <ToggleLabel>비대면 회의</ToggleLabel>
+        {/* <ToggleLabel>비대면 회의</ToggleLabel>
         <Toggle
           isOn={isOnlineMeetingToggleOn}
           onClick={onOnlineMeetingToggleChange}
-        />
+        /> */}
+        {/* TODO: 비대면 회의 기능 추가하기. */}
+        <ToggleLabel>회의 장소</ToggleLabel>
       </ToggleContainer>
       {isOnlineMeetingToggleOn || (
         <AddressInputContainer>
@@ -155,8 +161,11 @@ const MeetingConfig = ({
           </SearchInMapButton>
         </AddressInputContainer>
       )}
-      <ButtonFooter disabled={false} onClick={onSubmitMeeting}>
-        회의 만들기
+      <ButtonFooter
+        disabled={!!isSumbitButtonDisabled}
+        onClick={onSubmitMeeting}
+      >
+        {submitText || '회의 만들기'}
       </ButtonFooter>
     </Background>
   );

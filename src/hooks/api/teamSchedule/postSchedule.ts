@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 
 import customAxios from '../../../api/customAxios';
 
-type PostTeamSchedulesReqeust = {
+export type TeamScheduleDetail = {
   title: string;
   startTime: string;
   endTime: string;
@@ -11,9 +11,12 @@ type PostTeamSchedulesReqeust = {
     longitude: string;
     latitude: string;
   };
-  roomId: number;
   participantsIds: number[];
 };
+
+type PostTeamSchedulesReqeust = {
+  roomId: number;
+} & TeamScheduleDetail;
 
 type PostTeamSchedulesData = Omit<
   PostTeamSchedulesReqeust,

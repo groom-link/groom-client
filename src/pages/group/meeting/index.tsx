@@ -87,6 +87,7 @@ const Meeting = () => {
             }) => (
               <MeetingCard
                 key={id}
+                editLink={`./meeting/edit?roomId=${roomId}&meetingId=${id}`}
                 detailHref={`./timer/map?roomId=${roomId}&meetingId=${id}`}
                 onDeleteClick={() => {
                   setDeleteID(id);
@@ -98,7 +99,6 @@ const Meeting = () => {
                   startTime,
                   profiles
                 }}
-                editLink=" "
               />
             )
           )
