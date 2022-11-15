@@ -123,10 +123,16 @@ const Map = () => {
       Router.push(`../edit?roomId=${roomId}&meetingId=${meetingId}&edit=true`);
       return;
     }
-    Router.push(`./?roomId=${roomId}`);
+    Router.push(`./?roomId=${roomId}&edit=true`);
   };
 
-  const handleBackButtonClick = () => Router.push(`./?roomId=${roomId}`);
+  const handleBackButtonClick = () => {
+    if (edit === 'true') {
+      Router.push(`../edit?roomId=${roomId}&meetingId=${meetingId}&edit=true`);
+      return;
+    }
+    Router.push(`./?roomId=${roomId}&edit=true`);
+  };
 
   return (
     <>

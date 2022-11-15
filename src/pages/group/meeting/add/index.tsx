@@ -13,7 +13,9 @@ import TimePicker from '../../../../components/molecules/TimePicker';
 import { UseDatetimePicker } from '../../../../hooks';
 import useGetDetailWithRoomId from '../../../../hooks/api/room/getDetailWithRoomId';
 import usePostTeamSchedules from '../../../../hooks/api/teamSchedule/postSchedule';
+import useEditParams from '../../../../hooks/useEditParams';
 import useRoomIdParams from '../../../../hooks/useRoomIdParams';
+import useTimeParams from '../../../../hooks/useTimeParams';
 import useNewMeetingFormStore from '../../../../store/meetingLocation';
 import colors from '../../../../styles/colors';
 import {
@@ -77,6 +79,8 @@ const SearchInMapButton = styled(TextButton)`
 
 const Add = () => {
   const roomId = useRoomIdParams();
+  const edit = useEditParams();
+  const timeParams = useTimeParams();
   const { startDatetime, endDatetime, setStartDatetime, setEndDatetime } =
     UseDatetimePicker();
   const [isOnlineMeeting, setIsOnlineMeeting] = useState(false);
@@ -105,16 +109,21 @@ const Add = () => {
   } = useGetDetailWithRoomId(roomId);
 
   useEffect(() => {
-    const { startTime, endTime } = Router.query;
+    if (edit === 'loading') return;
+    if (edit === 'true') return;
+    const [startTime, endTime] = timeParams;
     if (!startTime || !endTime) {
       setStartDatetimeStore(startDatetime);
       setEndDatetimeStore(endDatetime);
+      setStartDatetime(startDatetime);
+      setEndDatetime(endDatetime);
       return;
     }
-    if (typeof startTime !== 'string' || typeof endTime !== 'string') return;
     setStartDatetimeStore(startTime.slice(0, 16));
     setEndDatetimeStore(endTime.slice(0, 16));
-  });
+    setStartDatetime(startTime.slice(0, 16));
+    setEndDatetime(endTime.slice(0, 16));
+  }, [edit, timeParams]);
 
   const getIsSelected = (id: number) => participants.includes(id);
 
@@ -215,8 +224,8 @@ const Add = () => {
           allDayOption={false}
           onChangeStartDatetime={handleStartDateTimeChange}
           onChangeEndDatetime={handleEndDateTimeChange}
-          startDatetime={startDateStored || startDatetime}
-          endDatetime={endDateStored || endDatetime}
+          startDatetime={startDateStored}
+          endDatetime={endDateStored}
         />
         <MemberListLabel>모임 구성원</MemberListLabel>
         {groupDetailData.roomParticipants.map(

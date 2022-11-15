@@ -7,8 +7,10 @@ const useEditParams = () => {
 
   useEffect(() => {
     const { edit } = router.query;
-    if (!edit) return;
-    if (typeof edit !== 'string') return;
+    if (!edit || typeof edit !== 'string') {
+      setEdit('false');
+      return;
+    }
     setEdit(edit);
   }, [router.query]);
 

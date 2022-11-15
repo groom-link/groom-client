@@ -24,6 +24,7 @@ const TAB_INDEX = {
 
 const Background = styled.div`
   min-height: 100vh;
+  padding-bottom: 84px;
   background-color: ${colors.grayScale.gray01};
 `;
 

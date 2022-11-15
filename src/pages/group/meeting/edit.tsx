@@ -55,8 +55,6 @@ const Edit = () => {
 
   useEffect(() => {
     if (!meetingDetail) return;
-    console.log(edit);
-
     if (edit === 'true' || edit === 'loading') return;
     const {
       title,
@@ -69,6 +67,8 @@ const Edit = () => {
     setTitle(title);
     setStartDatetimeStore(startTime);
     setEndDatetimeStore(endTime);
+    setStartDatetime(startTime);
+    setEndDatetime(endTime);
     setParticipants(participants.map(({ id }) => id));
     setAddress(address);
     setCoords(numberCoords);
@@ -152,8 +152,8 @@ const Edit = () => {
       onMeetingTitleChange={handleTitleChange}
       onChangeStartDatetime={handleStartDateTimeChange}
       onChangeEndDatetime={handleEndDateTimeChange}
-      startDatetime={startDatetimeStored || startDatetime}
-      endDatetime={endDatetimeStored || endDatetime}
+      startDatetime={startDatetimeStored}
+      endDatetime={endDatetimeStored}
       getIsMemberSelected={getIsMemerSelected}
       onChangeMemberSelect={onChangeMemberSelect}
       isOnlineMeetingToggleOn={false}
