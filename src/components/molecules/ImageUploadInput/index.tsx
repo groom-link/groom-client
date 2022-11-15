@@ -52,6 +52,7 @@ const ImageInput = ({ onChange }: ImageUploadInputProps) => {
 type ThumbnailImageContainer = {
   src: string;
   onClick: () => void;
+  disabled?: boolean;
 };
 
 const ImageContainer = styled.div`
@@ -71,13 +72,19 @@ const DeleteImageButton = styled.button`
   right: 13px;
 `;
 
-const ThumbnailImageContainer = ({ src, onClick }: ThumbnailImageContainer) => {
+const ThumbnailImageContainer = ({
+  src,
+  onClick,
+  disabled
+}: ThumbnailImageContainer) => {
   return (
     <ImageContainer>
       <ThumbnailImage alt="모임 프로필" src={src} />
-      <DeleteImageButton onClick={onClick}>
-        <FilledCancel />
-      </DeleteImageButton>
+      {!disabled && (
+        <DeleteImageButton onClick={onClick}>
+          <FilledCancel />
+        </DeleteImageButton>
+      )}
     </ImageContainer>
   );
 };
@@ -86,15 +93,21 @@ type Props = {
   profileImage: string;
   onClickDeleteImage: () => void;
   onChangeImageFile: ChangeEventHandler<HTMLInputElement>;
+  disabled?: boolean;
 };
 
 const ImageUploadInput = ({
   profileImage,
   onChangeImageFile,
-  onClickDeleteImage
+  onClickDeleteImage,
+  disabled
 }: Props) => {
   return profileImage ? (
-    <ThumbnailImageContainer src={profileImage} onClick={onClickDeleteImage} />
+    <ThumbnailImageContainer
+      src={profileImage}
+      onClick={onClickDeleteImage}
+      disabled={disabled}
+    />
   ) : (
     <ImageInput onChange={onChangeImageFile} />
   );

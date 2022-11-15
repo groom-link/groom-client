@@ -13,6 +13,7 @@ type Props = {
   errorMessage?: string;
   value: string;
   onChange: ChangeEventHandler<HTMLTextAreaElement>;
+  disabled?: boolean;
 };
 
 const Box = styled.div<Pick<Props, 'width'>>`
@@ -59,13 +60,14 @@ const TextArea = ({
   placeholder,
   width = 'auto',
   value,
-  onChange
+  onChange,
+  disabled
 }: Props) => {
   return (
     <Box {...{ className, width }}>
       {label && <Label marginBottom="4px">{label}</Label>}
       <TextAreaStyled
-        {...{ label, placeholder, errorMessage, value, onChange }}
+        {...{ disabled, label, placeholder, errorMessage, value, onChange }}
       />
       {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Box>
