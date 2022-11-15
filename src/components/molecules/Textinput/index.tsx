@@ -14,6 +14,7 @@ type Props = {
   value: string;
   onChange: ChangeEventHandler<HTMLInputElement>;
   errorMessage?: string;
+  disabled?: boolean;
 };
 
 const InputBox = styled.div<Pick<Props, 'width'>>`
@@ -67,7 +68,8 @@ const TextInput = ({
   placeholder,
   value,
   onChange,
-  errorMessage
+  errorMessage,
+  disabled
 }: Props) => {
   return (
     <div className={className}>
@@ -75,6 +77,7 @@ const TextInput = ({
       <InputBox width={width}>
         <Input
           type="text"
+          disabled={disabled}
           {...{ placeholder, value, onChange, errorMessage }}
         />
         {errorMessage && (

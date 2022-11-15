@@ -13,6 +13,7 @@ import {
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import { useRoomIdParams } from '../../../hooks';
+import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useDeleteRoom from '../../../hooks/api/room/deleteRoom';
 import useExitRoom from '../../../hooks/api/room/exitRoom';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
@@ -71,6 +72,7 @@ const DeleteButton = styled.button`
 const Information = () => {
   const router = useRouter();
   const roomId = useRoomIdParams();
+  const [isOwner, setIsOwner] = useState(false);
   const [profileImage, setProfileImage] = useState('');
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDescription, setMeetingDescription] = useState('');
@@ -84,9 +86,23 @@ const Information = () => {
     isLoading: isRoomDetailLoading,
     isError: isRoomDetailError
   } = useGetDetailWithRoomId(roomId);
+  const {
+    data: myInformation,
+    isLoading: isMyInformationLoading,
+    isError: isMyInformationError
+  } = useGetMyInformation();
   const { mutate: exitRoom } = useExitRoom();
   const { mutate: patchRoom } = usePatchRoom();
   const { mutate: deleteRoom } = useDeleteRoom();
+
+  useEffect(() => {
+    if (!roomDetail?.ownerId || !myInformation?.id) return;
+    if (roomDetail.ownerId === myInformation.id) {
+      setIsOwner(true);
+      return;
+    }
+    setIsOwner(false);
+  }, [roomDetail, myInformation]);
 
   useEffect(() => {
     if (!roomDetail) return;
@@ -168,6 +184,9 @@ const Information = () => {
   if (isRoomDetailLoading) return <div>그룹 정보 로딩중</div>;
   if (isRoomDetailError) return <div>그룹 정보 에러</div>;
   if (roomDetail === undefined) return <div>그룹 정보 없음</div>;
+  if (isMyInformationLoading) return <div>내 정보 로딩중</div>;
+  if (isMyInformationError) return <div>내 정보 에러</div>;
+  if (myInformation === undefined) return <div>내 정보 없음</div>;
 
   return (
     <>
@@ -183,18 +202,21 @@ const Information = () => {
           />
         </TabContainer>
         <ImageUploadInput
+          disabled={!isOwner}
           profileImage={profileImage}
           onClickDeleteImage={handleDeleteImage}
           onChangeImageFile={handleChangeImageUpload}
         />
         <WhiteBox>
           <TextInput
+            disabled={!isOwner}
             value={meetingTitle}
             onChange={handleMeetingTitleChange}
             label="모임 이름"
             placeholder="모임 이름을 입력해주세요."
           />
           <TextAreaStyled
+            disabled={!isOwner}
             value={meetingDescription}
             onChange={handleMeetingDescriptionChange}
             label="모임 내용"
@@ -218,18 +240,22 @@ const Information = () => {
             onDecrease={() => setMaxPeople((pre) => (pre ? pre - 1 : pre))}
             onIncrease={() => setMaxPeople((pre) => pre + 1)}
             color="navy"
-            decreaseDisabled={false}
-            increaseDisabled={false}
+            decreaseDisabled={!isOwner}
+            increaseDisabled={!isOwner}
           />
         </WhiteBox>
         <WhiteBox>
-          <ExitButton onClick={handleExitButtonClick}>모임 나가기</ExitButton>
-          <DeleteButton onClick={handleDeleteButtonClick}>
-            모임 끝내기
-          </DeleteButton>
+          {!isOwner && (
+            <ExitButton onClick={handleExitButtonClick}>모임 나가기</ExitButton>
+          )}
+          {isOwner && (
+            <DeleteButton onClick={handleDeleteButtonClick}>
+              모임 끝내기
+            </DeleteButton>
+          )}
         </WhiteBox>
         <ButtonFooter
-          disabled={isSumbitDisabled}
+          disabled={isSumbitDisabled || !isOwner}
           onClick={handleMeetingInformationSubmit}
         >
           모임 정보 수정하기

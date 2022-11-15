@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
@@ -86,8 +86,6 @@ const Member = () => {
     navigator.clipboard.write(data);
   };
 
-  useEffect(() => console.log(deleteModeId), [deleteModeId]);
-
   const handleBackButtonClick = () => Router.push(`/group?roomId=${roomId}`);
 
   if (isInviteCodeLoading) return <div>초대코드 로딩중...</div>;
@@ -138,6 +136,7 @@ const Member = () => {
               }}
               isDeleteButtonExposed={deleteModeId === id}
               onListClick={() => {
+                if (myInformation.id !== roomDetail.ownerId) return;
                 if (id === myInformation.id) return;
                 setDeleteModeId((pre) => {
                   if (pre === id) return 0;
