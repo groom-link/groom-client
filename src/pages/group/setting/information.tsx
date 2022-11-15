@@ -1,6 +1,7 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import { v4 } from 'uuid';
 
 import {
   Dialog,
@@ -12,6 +13,7 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import { getDownloadURL, ref, storage, uploadBytes } from '../../../firebase';
 import { useRoomIdParams } from '../../../hooks';
 import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useDeleteRoom from '../../../hooks/api/room/deleteRoom';
@@ -20,7 +22,6 @@ import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId'
 import usePatchRoom from '../../../hooks/api/room/patchRoom';
 import colors from '../../../styles/colors';
 import { semiBold16 } from '../../../styles/typography';
-import readFileAsURL from '../../../utils/readFileAsURL';
 import showToastMessage from '../../../utils/showToastMessage';
 
 const Background = styled.div`
@@ -116,11 +117,20 @@ const Information = () => {
 
   const handleDeleteImage = () => setProfileImage('');
 
-  const handleChangeImageUpload: ChangeEventHandler<HTMLInputElement> = ({
+  const handleChangeImageUpload: ChangeEventHandler<HTMLInputElement> = async ({
     target: { files }
   }) => {
     if (!files) return;
-    readFileAsURL(files[0], setProfileImage);
+    const file = files[0];
+    const accessURL = v4();
+    const pathReference = ref(storage, accessURL);
+    try {
+      await uploadBytes(pathReference, file);
+    } catch (error) {
+      alert(error);
+    }
+    const profileImageURL = await getDownloadURL(pathReference);
+    setProfileImage(profileImageURL);
   };
 
   const handleMeetingTitleChange: ChangeEventHandler<HTMLInputElement> = ({

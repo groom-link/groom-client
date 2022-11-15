@@ -226,7 +226,7 @@ const Home = () => {
             </LinkContainer>
           </Link>
         )}
-        {myRoomData ? (
+        {myRoomData.roomDtoList.length ? (
           <GroupContainer>
             <GroupType>가입된 모임</GroupType>
             {myRoomData.roomDtoList.map(

@@ -2,6 +2,7 @@
 import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
+import { v4 } from 'uuid';
 
 import {
   Dialog,
@@ -12,10 +13,10 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
+import { getDownloadURL, ref, storage, uploadBytes } from '../../../firebase';
 import useNewGroupInformationStore from '../../../store/newGroupInformation';
 import colors from '../../../styles/colors';
 import { semiBold20 } from '../../../styles/typography';
-import readFileAsURL from '../../../utils/readFileAsURL';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -58,12 +59,20 @@ const Basic = () => {
     (state) => state.setNumberOfMembers
   );
 
-  const handleChangeImageFile: ChangeEventHandler<HTMLInputElement> = ({
+  const handleChangeImageFile: ChangeEventHandler<HTMLInputElement> = async ({
     target: { files }
   }) => {
     if (!files) return;
     const file = files[0];
-    readFileAsURL(file, (url) => setProfileImage(url));
+    const accessURL = v4();
+    const pathReference = ref(storage, accessURL);
+    try {
+      await uploadBytes(pathReference, file);
+    } catch (error) {
+      alert(error);
+    }
+    const profileImageURL = await getDownloadURL(pathReference);
+    setProfileImage(profileImageURL);
   };
 
   const handleClickDeleteImage = () => setProfileImage('');
@@ -88,7 +97,6 @@ const Basic = () => {
 
   const handleButtonClick = () => {
     if (!isValueExist()) return;
-
     setProfileImageURLStore(profileImage);
     setNameStore(groupName);
     setDescriptionStore(description);

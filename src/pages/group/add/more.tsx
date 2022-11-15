@@ -155,20 +155,11 @@ const More = () => {
   }) => SetIsPublic(parseInt(value) as 1 | 2);
 
   const handleNextButtonClick = (id: number) => {
-    console.log({
-      profileImageURL,
-      name,
-      description,
-      tags,
-      numberOfMembers,
-      selectedGifticonID: selectedGifticon.id,
-      penaltyCount
-    });
     mutate(
       {
         name,
         description,
-        mainImageUrl: '',
+        mainImageUrl: profileImageURL,
         summary: '',
         maxPeople: numberOfMembers,
         roomParticipants: [],

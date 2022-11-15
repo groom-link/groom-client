@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
@@ -139,48 +140,49 @@ const ThumbnailList = ({
   numberOfMembers,
   numberOfMyTodos,
   tags
-}: Props) => (
-  <div className={className}>
-    {/* TODO: 가까운 회의 표시 기능 만들 때 수정하기 */}
-    <Container hasNearMeeting={false}>
-      <TopBox>
-        <ImageBox>
-          <Image
-            src={
-              profileImageURL === '' || 'string'
-                ? DEMO_GROUP_IMAGE_URL
-                : profileImageURL
-            }
-            layout="fill"
-            objectFit="cover"
-            alt="모임 프로필"
-          />
-        </ImageBox>
-        <TextContainer>
-          <TitleContainer>
-            <Title>{title}</Title>
-            {/* <NumberOfMyTodos>할 일 {numberOfMyTodos}개</NumberOfMyTodos> */}
-            {/* TODO: 내가 속한 그룹 조회할 때 나의 할 일 개수도 받아오기 */}
-          </TitleContainer>
-          <NumberOfMembers>인원 수 {numberOfMembers}명</NumberOfMembers>
-        </TextContainer>
-      </TopBox>
-      <TagBox>
-        {tags.map((tag) => (
-          <GroupTag type="default" key={tag}>
-            {tag}
-          </GroupTag>
-        ))}
-      </TagBox>
-    </Container>
-    {nearMeeting && (
-      <MeetingInformationContainer>
-        <MeetingTitle>{nearMeeting.title}</MeetingTitle>
-        <MeetingLocation>{nearMeeting.location}</MeetingLocation>
-        <MeetingDate>{nearMeeting.date}</MeetingDate>
-      </MeetingInformationContainer>
-    )}
-  </div>
-);
+}: Props) => {
+  const [isImageError, setIsImageError] = useState(false);
+
+  return (
+    <div className={className}>
+      {/* TODO: 가까운 회의 표시 기능 만들 때 수정하기 */}
+      <Container hasNearMeeting={false}>
+        <TopBox>
+          <ImageBox>
+            <Image
+              src={isImageError ? DEMO_GROUP_IMAGE_URL : profileImageURL}
+              layout="fill"
+              objectFit="cover"
+              alt="모임 프로필"
+              onError={() => setIsImageError(true)}
+            />
+          </ImageBox>
+          <TextContainer>
+            <TitleContainer>
+              <Title>{title}</Title>
+              {/* <NumberOfMyTodos>할 일 {numberOfMyTodos}개</NumberOfMyTodos> */}
+              {/* TODO: 내가 속한 그룹 조회할 때 나의 할 일 개수도 받아오기 */}
+            </TitleContainer>
+            <NumberOfMembers>인원 수 {numberOfMembers}명</NumberOfMembers>
+          </TextContainer>
+        </TopBox>
+        <TagBox>
+          {tags.map((tag) => (
+            <GroupTag type="default" key={tag}>
+              {tag}
+            </GroupTag>
+          ))}
+        </TagBox>
+      </Container>
+      {nearMeeting && (
+        <MeetingInformationContainer>
+          <MeetingTitle>{nearMeeting.title}</MeetingTitle>
+          <MeetingLocation>{nearMeeting.location}</MeetingLocation>
+          <MeetingDate>{nearMeeting.date}</MeetingDate>
+        </MeetingInformationContainer>
+      )}
+    </div>
+  );
+};
 
 export default ThumbnailList;
