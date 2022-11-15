@@ -70,6 +70,7 @@ const Money = styled.strong`
 
 const Detail = () => {
   const [inviteCode, setInviteCode] = useState('');
+  const [isImageError, setImageError] = useState(false);
   const {
     isError,
     isLoading,
@@ -93,11 +94,12 @@ const Detail = () => {
     <Background>
       <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
       <Image
-        src={DEMO_GROUP_IMAGE_URL}
+        src={isImageError ? DEMO_GROUP_IMAGE_URL : groupData.mainImageUrl}
         alt="모임 프로필 이미지"
         layout="responsive"
         height="250px"
         width="414"
+        onError={() => setImageError(true)}
       />
       <WhiteBox>
         <GroupName>{groupData.name}</GroupName>
