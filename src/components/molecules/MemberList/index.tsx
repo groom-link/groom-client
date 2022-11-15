@@ -84,12 +84,12 @@ const MemberList = ({ className, src, name, ...props }: Props) => {
 
   return (
     <>
-      <Container
-        tabIndex={0}
-        onClick={'onListClick' in props ? props.onListClick : () => {}}
-        onBlur={'onBlur' in props ? props.onBlur : () => {}}
-      >
-        <ListItemContainer className={className} htmlFor={inputID}>
+      <Container onBlur={'onBlur' in props ? props.onBlur : () => {}}>
+        <ListItemContainer
+          className={className}
+          htmlFor={inputID}
+          onClick={'onListClick' in props ? props.onListClick : () => {}}
+        >
           <Avatar proptype="image" src={src} />
           <Name>{name}</Name>
           {props.check && (
