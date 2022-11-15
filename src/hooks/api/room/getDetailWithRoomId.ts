@@ -3,6 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import customAxios from '../../../api/customAxios';
 
 export type RoomDetail = Room & {
+  ownerId: number;
   roomParticipants: {
     id: number;
     nickname: string;
