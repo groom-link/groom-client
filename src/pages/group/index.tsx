@@ -5,6 +5,7 @@ import { MeetingCard } from '../../components/molecules';
 import { GroupPage } from '../../components/templates';
 import Image from '../../components/utils/Image';
 import { useRoomIdParams } from '../../hooks';
+import useGetMyInformation from '../../hooks/api/auth/getMyInformation';
 import useGetDetailWithRoomId from '../../hooks/api/room/getDetailWithRoomId';
 import useGetTeamSchedules from '../../hooks/api/teamSchedule/getSchedules';
 import useGetTodo from '../../hooks/api/todo/getTodo';
@@ -52,6 +53,11 @@ const MyTodo = styled.div`
 const Home = () => {
   const roomId = useRoomIdParams();
   const {
+    data: myInformation,
+    isLoading: myInformationLoading,
+    isError: myInformationError
+  } = useGetMyInformation();
+  const {
     data: schedules,
     isLoading: isSchedulesLoading,
     isError: isSchedulesError
@@ -65,8 +71,11 @@ const Home = () => {
     data: todoData,
     isLoading: isTodoLoading,
     isError: isTodoError
-  } = useGetTodo({ roomId });
+  } = useGetTodo({ roomId, userId: myInformation?.id });
 
+  if (myInformationLoading) return <div>내 정보 로딩중...</div>;
+  if (myInformationError) return <div>내 정보 불러오기 에러!</div>;
+  if (myInformation === undefined) return <div>내 정보 없음!</div>;
   if (isSchedulesLoading) return <div>스케쥴 로딩중...</div>;
   if (isSchedulesError) return <div>스케쥴 로딩 에러!</div>;
   if (schedules === undefined) return <div>스케쥴 데이터 오류!</div>;
