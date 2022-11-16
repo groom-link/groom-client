@@ -10,6 +10,7 @@ import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useGetProducts from '../../../hooks/api/product/getProducts';
 import usePostRoom from '../../../hooks/api/room/postRoom';
+import usePostFile from '../../../hooks/api/upload/postFile';
 import useNewGroupInformationStore from '../../../store/newGroupInformation';
 import colors from '../../../styles/colors';
 import {
@@ -138,6 +139,7 @@ const More = () => {
     (state) => state.numberOfMembers
   );
   const { mutate } = usePostRoom();
+  const { mutate: uploadFile } = usePostFile();
 
   const handleGifticonSelect = (gifticon: Gifticon) =>
     setSelectedGifticon(gifticon);
@@ -154,25 +156,33 @@ const More = () => {
     target: { value }
   }) => SetIsPublic(parseInt(value) as 1 | 2);
 
-  const handleNextButtonClick = (id: number) => {
-    mutate(
-      {
-        name,
-        description,
-        mainImageUrl: profileImageURL,
-        summary: '',
-        maxPeople: numberOfMembers,
-        roomParticipants: [],
-        roomPenaltyPostDto: {
-          maxAmount: penaltyCount,
-          gifticonId: parseInt(selectedGifticon.id),
-          roomId: 0
-        }
-      },
-      {
-        onSuccess: ({ data: { code } }) => Router.push(`./success?code=${code}`)
+  const handleNextButtonClick = () => {
+    if (!profileImageURL) return;
+    const formData = new FormData();
+    formData.append('file', profileImageURL);
+    uploadFile(formData, {
+      onSuccess: (data) => {
+        mutate(
+          {
+            name,
+            description,
+            mainImageUrl: data,
+            summary: '',
+            maxPeople: numberOfMembers,
+            roomParticipants: [],
+            roomPenaltyPostDto: {
+              maxAmount: penaltyCount,
+              gifticonId: parseInt(selectedGifticon.id),
+              roomId: 0
+            }
+          },
+          {
+            onSuccess: ({ data: { code } }) =>
+              Router.push(`./success?code=${code}`)
+          }
+        );
       }
-    );
+    });
   };
 
   const handleBackButtonClick = () => Router.push('./basic');
@@ -279,7 +289,7 @@ const More = () => {
       </WhiteBox>
       <ButtonFooter
         disabled={!(selectedGifticon && penaltyCount)}
-        onClick={() => handleNextButtonClick(myInformation.id)}
+        onClick={() => handleNextButtonClick()}
       >
         모임비 결제하기
       </ButtonFooter>

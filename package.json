@@ -17,7 +17,6 @@
     "@tanstack/react-query-devtools": "^4.11.0",
     "axios": "^0.27.2",
     "cookies-next": "^2.1.1",
-    "firebase": "^9.14.0",
     "install-peers": "^1.0.4",
     "next": "12.2.3",
     "react": "18.2.0",

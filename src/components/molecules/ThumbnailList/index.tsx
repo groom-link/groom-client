@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 
 import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
+import useGetFile from '../../../hooks/api/upload/getFile';
 import colors from '../../../styles/colors';
 import { textEllipsis } from '../../../styles/mixins';
 import { medium10, medium12, medium18 } from '../../../styles/typography';
+import readFileAsURL from '../../../utils/readFileAsURL';
 import { Tag } from '../../atoms';
 import Image from '../../utils/Image';
 
@@ -142,6 +144,16 @@ const ThumbnailList = ({
   tags
 }: Props) => {
   const [isImageError, setIsImageError] = useState(false);
+  const [imageSrc, setImageSrc] = useState('');
+  const { data: profileImage } = useGetFile(profileImageURL);
+
+  useEffect(() => {
+    if (!profileImage) return;
+    readFileAsURL(profileImage, (url) => {
+      setImageSrc(url);
+      setIsImageError(false);
+    });
+  }, [profileImage]);
 
   return (
     <div className={className}>
@@ -150,7 +162,7 @@ const ThumbnailList = ({
         <TopBox>
           <ImageBox>
             <Image
-              src={isImageError ? DEMO_GROUP_IMAGE_URL : profileImageURL}
+              src={isImageError ? DEMO_GROUP_IMAGE_URL : imageSrc}
               layout="fill"
               objectFit="cover"
               alt="모임 프로필"
