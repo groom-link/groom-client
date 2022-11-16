@@ -11,7 +11,8 @@ type PostFile = (body: PostFileRequest) => Promise<PostFileResponse>;
 const postFile: PostFile = async (body: PostFileRequest) => {
   const { data } = await customAxios.post('/upload', body, {
     headers: {
-      'Content-Type': 'multipart/form-data'
+      'Content-Type':
+        'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
     }
   });
   return data;

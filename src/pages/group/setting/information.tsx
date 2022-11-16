@@ -180,9 +180,8 @@ const Information = () => {
   const handleMeetingInformationSubmit = () => {
     if (!roomDetail) return;
     if (originalFile) {
-      const formElement = document.createElement('form');
-      const formData = new FormData(formElement);
-      formData.append('file', originalFile);
+      const formData = new FormData();
+      formData.append('file', originalFile, originalFile.name);
       postFile(formData, {
         onSuccess: (data) => {
           deleteFile(roomDetail.mainImageUrl);
@@ -225,13 +224,19 @@ const Information = () => {
 
   const handleDeleteModalClose = () => setIsDeleteConfirmModalOpen(false);
 
-  const closeRoom = () =>
-    deleteRoom(roomId, {
+  const closeRoom = () => {
+    if (!roomDetail) return;
+    deleteFile(roomDetail?.mainImageUrl, {
       onSuccess: () => {
-        router.push('/home');
-        showToastMessage('모임이 삭제되었습니다.', 'success');
+        deleteRoom(roomId, {
+          onSuccess: () => {
+            router.push('/home');
+            showToastMessage('모임이 삭제되었습니다.', 'success');
+          }
+        });
       }
     });
+  };
 
   const handleBackButtonClick = () => router.push(`/group?roomId=${roomId}`);
 
