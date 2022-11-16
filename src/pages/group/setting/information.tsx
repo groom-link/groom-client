@@ -180,7 +180,8 @@ const Information = () => {
   const handleMeetingInformationSubmit = () => {
     if (!roomDetail) return;
     if (originalFile) {
-      const formData = new FormData();
+      const formElement = document.createElement('form');
+      const formData = new FormData(formElement);
       formData.append('file', originalFile);
       postFile(formData, {
         onSuccess: (data) => {
