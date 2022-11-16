@@ -122,7 +122,7 @@ const Information = () => {
 
   useEffect(() => {
     if (!roomDetail) return;
-    const { name, description, mainImageUrl, maxPeopleNumber } = roomDetail;
+    const { name, description, maxPeopleNumber } = roomDetail;
     setMeetingTitle(name);
     setMeetingDescription(description);
     setTagList(tagList);
@@ -179,12 +179,12 @@ const Information = () => {
 
   const handleMeetingInformationSubmit = () => {
     if (!roomDetail) return;
-    let newMainImageUrl = profileImage ? roomDetail.mainImageUrl : '';
     if (originalFile) {
       const formData = new FormData();
       formData.append('file', originalFile);
       postFile(formData, {
         onSuccess: (data) => {
+          deleteFile(roomDetail.mainImageUrl);
           const body = {
             id: roomId,
             name: meetingTitle,
@@ -202,17 +202,21 @@ const Information = () => {
       });
       return;
     }
-    const body = {
-      id: roomId,
-      name: meetingTitle,
-      mainImageUrl: newMainImageUrl,
-      description: meetingDescription,
-      maxPeople
-    };
-    patchRoom(body, {
+    deleteFile(roomDetail.mainImageUrl, {
       onSuccess: () => {
-        router.push(`/group?roomId=${roomId}`);
-        showToastMessage('모임 정보가 수정되었습니다.', 'success');
+        const body = {
+          id: roomId,
+          name: meetingTitle,
+          mainImageUrl: '',
+          description: meetingDescription,
+          maxPeople
+        };
+        patchRoom(body, {
+          onSuccess: () => {
+            router.push(`/group?roomId=${roomId}`);
+            showToastMessage('모임 정보가 수정되었습니다.', 'success');
+          }
+        });
       }
     });
   };
