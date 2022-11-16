@@ -198,7 +198,8 @@ const Information = () => {
               showToastMessage('모임 정보가 수정되었습니다.', 'success');
             }
           });
-        }
+        },
+        onError: (error) => alert(error)
       });
       return;
     }

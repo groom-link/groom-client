@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import customAxios from '../../../api/customAxios';
+import { queryClient } from '../../../pages/_app';
 
 type DeleteFileRequest = string;
 
@@ -13,6 +14,11 @@ const DeleteFile: DeleteFile = async (filename: DeleteFileRequest) => {
   return data;
 };
 
-const useDeleteFile = () => useMutation(DeleteFile);
+const useDeleteFile = () =>
+  useMutation(DeleteFile, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['image']);
+    }
+  });
 
 export default useDeleteFile;

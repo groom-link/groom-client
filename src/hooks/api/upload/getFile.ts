@@ -19,7 +19,7 @@ const getFile: GetFile = async (filename: GetFileRequest) => {
 };
 
 const useGetFile = (filename: GetFileRequest) =>
-  useQuery(['file', filename], () => getFile(filename), {
+  useQuery(['image', filename], () => getFile(filename), {
     select: (data) => data,
     enabled: !!filename
   });
