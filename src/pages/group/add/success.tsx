@@ -59,13 +59,7 @@ const Success = () => {
     setCode(inviteCode);
   }, []);
 
-  const setClipboard = (text: string) => {
-    const type = 'text/plain';
-    const blob = new Blob([text], { type });
-    const data = [new ClipboardItem({ [type]: blob })];
-
-    navigator.clipboard.write(data);
-  };
+  const setClipboard = (text: string) => navigator.clipboard.writeText(text);
 
   return (
     <>
