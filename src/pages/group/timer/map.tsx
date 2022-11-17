@@ -23,7 +23,7 @@ import {
   renderProfileMarker
 } from '../../../utils/kakaoMapsTools';
 
-const ARRIVAL_ARIA_CIRCLE_RADIUS = 30 as const;
+const ARRIVAL_ARIA_CIRCLE_RADIUS = 60 as const;
 
 const Map = styled.div`
   box-sizing: border-box;

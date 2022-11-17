@@ -121,7 +121,7 @@ const TimerPopup = (props: Props) => {
             타이머 해제
           </ClearTimerButton>
           <ButtonDescription>
-            모임 장소 30m 이내에서 해제 가능합니다.
+            모임 장소 50m 이내에서 해제 가능합니다.
           </ButtonDescription>
         </>
       )}
