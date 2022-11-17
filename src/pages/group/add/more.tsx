@@ -256,7 +256,7 @@ const More = () => {
         <SelectedResultRow
           type="default"
           label="모임원 수"
-          value="3"
+          value={numberOfMembers.toString()}
           unit="명"
         />
         <SelectedResultRow
@@ -270,7 +270,11 @@ const More = () => {
           label="총 모임비"
           value={
             selectedGifticon
-              ? (selectedGifticon.price * penaltyCount * 3).toLocaleString()
+              ? (
+                  selectedGifticon.price *
+                  penaltyCount *
+                  numberOfMembers
+                ).toLocaleString()
               : '0'
           }
           unit="원"
