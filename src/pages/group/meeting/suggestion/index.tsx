@@ -111,7 +111,7 @@ const Suggestion = () => {
           <TitleContainer>
             <Title>회의가 가능한 날들이에요.</Title>
             <Link passHref href={`./suggestion/edit?roomId=${roomId}`}>
-              <EditLink>수정</EditLink>
+              <EditLink>불가능 시간 설정</EditLink>
             </Link>
           </TitleContainer>
           {recommendTimes.map(({ startTime, endTime }) => (
