@@ -25,6 +25,12 @@ const Login = () => {
   }, []);
 
   const handleKakaoLogin = () => {
+    const isAndroid = navigator.userAgent.includes('Android');
+    if (isAndroid) {
+      window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL}&response_type=code`;
+      return;
+    }
+
     Kakao.Auth.authorize({
       redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
     });
