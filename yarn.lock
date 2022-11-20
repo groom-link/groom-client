@@ -9213,6 +9213,11 @@ react-responsive-carousel@^3.2.23:
     prop-types "^15.5.8"
     react-easy-swipe "^0.0.21"
 
+react-simple-star-rating@^5.1.6:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/react-simple-star-rating/-/react-simple-star-rating-5.1.6.tgz#e395d087f52b4e26ee7d7adb8b4c9dafa12c3b6e"
+  integrity sha512-kRLLqkXRI8qk/9hXlsXviEE9E5gwiIdGyeNToVspbPvm1Asmv6YFNFMG6nr1VtqMajWMWS5PEruy15m+W5W2Iw==
+
 react-syntax-highlighter@^15.4.5:
   version "15.5.0"
   resolved "https://registry.yarnpkg.com/react-syntax-highlighter/-/react-syntax-highlighter-15.5.0.tgz#4b3eccc2325fa2ec8eff1e2d6c18fa4a9e07ab20"
