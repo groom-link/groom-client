@@ -1,4 +1,4 @@
-const readFileAsURL = (file: File, callback: (url: string) => void) => {
+const readFileAsURL = (file: File | Blob, callback: (url: string) => void) => {
   const fileReader = new FileReader();
   fileReader.addEventListener('load', ({ target }) => {
     if (!target) return;
