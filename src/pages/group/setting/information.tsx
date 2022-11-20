@@ -1,7 +1,6 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import { v4 } from 'uuid';
 
 import {
   Dialog,
@@ -13,15 +12,18 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
-import { getDownloadURL, ref, storage, uploadBytes } from '../../../firebase';
 import { useRoomIdParams } from '../../../hooks';
 import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useDeleteRoom from '../../../hooks/api/room/deleteRoom';
 import useExitRoom from '../../../hooks/api/room/exitRoom';
 import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId';
 import usePatchRoom from '../../../hooks/api/room/patchRoom';
+import useDeleteFile from '../../../hooks/api/upload/deleteFile';
+import useGetFile from '../../../hooks/api/upload/getFile';
+import usePostFile from '../../../hooks/api/upload/postFile';
 import colors from '../../../styles/colors';
 import { semiBold16 } from '../../../styles/typography';
+import readFileAsURL from '../../../utils/readFileAsURL';
 import showToastMessage from '../../../utils/showToastMessage';
 
 const Background = styled.div`
@@ -74,7 +76,9 @@ const Information = () => {
   const router = useRouter();
   const roomId = useRoomIdParams();
   const [isOwner, setIsOwner] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
   const [profileImage, setProfileImage] = useState('');
+  const [originalFile, setOriginalFile] = useState<File | null>(null);
   const [meetingTitle, setMeetingTitle] = useState('');
   const [meetingDescription, setMeetingDescription] = useState('');
   const [maxPeople, setMaxPeople] = useState(0);
@@ -95,6 +99,17 @@ const Information = () => {
   const { mutate: exitRoom } = useExitRoom();
   const { mutate: patchRoom } = usePatchRoom();
   const { mutate: deleteRoom } = useDeleteRoom();
+  const { data: profileImageFile } = useGetFile(roomDetail?.mainImageUrl);
+  const { mutate: deleteFile } = useDeleteFile();
+  const { mutate: postFile, isLoading: isFileUploading } = usePostFile();
+
+  useEffect(() => {
+    if (isDeleted) return;
+    if (!profileImageFile) return;
+    readFileAsURL(profileImageFile, (url) => {
+      setProfileImage(url);
+    });
+  }, [profileImageFile, isDeleted]);
 
   useEffect(() => {
     if (!roomDetail?.ownerId || !myInformation?.id) return;
@@ -107,30 +122,35 @@ const Information = () => {
 
   useEffect(() => {
     if (!roomDetail) return;
-    const { name, description, mainImageUrl, maxPeopleNumber } = roomDetail;
-    setProfileImage(mainImageUrl);
+    const { name, description, maxPeopleNumber } = roomDetail;
     setMeetingTitle(name);
     setMeetingDescription(description);
     setTagList(tagList);
     setMaxPeople(maxPeopleNumber);
-  }, [roomDetail]);
+  }, [roomDetail, tagList]);
 
-  const handleDeleteImage = () => setProfileImage('');
+  const handleDeleteImage = () => {
+    setProfileImage('');
+    setIsDeleted(true);
+  };
 
   const handleChangeImageUpload: ChangeEventHandler<HTMLInputElement> = async ({
     target: { files }
   }) => {
     if (!files) return;
     const file = files[0];
-    const accessURL = v4();
-    const pathReference = ref(storage, accessURL);
-    try {
-      await uploadBytes(pathReference, file);
-    } catch (error) {
-      alert(error);
-    }
-    const profileImageURL = await getDownloadURL(pathReference);
-    setProfileImage(profileImageURL);
+    readFileAsURL(file, (url) => setProfileImage(url));
+    setOriginalFile(file);
+
+    // const accessURL = v4();
+    // const pathReference = ref(storage, accessURL);
+    // try {
+    //   await uploadBytes(pathReference, file);
+    // } catch (error) {
+    //   alert(error);
+    // }
+    // const profileImageURL = await getDownloadURL(pathReference);
+    // setProfileImage(profileImageURL);
   };
 
   const handleMeetingTitleChange: ChangeEventHandler<HTMLInputElement> = ({
@@ -158,30 +178,65 @@ const Information = () => {
   const handleClickCloseMeeting = () => setIsDeleteConfirmModalOpen(true);
 
   const handleMeetingInformationSubmit = () => {
-    const body = {
-      id: roomId,
-      name: meetingTitle,
-      mainImageUrl: profileImage,
-      description: meetingDescription,
-      maxPeople
-    };
-    patchRoom(body, {
+    if (!roomDetail) return;
+    if (originalFile) {
+      const formData = new FormData();
+      formData.append('file', originalFile, originalFile.name);
+      postFile(formData, {
+        onSuccess: (data) => {
+          deleteFile(roomDetail.mainImageUrl);
+          const body = {
+            id: roomId,
+            name: meetingTitle,
+            mainImageUrl: data,
+            description: meetingDescription,
+            maxPeople
+          };
+          patchRoom(body, {
+            onSuccess: () => {
+              router.push(`/group?roomId=${roomId}`);
+              showToastMessage('모임 정보가 수정되었습니다.', 'success');
+            }
+          });
+        },
+        onError: (error) => alert(error)
+      });
+      return;
+    }
+    deleteFile(roomDetail.mainImageUrl, {
       onSuccess: () => {
-        router.push(`/group?roomId=${roomId}`);
-        showToastMessage('모임 정보가 수정되었습니다.', 'success');
+        const body = {
+          id: roomId,
+          name: meetingTitle,
+          mainImageUrl: '',
+          description: meetingDescription,
+          maxPeople
+        };
+        patchRoom(body, {
+          onSuccess: () => {
+            router.push(`/group?roomId=${roomId}`);
+            showToastMessage('모임 정보가 수정되었습니다.', 'success');
+          }
+        });
       }
     });
   };
 
   const handleDeleteModalClose = () => setIsDeleteConfirmModalOpen(false);
 
-  const closeRoom = () =>
-    deleteRoom(roomId, {
+  const closeRoom = () => {
+    if (!roomDetail) return;
+    deleteFile(roomDetail?.mainImageUrl, {
       onSuccess: () => {
-        router.push('/home');
-        showToastMessage('모임이 삭제되었습니다.', 'success');
+        deleteRoom(roomId, {
+          onSuccess: () => {
+            router.push('/home');
+            showToastMessage('모임이 삭제되었습니다.', 'success');
+          }
+        });
       }
     });
+  };
 
   const handleBackButtonClick = () => router.push(`/group?roomId=${roomId}`);
 

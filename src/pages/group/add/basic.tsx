@@ -1,8 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
-import { ChangeEventHandler, useState } from 'react';
-import Router from 'next/router';
+import { ChangeEventHandler, useEffect, useState } from 'react';
+import Router, { useRouter } from 'next/router';
 import styled from '@emotion/styled';
-import { v4 } from 'uuid';
 
 import {
   Dialog,
@@ -13,10 +12,10 @@ import {
   TopNavBar
 } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
-import { getDownloadURL, ref, storage, uploadBytes } from '../../../firebase';
 import useNewGroupInformationStore from '../../../store/newGroupInformation';
 import colors from '../../../styles/colors';
 import { semiBold20 } from '../../../styles/typography';
+import readFileAsURL from '../../../utils/readFileAsURL';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -41,67 +40,78 @@ const GroupNameInput = styled(TextInput)`
 `;
 
 const Basic = () => {
-  const [groupName, setGroupName] = useState('');
-  const [description, setDescription] = useState('');
-  const [numberOfPeople, setNumberOfPeople] = useState(0);
+  const router = useRouter();
   const [tagList, setTagList] = useState<string[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [profileImage, setProfileImage] = useState('');
-  const setProfileImageURLStore = useNewGroupInformationStore(
+  const profileImageURL = useNewGroupInformationStore(
+    (state) => state.profileImageURL
+  );
+  const setProfileImageURL = useNewGroupInformationStore(
     (state) => state.setProfileImageURL
   );
-  const setNameStore = useNewGroupInformationStore((state) => state.setName);
-  const setDescriptionStore = useNewGroupInformationStore(
-    (state) => state.setDescription
+  const name = useNewGroupInformationStore((state) => state.name);
+  const setName = useNewGroupInformationStore((state) => state.setName);
+  const numberOfMembers = useNewGroupInformationStore(
+    (state) => state.numberOfMembers
   );
-  const setTagsStore = useNewGroupInformationStore((state) => state.setTags);
-  const setNumberOfMembersStore = useNewGroupInformationStore(
+  const setNumberOfMembers = useNewGroupInformationStore(
     (state) => state.setNumberOfMembers
   );
+  const description = useNewGroupInformationStore((state) => state.description);
+  const setDescription = useNewGroupInformationStore(
+    (state) => state.setDescription
+  );
+  const setGifticonID = useNewGroupInformationStore(
+    (state) => state.setGifticonID
+  );
+  const setMaximumNumberOfPenalty = useNewGroupInformationStore(
+    (state) => state.setMaximumNumberOfPenalty
+  );
+
+  useEffect(() => {
+    if (!profileImageURL) return;
+    readFileAsURL(profileImageURL, (url) => setProfileImage(url));
+  });
 
   const handleChangeImageFile: ChangeEventHandler<HTMLInputElement> = async ({
     target: { files }
   }) => {
     if (!files) return;
     const file = files[0];
-    const accessURL = v4();
-    const pathReference = ref(storage, accessURL);
-    try {
-      await uploadBytes(pathReference, file);
-    } catch (error) {
-      alert(error);
-    }
-    const profileImageURL = await getDownloadURL(pathReference);
-    setProfileImage(profileImageURL);
+    setProfileImageURL(profileImageURL);
+    readFileAsURL(file, (url) => {
+      setProfileImage(url);
+      setProfileImageURL(file);
+    });
   };
 
-  const handleClickDeleteImage = () => setProfileImage('');
+  const handleClickDeleteImage = () => {
+    setProfileImage('');
+    setProfileImageURL(null);
+  };
 
   const handleGroupNameChange: ChangeEventHandler<HTMLInputElement> = ({
     target: { value }
-  }) => setGroupName(value);
+  }) => setName(value);
 
   const handleDescriptionChange: ChangeEventHandler<HTMLTextAreaElement> = ({
     target: { value }
   }) => setDescription(value);
 
-  const decreasePeople = () =>
-    setNumberOfPeople((pre) => {
-      if (pre <= 0) return 0;
-      return --pre;
-    });
+  const decreasePeople = () => {
+    if (numberOfMembers <= 0) return;
+    setNumberOfMembers(numberOfMembers - 1);
+  };
 
-  const increasePeople = () => setNumberOfPeople((pre) => ++pre);
+  const increasePeople = () => setNumberOfMembers(numberOfMembers + 1);
 
-  const isValueExist = () => !!(groupName && description && numberOfPeople);
+  const isValueExist = () =>
+    !!(name && description && numberOfMembers && profileImageURL);
 
   const handleButtonClick = () => {
     if (!isValueExist()) return;
-    setProfileImageURLStore(profileImage);
-    setNameStore(groupName);
-    setDescriptionStore(description);
-    setTagsStore(tagList);
-    setNumberOfMembersStore(numberOfPeople);
+    if (!profileImageURL) return;
     Router.push('./more');
   };
 
@@ -117,6 +127,16 @@ const Basic = () => {
 
   const backConfirmCallback = () => setIsModalOpen(true);
 
+  const handleModalGrayButtonClick = () => {
+    setProfileImageURL(null);
+    setName('');
+    setDescription('');
+    setNumberOfMembers(0);
+    setGifticonID('0');
+    setMaximumNumberOfPenalty(0);
+    router.push('/home');
+  };
+
   return (
     <>
       <Dialog
@@ -126,7 +146,7 @@ const Basic = () => {
         description="취소한 모임은 저장되지 않습니다."
         purpleButtonText="아니요"
         grayButtonText="네, 취소할게요"
-        onGrayButtonClick={() => Router.push('/home')}
+        onGrayButtonClick={handleModalGrayButtonClick}
         onPurpleButtonClick={() => setIsModalOpen(false)}
         isGrayButtonDisabled={false}
         isPurpleButtonDisabled={false}
@@ -146,7 +166,7 @@ const Basic = () => {
           <GroupNameInput
             label="모임 이름"
             placeholder="모임 이름을 입력해주세요."
-            value={groupName}
+            value={name}
             onChange={handleGroupNameChange}
           />
           <TextArea
@@ -166,7 +186,7 @@ const Basic = () => {
         <WhiteBox hasMargin={true}>
           <Stepper
             label="모임 구성원 수"
-            value={numberOfPeople}
+            value={numberOfMembers}
             onDecrease={decreasePeople}
             onIncrease={increasePeople}
             color="navy"
