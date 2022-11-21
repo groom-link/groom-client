@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 
-import { AppleLoginButton, KakaoLoginButton } from '../components/atoms';
+import { KakaoLoginButton } from '../components/atoms';
 import Image from '../components/utils/Image';
 
 const LogoContainer = styled.div`
@@ -10,8 +10,9 @@ const LogoContainer = styled.div`
   text-align: center;
 `;
 
-const AppleLoginButtonStyled = styled(AppleLoginButton)`
-  margin-top: 20px;
+const AppleLoginButtonStyled = styled.button`
+  display: block;
+  margin: 20px auto;
 `;
 
 const KakaoLoginButtonStyled = styled(KakaoLoginButton)`
@@ -20,10 +21,6 @@ const KakaoLoginButtonStyled = styled(KakaoLoginButton)`
 `;
 
 const Login = () => {
-  useEffect(() => {
-    window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY as string);
-  }, []);
-
   const handleKakaoLogin = () => {
     const isAndroid = navigator.userAgent.includes('Android');
     if (isAndroid) {
@@ -35,6 +32,10 @@ const Login = () => {
       redirectUri: process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URL
     });
   };
+
+  const handleAppleLoginClick = () =>
+    (window.location.href =
+      'https://appleid.apple.com/auth/authorize?client_id=link.groom.service.dev&redirect_uri=https://dev.service.groom.link/auth/apple/login&response_type=code&response_mode=query');
 
   return (
     <>
@@ -50,6 +51,14 @@ const Login = () => {
         />
       </LogoContainer>
       <KakaoLoginButtonStyled onClick={handleKakaoLogin} width="100%" />
+      <AppleLoginButtonStyled onClick={handleAppleLoginClick}>
+        <Image
+          src="https://appleid.cdn-apple.com/appleid/button?width=360&height=54&locale=ko_KR"
+          width="360"
+          height="53.89"
+          alt="Sign in with Apple"
+        />
+      </AppleLoginButtonStyled>
     </>
   );
 };

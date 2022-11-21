@@ -1,5 +1,6 @@
 interface Window {
   kakao: any;
+  AppleID: any;
 }
 
 type Coords = [number, number];
