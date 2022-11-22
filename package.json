@@ -24,6 +24,7 @@
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.0",
     "react-responsive-carousel": "^3.2.23",
+    "react-simple-star-rating": "^5.1.6",
     "uuid": "^9.0.0",
     "zustand": "^4.1.2"
   },

@@ -81,16 +81,19 @@ const TodoBoardContainer = styled.div<{ color: TodoColorProps }>`
 
 const TodoItemContainer = styled.div`
   box-sizing: border-box;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
   margin-bottom: 8px;
-  padding: 12px 16px;
   background-color: ${colors.grayScale.white};
   border-radius: 8px;
   text-decoration: none;
   text-align: left;
+`;
+
+const MainContainer = styled.div`
+  display: flex;
+  padding: 12px 16px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${colors.grayScale.gray01};
 `;
 
 const TodoOwnerAvatar = styled(Avatar)`
@@ -145,6 +148,15 @@ const ContentContainer = styled.a`
   flex: 1;
   align-items: center;
   text-decoration: none;
+`;
+
+const AttachLink = styled.a`
+  ${semiBold16};
+  display: block;
+  padding: 14px 0;
+  color: ${colors.grayScale.gray04};
+  text-decoration: none;
+  text-align: center;
 `;
 
 type TodoBoardProps = {
@@ -221,29 +233,46 @@ const TodoBoard = ({
       <TodoTitle color={color}>{title}</TodoTitle>
       {filteredTodos.length
         ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
-            <TodoItemContainer key={id}>
-              <Link passHref href={`./todo/edit?roomId=${roomId}&todoId=${id}`}>
-                <ContentContainer>
-                  <TodoOwnerAvatar proptype="image" src={profileImage} />
-                  <div>
-                    <TodoOwnerName>{nickname || '담당자 없음'}</TodoOwnerName>
-                    <TodoName>{title}</TodoName>
-                  </div>
-                </ContentContainer>
-              </Link>
-              <MoveButton
-                color={color}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  patchOnlySlot({
-                    id,
-                    roomSlot: getSlotName(color)
-                  });
-                }}
-              >
-                {getButtonName(color)}
-              </MoveButton>
-            </TodoItemContainer>
+            <div key={id}>
+              <TodoItemContainer>
+                <MainContainer>
+                  <Link
+                    passHref
+                    href={`./todo/edit?roomId=${roomId}&todoId=${id}`}
+                  >
+                    <ContentContainer>
+                      <TodoOwnerAvatar proptype="image" src={profileImage} />
+                      <div>
+                        <TodoOwnerName>
+                          {nickname || '담당자 없음'}
+                        </TodoOwnerName>
+                        <TodoName>{title}</TodoName>
+                      </div>
+                    </ContentContainer>
+                  </Link>
+                  <MoveButton
+                    color={color}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      patchOnlySlot({
+                        id,
+                        roomSlot: getSlotName(color)
+                      });
+                    }}
+                  >
+                    {getButtonName(color)}
+                  </MoveButton>
+                </MainContainer>
+                {color === 'gray' && (
+                  <Link
+                    passHref
+                    href={`./todo/attachment?roomId=${roomId}&todoId=${id}`}
+                  >
+                    <AttachLink>산출물 등록</AttachLink>
+                  </Link>
+                )}
+              </TodoItemContainer>
+            </div>
           ))
         : color === 'red' || <TodoDescription>{description}</TodoDescription>}
       {color === 'red' && (
