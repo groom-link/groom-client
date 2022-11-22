@@ -32,7 +32,7 @@ app.prepare().then(() => {
       const parsedUrl = parse(req.url, true);
       handle(req, res, parsedUrl);
     })
-    .listen(PORT + 1, (err) => {
+    .listen(SSL_PORT, (err) => {
       if (err) throw err;
       console.log(`> Ready on https://localhost:${SSL_PORT}`);
     });

@@ -11,6 +11,8 @@ type PatchTodoRequest = {
   content: string;
   roomSlot: Roomslot;
   todoOwnerId: number;
+  fileUrl?: string;
+  fileName?: string;
 };
 
 type PatchTodoResponse = GroomApiResponse<TodoDetail>;
@@ -27,6 +29,7 @@ const usePatchTodo = () => {
   return useMutation(patchTodo, {
     onSuccess: () => {
       queryClient.invalidateQueries(['todo']);
+      queryClient.invalidateQueries(['todoDetail']);
     }
   });
 };

@@ -16,6 +16,7 @@ export type Todo = {
   nickname: string;
   profileImage: string;
   roomSlot: RoomSlot;
+  todoOwnerId: number;
 };
 
 type GetTodoResponse = GroomApiResponse<{

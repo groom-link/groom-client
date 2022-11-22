@@ -1,5 +1,6 @@
 import { KeyboardEventHandler, useEffect, useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
 
 import { Avatar } from '../../../components/atoms';
@@ -17,10 +18,10 @@ import { queryClient } from '../../_app';
 
 type TodoColorKeys = keyof typeof colors.toDoColor;
 
-type TodoColorProps = 'red' | 'green' | 'gray';
+type TodoColor = 'red' | 'green' | 'gray';
 
 type TOdoBoardData = {
-  color: TodoColorProps;
+  color: TodoColor;
   title: string;
   description: string;
 }[];
@@ -49,7 +50,7 @@ const SubTitle = styled.h2`
   color: ${colors.grayScale.gray04};
 `;
 
-const TodoTitle = styled.h2<{ color: TodoColorProps }>`
+const TodoTitle = styled.h2<{ color: TodoColor }>`
   ${medium12}
   display: block;
   margin-bottom: 8px;
@@ -64,7 +65,7 @@ const TodoDescription = styled.span`
   color: ${colors.grayScale.gray03};
 `;
 
-const TodoBoardContainer = styled.div<{ color: TodoColorProps }>`
+const TodoBoardContainer = styled.div<{ color: TodoColor }>`
   box-sizing: border-box;
   min-height: 110px;
   margin-bottom: 16px;
@@ -132,7 +133,7 @@ const TodoInput = styled.input`
   }
 `;
 
-const MoveButton = styled.button<{ color: TodoColorProps }>`
+const MoveButton = styled.button<{ color: TodoColor }>`
   ${medium12};
   padding: 10px;
   background-color: ${colors.grayScale.gray01};
@@ -161,7 +162,7 @@ const AttachLink = styled.a`
 
 type TodoBoardProps = {
   userId: number;
-  color: TodoColorProps;
+  color: TodoColor;
   title: string;
   description: string;
   todos: Todo[];
@@ -176,6 +177,7 @@ const TodoBoard = ({
   userId,
   roomId
 }: TodoBoardProps) => {
+  const router = useRouter();
   const [todoTitle, setTodoTitle] = useState('');
   const [filteredTodos, setFilteredTodos] = useState<Todo[]>([]);
   const { mutate } = usePostTodo();
@@ -186,7 +188,7 @@ const TodoBoard = ({
     setFilteredTodos(filteredTodos);
   }, [todos, color]);
 
-  const getTodoData = (todos: Todo[], color: TodoColorProps) => {
+  const getTodoData = (todos: Todo[], color: TodoColor) => {
     const filterdTodo = todos.filter(({ roomSlot }) => {
       if (color === 'red') return roomSlot === 'todo';
       if (color === 'green') return roomSlot === 'doing';
@@ -196,13 +198,13 @@ const TodoBoard = ({
     return filterdTodo;
   };
 
-  const getButtonName = (color: TodoColorProps) => {
+  const getButtonName = (color: TodoColor) => {
     if (color === 'red') return '시작';
     if (color === 'green') return '마치기';
     return '다시 하기';
   };
 
-  const getSlotName = (color: TodoColorProps) => {
+  const getSlotName = (color: TodoColor) => {
     if (color === 'red') return 'doing';
     if (color === 'green') return 'done';
     return 'doing';
@@ -232,48 +234,58 @@ const TodoBoard = ({
     <TodoBoardContainer key={title} color={color}>
       <TodoTitle color={color}>{title}</TodoTitle>
       {filteredTodos.length
-        ? filteredTodos.map(({ id, title, profileImage, nickname }) => (
-            <div key={id}>
-              <TodoItemContainer>
-                <MainContainer>
-                  <Link
-                    passHref
-                    href={`./todo/edit?roomId=${roomId}&todoId=${id}`}
-                  >
-                    <ContentContainer>
-                      <TodoOwnerAvatar proptype="image" src={profileImage} />
-                      <div>
-                        <TodoOwnerName>
-                          {nickname || '담당자 없음'}
-                        </TodoOwnerName>
-                        <TodoName>{title}</TodoName>
-                      </div>
-                    </ContentContainer>
-                  </Link>
-                  <MoveButton
-                    color={color}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      patchOnlySlot({
-                        id,
-                        roomSlot: getSlotName(color)
-                      });
-                    }}
-                  >
-                    {getButtonName(color)}
-                  </MoveButton>
-                </MainContainer>
-                {color === 'gray' && (
-                  <Link
-                    passHref
-                    href={`./todo/attachment?roomId=${roomId}&todoId=${id}`}
-                  >
-                    <AttachLink>산출물 등록</AttachLink>
-                  </Link>
-                )}
-              </TodoItemContainer>
-            </div>
-          ))
+        ? filteredTodos.map(
+            ({ id, title, profileImage, nickname, todoOwnerId }) => (
+              <div key={id}>
+                <TodoItemContainer>
+                  <MainContainer>
+                    <Link
+                      passHref
+                      href={
+                        todoOwnerId === userId
+                          ? `./todo/edit?roomId=${roomId}&todoId=${id}`
+                          : router.asPath
+                      }
+                    >
+                      <ContentContainer>
+                        <TodoOwnerAvatar proptype="image" src={profileImage} />
+                        <div>
+                          <TodoOwnerName>
+                            {nickname || '담당자 없음'}
+                          </TodoOwnerName>
+                          <TodoName>{title}</TodoName>
+                        </div>
+                      </ContentContainer>
+                    </Link>
+                    {todoOwnerId === userId && (
+                      <MoveButton
+                        color={color}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          patchOnlySlot({
+                            id,
+                            roomSlot: getSlotName(color)
+                          });
+                        }}
+                      >
+                        {getButtonName(color)}
+                      </MoveButton>
+                    )}
+                  </MainContainer>
+                  {color === 'gray' && (
+                    <Link
+                      passHref
+                      href={`./todo/attachment?roomId=${roomId}&todoId=${id}`}
+                    >
+                      <AttachLink>
+                        {todoOwnerId === userId ? '산출물 등록' : '산출물 보기'}
+                      </AttachLink>
+                    </Link>
+                  )}
+                </TodoItemContainer>
+              </div>
+            )
+          )
         : color === 'red' || <TodoDescription>{description}</TodoDescription>}
       {color === 'red' && (
         <TodoInput

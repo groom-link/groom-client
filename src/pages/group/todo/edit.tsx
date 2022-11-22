@@ -15,10 +15,10 @@ import useGetDetailWithRoomId from '../../../hooks/api/room/getDetailWithRoomId'
 import useDeleteTodo from '../../../hooks/api/todo/deleteTodo';
 import useGetTodoDetail from '../../../hooks/api/todo/getTodoDetail';
 import usePatchTodo from '../../../hooks/api/todo/patchTodo';
+import useDeleteFile from '../../../hooks/api/upload/deleteFile';
 import colors from '../../../styles/colors';
 import { medium12, semiBold16, semiBold20 } from '../../../styles/typography';
 import showToastMessage from '../../../utils/showToastMessage';
-import { queryClient } from '../../_app';
 
 const Background = styled.div`
   min-height: 100vh;
@@ -82,8 +82,9 @@ const Edit = () => {
     isError: isTodoDetailError,
     isLoading: isTodoDetailLoading
   } = useGetTodoDetail(todoId);
-  const { mutate } = useDeleteTodo();
+  const { mutate: deleteTodo } = useDeleteTodo();
   const { mutate: patchTodo } = usePatchTodo();
+  const { mutate: deleteFile } = useDeleteFile();
 
   useEffect(() => {
     if (!todoDetailData) return;
@@ -130,6 +131,32 @@ const Edit = () => {
   };
 
   const isSubmitDisabled = () => !title || !owner;
+
+  const handleDeleteTodo = () => {
+    if (!todoDetailData) return;
+    const { fileUrl } = todoDetailData;
+    console.log(fileUrl);
+    
+    if (!fileUrl) {
+      deleteTodo(todoId, {
+        onSuccess: () => {
+          router.push(`./?roomId=${roomId}`);
+          showToastMessage('할 일이 삭제되었습니다.', 'success');
+        }
+      });
+      return;
+    }
+    deleteFile(fileUrl, {
+      onSuccess: () => {
+        deleteTodo(todoId, {
+          onSuccess: () => {
+            router.push(`./?roomId=${roomId}`);
+            showToastMessage('할 일이 삭제되었습니다.', 'success');
+          }
+        });
+      }
+    });
+  };
 
   if (isGroupDetailLoading) return <div>그룹 정보 로딩중...</div>;
   if (isGroupDetailError) return <div>그룹 정보 불러오기 에러!</div>;
@@ -187,15 +214,7 @@ const Edit = () => {
         isOpen={isDialogOpen}
         isGrayButtonDisabled={false}
         isPurpleButtonDisabled={false}
-        onGrayButtonClick={() =>
-          mutate(todoId, {
-            onSuccess: () => {
-              queryClient.invalidateQueries(['todo']);
-              router.push(`./?roomId=${roomId}`);
-              showToastMessage('할 일이 삭제되었습니다.', 'success');
-            }
-          })
-        }
+        onGrayButtonClick={handleDeleteTodo}
         onPurpleButtonClick={() => setIsDialogOpen(false)}
         title="할 일을 삭제하시겠어요?"
         grayButtonText="네, 삭제할게요"
