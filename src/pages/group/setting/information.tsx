@@ -226,7 +226,18 @@ const Information = () => {
 
   const closeRoom = () => {
     if (!roomDetail) return;
-    deleteFile(roomDetail?.mainImageUrl, {
+    const { mainImageUrl } = roomDetail;
+    
+    if (!mainImageUrl) {
+      deleteRoom(roomId, {
+        onSuccess: () => {
+          router.push('/home');
+          showToastMessage('모임이 삭제되었습니다.', 'success');
+        }
+      });
+      return;
+    }
+    deleteFile(mainImageUrl, {
       onSuccess: () => {
         deleteRoom(roomId, {
           onSuccess: () => {

@@ -14,6 +14,8 @@ import { bold16 } from '../../../../styles/typography';
 import { moveCenterOfMap } from '../../../../utils/kakaoMapsTools';
 import showToastMessage from '../../../../utils/showToastMessage';
 
+const INITIAL_ADDRESS_TEXT = '지도를 움직여 위치를 선택해주세요.';
+
 const MapContainer = styled.div`
   box-sizing: border-box;
   display: flex;
@@ -88,7 +90,7 @@ const Map = () => {
     coords,
     onMapDragEvent
   });
-  const [address, setAddress] = useState('지도를 움직여 위치를 선택해주세요.');
+  const [address, setAddress] = useState(INITIAL_ADDRESS_TEXT);
   const setAddressStore = useNewMeetingFormStore((state) => state.setAddress);
   const setCoordsStore = useNewMeetingFormStore((state) => state.setCoords);
 
@@ -150,7 +152,7 @@ const Map = () => {
               color="purple"
               size="medium"
               onClick={handleClickSetLocationButton}
-              disabled={false}
+              disabled={address === INITIAL_ADDRESS_TEXT}
             >
               이 위치로 회의장소 설정
             </Button>

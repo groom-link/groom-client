@@ -2,16 +2,16 @@ import { useEffect, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
 
+import { DEMO_GROUP_IMAGE_URL } from '../../../__mocks__';
 import { Avatar, Tag } from '../../../components/atoms';
 import { TopNavBar } from '../../../components/molecules';
 import ButtonFooter from '../../../components/molecules/ButtonFooter';
 import Image from '../../../components/utils/Image';
 import useGetDetailWithCode from '../../../hooks/api/room/getDetailWithCode';
+import useGetFile from '../../../hooks/api/upload/getFile';
 import colors from '../../../styles/colors';
 import { regular16, semiBold16, semiBold20 } from '../../../styles/typography';
-
-const DEMO_GROUP_IMAGE_URL =
-  'https://img.freepik.com/premium-photo/group-diverse-friends-taking-selfie-beach_53876-91925.jpg?w=2000' as const;
+import readFileAsURL from '../../../utils/readFileAsURL';
 
 const Background = styled.div`
   height: 100vh;
@@ -70,12 +70,23 @@ const Money = styled.strong`
 
 const Detail = () => {
   const [inviteCode, setInviteCode] = useState('');
-  const [isImageError, setImageError] = useState(false);
+  const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const {
     isError,
     isLoading,
     data: groupData
   } = useGetDetailWithCode(inviteCode);
+  const {
+    data: originalProfileImageFile,
+    isError: isOriginalProfileImageFileError
+  } = useGetFile(groupData?.mainImageUrl);
+
+  useEffect(() => {
+    if (!originalProfileImageFile) return;
+    if (!isOriginalProfileImageFileError)
+      setProfileImageUrl(DEMO_GROUP_IMAGE_URL);
+    readFileAsURL(originalProfileImageFile, (url) => setProfileImageUrl(url));
+  }, [originalProfileImageFile, isOriginalProfileImageFileError]);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -93,14 +104,15 @@ const Detail = () => {
   return (
     <Background>
       <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
-      <Image
-        src={isImageError ? DEMO_GROUP_IMAGE_URL : groupData.mainImageUrl}
-        alt="모임 프로필 이미지"
-        layout="responsive"
-        height="250px"
-        width="414"
-        onError={() => setImageError(true)}
-      />
+      {profileImageUrl && (
+        <Image
+          src={profileImageUrl}
+          alt="모임 프로필 이미지"
+          layout="responsive"
+          height="250px"
+          width="414"
+        />
+      )}
       <WhiteBox>
         <GroupName>{groupData.name}</GroupName>
         <Description>{groupData.description}</Description>
