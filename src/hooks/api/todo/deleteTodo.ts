@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 
 import customAxios from '../../../api/customAxios';
+import { queryClient } from '../../../pages/_app';
 
 type DeleteTodoResponse = GroomApiResponse<number>;
 
@@ -11,6 +12,8 @@ const deleteTodo: DeleteTodo = async (id) => {
   return data;
 };
 
-const useDeleteTodo = () => useMutation(deleteTodo);
+const useDeleteTodo = () => useMutation(deleteTodo, {
+  onSuccess: () => queryClient.invalidateQueries(['todo']),
+});
 
 export default useDeleteTodo;

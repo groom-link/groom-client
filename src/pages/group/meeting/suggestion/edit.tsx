@@ -89,7 +89,7 @@ const Edit = () => {
     <Background>
       <TopNavBar onBackButtonClick={handleBackButtonClick} setting={false} />
       <WhiteBox>
-        <Title>회의가 불가능한 시간들이애요.</Title>
+        <Title>회의가 불가능한 시간들이에요.</Title>
       </WhiteBox>
       <TimePicker
         allDayOption={false}

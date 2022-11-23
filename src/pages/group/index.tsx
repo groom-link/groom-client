@@ -93,10 +93,10 @@ const Home = () => {
       {!!todoData.todoList.length && (
         <>
           <SubTitle>내 할 일</SubTitle>
-          {todoData.todoList.map(({ id, title }) => (
+          {todoData.todoList.map(({ id, title, roomSlot }) => (
             <MyTodo key={id}>
               <span>{title}</span>
-              <CheckCircle width="30px" color={colors.mainColor.purple} />
+              <CheckCircle width="30px" color={roomSlot === 'done' ? colors.mainColor.purple : colors.grayScale.gray02} />
             </MyTodo>
           ))}
         </>

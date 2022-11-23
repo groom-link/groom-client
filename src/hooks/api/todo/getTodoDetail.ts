@@ -13,7 +13,7 @@ const getTodoDetail: GetTodoDetail = async (id) => {
 };
 
 const useGetTodoDetail = (id: number) =>
-  useQuery(['todoDetail'], () => getTodoDetail(id), {
+  useQuery(['todoDetail', {todoId: id}], () => getTodoDetail(id), {
     select: (data) => data.data,
     enabled: !!id
   });

@@ -1,6 +1,8 @@
 import { ChangeEventHandler, useState } from 'react';
 import Router from 'next/router';
 import styled from '@emotion/styled';
+import imageCompresstion from 'browser-image-compression';
+import toast from 'react-hot-toast';
 import { Carousel } from 'react-responsive-carousel';
 
 import { Thumbnail } from '../../../components/atoms';
@@ -140,6 +142,9 @@ const More = () => {
   );
   const { mutate } = usePostRoom();
   const { mutate: uploadFile } = usePostFile();
+  const [isUploading, setIsUploading] = useState(false);
+
+  const getIsUploadingPromise = async () => isUploading;
 
   const handleGifticonSelect = (gifticon: Gifticon) =>
     setSelectedGifticon(gifticon);
@@ -156,10 +161,19 @@ const More = () => {
     target: { value }
   }) => SetIsPublic(parseInt(value) as 1 | 2);
 
-  const handleNextButtonClick = () => {
+  const handleNextButtonClick = async () => {
     if (!profileImageURL) return;
+    toast.promise(getIsUploadingPromise(), {
+      loading: '모임을 만드는 중이에요...',
+      success: '모임 생성 완료!',
+      error: '모임을 만들지 못했어요.'
+    });
+    const compressedImager = await imageCompresstion(profileImageURL, {
+      maxSizeMB: 1,
+      useWebWorker: true
+    });
     const formData = new FormData();
-    formData.append('file', profileImageURL);
+    formData.append('file', compressedImager);
     uploadFile(formData, {
       onSuccess: (data) => {
         mutate(
@@ -177,8 +191,10 @@ const More = () => {
             }
           },
           {
-            onSuccess: ({ data: { code } }) =>
-              Router.push(`./success?code=${code}`)
+            onSuccess: ({ data: { code } }) => {
+              Router.push(`./success?code=${code}`);
+              setIsUploading(true);
+            }
           }
         );
       }

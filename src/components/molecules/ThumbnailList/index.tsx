@@ -143,17 +143,19 @@ const ThumbnailList = ({
   numberOfMyTodos,
   tags
 }: Props) => {
-  const [isImageError, setIsImageError] = useState(false);
-  const [imageSrc, setImageSrc] = useState('');
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
   const { data: profileImage } = useGetFile(profileImageURL);
 
   useEffect(() => {
+    if (!profileImageURL) {
+      setImageSrc(DEMO_GROUP_IMAGE_URL);
+      return;
+    }
     if (!profileImage) return;
     readFileAsURL(profileImage, (url) => {
       setImageSrc(url);
-      setIsImageError(false);
     });
-  }, [profileImage]);
+  }, [profileImage, profileImageURL]);
 
   return (
     <div className={className}>
@@ -161,13 +163,14 @@ const ThumbnailList = ({
       <Container hasNearMeeting={false}>
         <TopBox>
           <ImageBox>
-            <Image
-              src={isImageError ? DEMO_GROUP_IMAGE_URL : imageSrc}
-              layout="fill"
-              objectFit="cover"
-              alt="모임 프로필"
-              onError={() => setIsImageError(true)}
-            />
+            {imageSrc && (
+              <Image
+                src={imageSrc}
+                layout="fill"
+                objectFit="cover"
+                alt="모임 프로필"
+              />
+            )}
           </ImageBox>
           <TextContainer>
             <TitleContainer>
