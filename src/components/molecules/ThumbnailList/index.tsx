@@ -144,15 +144,18 @@ const ThumbnailList = ({
   tags
 }: Props) => {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
-  const { data: profileImage, isError: isGetProfileImageImageError } = useGetFile(profileImageURL);
+  const { data: profileImage } = useGetFile(profileImageURL);
 
   useEffect(() => {
+    if (!profileImageURL) {
+      setImageSrc(DEMO_GROUP_IMAGE_URL);
+      return;
+    }
     if (!profileImage) return;
-    if (isGetProfileImageImageError) setImageSrc(DEMO_GROUP_IMAGE_URL);
     readFileAsURL(profileImage, (url) => {
       setImageSrc(url);
     });
-  }, [profileImage, isGetProfileImageImageError]);
+  }, [profileImage, profileImageURL]);
 
   return (
     <div className={className}>
@@ -160,12 +163,14 @@ const ThumbnailList = ({
       <Container hasNearMeeting={false}>
         <TopBox>
           <ImageBox>
-            {imageSrc && <Image
-              src={imageSrc}
-              layout="fill"
-              objectFit="cover"
-              alt="모임 프로필"
-            />}
+            {imageSrc && (
+              <Image
+                src={imageSrc}
+                layout="fill"
+                objectFit="cover"
+                alt="모임 프로필"
+              />
+            )}
           </ImageBox>
           <TextContainer>
             <TitleContainer>

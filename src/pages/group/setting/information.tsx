@@ -1,6 +1,8 @@
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import styled from '@emotion/styled';
+import imageCompresstion from 'browser-image-compression';
+import toast from 'react-hot-toast';
 
 import {
   Dialog,
@@ -83,6 +85,7 @@ const Information = () => {
   const [meetingDescription, setMeetingDescription] = useState('');
   const [maxPeople, setMaxPeople] = useState(0);
   const [tagList, setTagList] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const [isDeleteConfirmModalOpen, setIsDeleteConfirmModalOpen] =
     useState(false);
   const [isExitConfirmModalOpen, setIsExitConfirmModalOpen] = useState(false);
@@ -128,6 +131,8 @@ const Information = () => {
     setTagList(tagList);
     setMaxPeople(maxPeopleNumber);
   }, [roomDetail, tagList]);
+
+  const getIsUploadingPromise = async () => isUploading;
 
   const handleDeleteImage = () => {
     setProfileImage('');
@@ -177,11 +182,20 @@ const Information = () => {
 
   const handleClickCloseMeeting = () => setIsDeleteConfirmModalOpen(true);
 
-  const handleMeetingInformationSubmit = () => {
+  const handleMeetingInformationSubmit = async () => {
     if (!roomDetail) return;
     if (originalFile) {
+      toast.promise(getIsUploadingPromise(), {
+        loading: '프로필 사진 업로드중...',
+        success: '모임 정보 수정 완료!',
+        error: '모임 정보를 수정하지 못했어요.'
+      });
+      const compressedImage = await imageCompresstion(originalFile, {
+        maxSizeMB: 1,
+        useWebWorker: true
+      });
       const formData = new FormData();
-      formData.append('file', originalFile, originalFile.name);
+      formData.append('file', compressedImage);
       postFile(formData, {
         onSuccess: (data) => {
           deleteFile(roomDetail.mainImageUrl);
@@ -195,7 +209,7 @@ const Information = () => {
           patchRoom(body, {
             onSuccess: () => {
               router.push(`/group?roomId=${roomId}`);
-              showToastMessage('모임 정보가 수정되었습니다.', 'success');
+              setIsUploading(true);
             }
           });
         },
@@ -227,7 +241,7 @@ const Information = () => {
   const closeRoom = () => {
     if (!roomDetail) return;
     const { mainImageUrl } = roomDetail;
-    
+
     if (!mainImageUrl) {
       deleteRoom(roomId, {
         onSuccess: () => {
