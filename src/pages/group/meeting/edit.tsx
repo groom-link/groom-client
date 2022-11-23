@@ -74,8 +74,21 @@ const Edit = () => {
     setCoords(numberCoords);
   }, [meetingDetail, edit]);
 
-  const handleBackButtonClick = () =>
+  const resetAllGlobalFormState = () => {
+    setTitle('');
+    setStartDatetimeStore('');
+    setEndDatetimeStore('');
+    setStartDatetime('');
+    setEndDatetime('');
+    setParticipants([]);
+    setAddress('');
+    setCoords([0, 0]);
+  };
+
+  const handleBackButtonClick = () => {
+    resetAllGlobalFormState();
     router.push(`/group/meeting?roomId=${roomId}`);
+  };
 
   const getIsMemerSelected = (id: number) => participants.includes(id);
 
