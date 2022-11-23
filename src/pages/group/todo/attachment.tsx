@@ -32,6 +32,7 @@ import {
   semiBold16,
   semiBold20
 } from '../../../styles/typography';
+import readFileAsURL from '../../../utils/readFileAsURL';
 import showToastMessage from '../../../utils/showToastMessage';
 
 const FileUploadBox = styled.label`
@@ -359,8 +360,9 @@ const Attachment = () => {
 
   useEffect(() => {
     if (!file) return;
-    const url = URL.createObjectURL(file);
-    setDownloadUrl(url);
+    readFileAsURL(file, (url) => {
+      setDownloadUrl(url);
+    });
   }, [file]);
 
   useEffect(() => {
