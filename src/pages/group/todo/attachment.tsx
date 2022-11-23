@@ -18,7 +18,7 @@ import useGetMyInformation from '../../../hooks/api/auth/getMyInformation';
 import useDeleteEvaluation from '../../../hooks/api/evaluation/deleteEvaluation';
 import useGetEvaluation, {
   Evaluation
-} from '../../../hooks/api/evaluation/getEValuation';
+} from '../../../hooks/api/evaluation/getEvaluation';
 import usePostEvaluation from '../../../hooks/api/evaluation/postEvaluation';
 import useGetTodoDetail from '../../../hooks/api/todo/getTodoDetail';
 import usePatchTodo from '../../../hooks/api/todo/patchTodo';
